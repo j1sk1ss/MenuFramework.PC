@@ -1,4 +1,98 @@
-package org.j1sk1ss.menuframework.objects.interactive;
+package org.j1sk1ss.menuframework.objects.interactive.components;
 
-public class Button {
+
+import lombok.experimental.ExtensionMethod;
+import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
+import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.objects.interactive.Component;
+import org.j1sk1ss.menuframework.objects.item.Item;
+import org.j1sk1ss.menuframework.objects.item.ItemManager;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+
+@ExtensionMethod({ItemManager.class})
+public class Button extends Component {
+    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+        FirstSlot  = firstSlot;
+        SecondSlot = secondSlot;
+        Name       = name;
+        Lore       = lore;
+        Action     = delegate;
+    }
+
+    public Button(int firstSlot, int secondSlot, String name, String lore) {
+        FirstSlot  = firstSlot;
+        SecondSlot = secondSlot;
+        Name       = name;
+        Lore       = lore;
+        Action     = null;
+    }
+
+    public Button(int firstSlot, int secondSlot, String name) {
+        FirstSlot  = firstSlot;
+        SecondSlot = secondSlot;
+        Name       = name;
+        Lore       = "";
+        Action     = null;
+    }
+
+    private final int FirstSlot;
+    private final int SecondSlot;
+    private final String Name;
+    private final String Lore;
+    private final Consumer<InventoryClickEvent> Action;
+
+
+    @Override
+    public void place(Inventory inventory) {
+        for (var coordinate : getCoordinates())
+            inventory.setItem(coordinate, new Item(Name, Lore, Material.PAPER, 1, MenuFramework.Config.getInt("buttons_data_model")));
+    }
+
+    @Override
+    public void displace(Inventory inventory) {
+        for (var coordinate : getCoordinates())
+            if (inventory.getItem(coordinate) != null)
+                if (inventory.getItem(coordinate).getName().equals(Name))
+                    inventory.setItem(coordinate, null);
+    }
+
+    @Override
+    public boolean isClicked(int click) {
+        return getCoordinates().contains(click);
+    }
+
+    @Override
+    public String getName() {
+        return Name;
+    }
+
+    @Override
+    public String getLoreLines() {
+        return Lore;
+    }
+
+    @Override
+    public List<Integer> getCoordinates() {
+        var list = new ArrayList<Integer>();
+        var secondCoordinate = SecondSlot - FirstSlot;
+
+        var height = (secondCoordinate / 9) + 1;
+        var weight = (secondCoordinate % 9) + 1;
+        for (var i = FirstSlot / 9; i < FirstSlot / 9 + height; i++)
+            for (var j = FirstSlot % 9; j < FirstSlot % 9 + weight; j++)
+                list.add(9 * i + j);
+
+        return list;
+    }
+
+    @Override
+    public void action(InventoryClickEvent event) {
+        if (Action != null) Action.accept(event);
+    }
 }

@@ -2,3 +2,14 @@ name: MenuFramework
 version: '${project.version}'
 main: org.j1sk1ss.menuframework.MenuFramework
 api-version: '1.20'
+authors: [ j1sk1ss ]
+description: UI Framework for PC plugins by j1sk1ss
+
+
+buttons_data_model: 17000
+slider_data_models:
+  chosen: 17000
+  default: 17000
+checkbox_data_models:
+  chosen: 17000
+  default: 17000
