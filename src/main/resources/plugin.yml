@@ -1,0 +1,4 @@
+name: MenuFramework
+version: '${project.version}'
+main: org.j1sk1ss.menuframework.MenuFramework
+api-version: '1.20'
