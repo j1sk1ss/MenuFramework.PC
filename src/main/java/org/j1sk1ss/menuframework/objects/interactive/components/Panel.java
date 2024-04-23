@@ -20,7 +20,7 @@ public class Panel extends Component {
      * @param components Components of panel
      */
     public Panel(List<Component> components, String name) {
-        Name        = name;
+        Name       = name;
         Components = components;
     }
 
@@ -155,11 +155,35 @@ public class Panel extends Component {
         return buttons;
     }
 
+    /**
+     * Get checkbox from panel by name
+     * @param name Name of checkbox
+     * @return Checkbox
+     */
+    public Checkbox getCheckBoxes(String name) {
+        for (var component : Components)
+            if (component instanceof Checkbox checkbox)
+                if (checkbox.getName().equals(name))
+                    return checkbox;
+
+        return null;
+    }
+
+    /**
+     * Get checkboxes from panel
+     * @return Checkboxes
+     */
+    public List<Checkbox> getCheckBoxes() {
+        var checkboxes = new ArrayList<Checkbox>();
+        for (var component : Components)
+            if (component instanceof Checkbox checkbox) checkboxes.add(checkbox);
+
+        return checkboxes;
+    }
+
     @Override
     public boolean isClicked(int click) {
-        for (var component : Components) 
-            if (component.isClicked(click)) return true;
-
+        for (var component : Components) if (component.isClicked(click)) return true;
         return false;
     }
 

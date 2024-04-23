@@ -11,6 +11,7 @@ import org.j1sk1ss.menuframework.objects.item.ItemManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 @ExtensionMethod({ItemManager.class})
@@ -22,10 +23,10 @@ public class Slider extends Component {
      */
     public Slider(Slider slider, Inventory inventory) {
         Coordinates = new ArrayList<>(slider.Coordinates);
-        Options = new ArrayList<>(slider.Options);
-        Name = slider.Name;
-        Lore = slider.Lore;
-        Parameter = 0;
+        Options     = new ArrayList<>(slider.Options);
+        Name        = slider.Name;
+        Lore        = slider.Lore;
+        Action      = null;
     }
 
     /**
@@ -33,12 +34,12 @@ public class Slider extends Component {
      * @param coordinates Coordinates of slider
      * @param options List of options
      */
-    public Slider(List<Integer> coordinates, List<String> options, String lore, String name) {
+    public Slider(List<Integer> coordinates, List<String> options, String lore, String name, Consumer<InventoryClickEvent> delegate) {
         Coordinates = coordinates;
-        Options = options;
-        Name = name;
-        Lore = lore;
-        Parameter = 0;
+        Options     = options;
+        Name        = name;
+        Lore        = lore;
+        Action      = delegate;
     }
 
     /**
@@ -47,23 +48,23 @@ public class Slider extends Component {
      */
     public Slider(Slider slider) {
         Coordinates = new ArrayList<>(slider.Coordinates);
-        Options = new ArrayList<>(slider.Options);
-        Name = slider.getName();
-        Lore = slider.Lore;
-        Parameter = 0;
+        Options     = new ArrayList<>(slider.Options);
+        Name        = slider.getName();
+        Lore        = slider.Lore;
+        Action      = null;
     }
 
-    private final int Parameter;
     private final List<Integer> Coordinates;
     private final List<String> Options;
     private final String Lore;
     private final String Name;
+    private final Consumer<InventoryClickEvent> Action;
 
     @Override
     public void place(Inventory inventory) {
-        for (var integer : Coordinates)
-            if (integer != Parameter) inventory.setItem(integer, new Item(Name, Lore, Material.PAPER, 1, MenuFramework.Config.getInt("slider_data_models.default")));
-            else inventory.setItem(integer, new Item(Name, Lore, Material.GLASS, 1, MenuFramework.Config.getInt("slider_data_models.chosen")));
+        for (var i = 0; i < Coordinates.size(); i++)
+            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.PURPLE_WOOL, 1, MenuFramework.Config.getInt("slider_data_models.default")));
+            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.GLASS, 1, MenuFramework.Config.getInt("slider_data_models.chosen")));
     }
 
     @Override
@@ -96,10 +97,12 @@ public class Slider extends Component {
 
     @Override
     public void action(InventoryClickEvent event) {
+        if (Action != null) Action.accept(event);
+
         var inventory = event.getInventory();
-        for (var integer : Coordinates)
-            if (integer != event.getSlot()) inventory.setItem(integer, new Item(Name, Lore, Material.PAPER, 1, MenuFramework.Config.getInt("slider_data_models.default")));
-            else inventory.setItem(integer, new Item(Name, Lore, Material.GLASS, 1, MenuFramework.Config.getInt("slider_data_models.chosen")));
+        for (var i = 0; i < Coordinates.size(); i++)
+            if (Coordinates.get(i) != event.getSlot()) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.PURPLE_WOOL, 1, MenuFramework.Config.getInt("slider_data_models.default")));
+            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.GLASS, 1, MenuFramework.Config.getInt("slider_data_models.chosen")));
     }
 
     /**
