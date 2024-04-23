@@ -106,9 +106,10 @@ public class Slider extends Component {
      * Get coordinate of chose
      * @return Coordinate of chose
      */
-    public String getChose() {
-        for (var i = 0; i < Coordinates.size(); i++) 
-            if (Coordinates.get(i) == Parameter) return Options.get(i);
+    public String getChose(InventoryClickEvent inventory) {
+        for (var i = 0; i < Coordinates.size(); i++)
+            if (inventory.getInventory().getItem(Coordinates.get(i)) != null)
+                if (inventory.getInventory().getItem(Coordinates.get(i)).getType().equals(Material.GLASS)) return Options.get(i);
 
         return "none";
     }

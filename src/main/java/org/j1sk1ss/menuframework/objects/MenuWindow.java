@@ -16,7 +16,7 @@ public class MenuWindow {
         Panels = panels;
     }
 
-    private List<Panel> Panels;
+    private final List<Panel> Panels;
 
     /**
      * Get panel by name
