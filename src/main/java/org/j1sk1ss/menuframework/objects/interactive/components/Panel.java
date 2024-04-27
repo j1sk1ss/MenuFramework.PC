@@ -178,6 +178,22 @@ public class Panel extends Component {
         return checkboxes;
     }
 
+    /**
+     * Add component to panel
+     * @param component Component for adding
+     */
+    public void addComponent(Component component) {
+        Components.add(component);
+    }
+
+    /**
+     * Delete component from panel
+     * @param component Component to delete
+     */
+    public void deleteComponent(Component component) {
+        Components.remove(component);
+    }
+
     @Override
     public boolean isClicked(int click) {
         for (var component : Components) if (component.isClicked(click)) return true;
