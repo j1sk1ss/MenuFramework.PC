@@ -24,8 +24,6 @@ public class Button extends Component {
         Lore       = lore;
         Action     = delegate;
         Material   = material;
-
-        MenuFramework.ClickHandler.addHandler(this);
     }
 
     public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
@@ -36,8 +34,6 @@ public class Button extends Component {
         Action     = delegate;
 
         Material   = org.bukkit.Material.PAPER;
-
-        MenuFramework.ClickHandler.addHandler(this);
     }
 
     public Button(int firstSlot, int secondSlot, String name, String lore) {

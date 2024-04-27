@@ -22,6 +22,8 @@ public class Panel extends Component {
     public Panel(List<Component> components, String name) {
         Name       = name;
         Components = components;
+
+        MenuFramework.ClickHandler.addHandler(components, name);
     }
 
     private final String Name;
@@ -30,7 +32,6 @@ public class Panel extends Component {
     /**
      * Get button what was clicked
      * @param click Slot of inventory what was clicked
-     * @return Button what was clicked
      */
     public void click(int click) {
         for (var component : Components) {
@@ -47,7 +48,6 @@ public class Panel extends Component {
     /**
      * Get button what was clicked
      * @param click Slot of inventory what was clicked
-     * @return Button what was clicked
      */
     @Override
     public void click(InventoryClickEvent click) {
@@ -65,7 +65,6 @@ public class Panel extends Component {
     /**
      * Place components body to new inventory
      * @param inventory Inventory where should be placed components
-     * @return Inventory with components body
      */
     @Override
     public void place(Inventory inventory) {
@@ -76,7 +75,6 @@ public class Panel extends Component {
      * Place components body to new inventory
      * @param inventory Inventory where should be placed components
      * @param customLore If you need to use custom lore
-     * @return Inventory with components body
      */
     public void place(Inventory inventory, List<String> customLore) {
         for (var component = 0; component < Components.size(); component++) {
@@ -96,7 +94,6 @@ public class Panel extends Component {
     /**
      * Displace components body to new inventory
      * @param inventory Inventory where should be displaced components
-     * @return Inventory with components body
      */
     @Override
     public void displace(Inventory inventory) {
