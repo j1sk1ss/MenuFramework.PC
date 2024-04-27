@@ -4,10 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.j1sk1ss.menuframework.objects.interactive.Component;
+import org.j1sk1ss.menuframework.objects.interactive.components.Panel;
 
 import java.util.HashMap;
-import java.util.List;
 
 
 public class InventoryClickHandler implements Listener {
@@ -15,17 +14,18 @@ public class InventoryClickHandler implements Listener {
         handlers = new HashMap<>();
     }
 
-    private final HashMap<String, List<Component>> handlers;
+    private final HashMap<String, Panel> handlers;
 
     @EventHandler
     @SuppressWarnings("deprecation")
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getInventory().getHolder() instanceof Player currentPlayer) {
-            String windowTitle = event.getView().getTitle();
-            if (!currentPlayer.equals(event.getWhoClicked())) return;
+        if (event.getInventory().getHolder() instanceof Player player) {
+            var windowTitle = event.getView().getTitle();
+            if (!player.equals(event.getWhoClicked())) return;
+
             for (var key : handlers.keySet()) {
                 if (windowTitle.contains(key)) {
-                    for (var handler : handlers.get(key)) handler.action(event);
+                    handlers.get(key).click(event);
                     event.setCancelled(true);
                     break;
                 }
@@ -33,7 +33,7 @@ public class InventoryClickHandler implements Listener {
         }
     }
 
-    public void addHandler(List<Component> components, String environment) {
+    public void addHandler(Panel components, String environment) {
         handlers.put(environment, components);
     }
 

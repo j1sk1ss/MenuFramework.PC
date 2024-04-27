@@ -23,7 +23,7 @@ public class Panel extends Component {
         Name       = name;
         Components = components;
 
-        MenuFramework.ClickHandler.addHandler(components, name);
+        MenuFramework.ClickHandler.addHandler(this, name);
     }
 
     private final String Name;
