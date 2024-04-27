@@ -26,6 +26,15 @@ public class Checkbox extends Component {
         Action     = delegate;
     }
 
+    public Checkbox(int firstSlot, int secondSlot, String name, String lore) {
+        FirstSlot  = firstSlot;
+        SecondSlot = secondSlot;
+        Name       = name;
+        Lore       = lore;
+
+        Action = null;
+    }
+
     private final String Name;
     private final String Lore;
     private final int FirstSlot;

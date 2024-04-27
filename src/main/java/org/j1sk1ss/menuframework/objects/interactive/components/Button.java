@@ -17,12 +17,27 @@ import java.util.function.Consumer;
 
 @ExtensionMethod({ItemManager.class})
 public class Button extends Component {
+    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
+        FirstSlot  = firstSlot;
+        SecondSlot = secondSlot;
+        Name       = name;
+        Lore       = lore;
+        Action     = delegate;
+        Material   = material;
+
+        MenuFramework.ClickHandler.addHandler(this);
+    }
+
     public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
         Name       = name;
         Lore       = lore;
         Action     = delegate;
+
+        Material   = org.bukkit.Material.PAPER;
+
+        MenuFramework.ClickHandler.addHandler(this);
     }
 
     public Button(int firstSlot, int secondSlot, String name, String lore) {
@@ -30,28 +45,33 @@ public class Button extends Component {
         SecondSlot = secondSlot;
         Name       = name;
         Lore       = lore;
+
         Action     = null;
+        Material   = org.bukkit.Material.PAPER;
     }
 
     public Button(int firstSlot, int secondSlot, String name) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
         Name       = name;
+
         Lore       = "";
         Action     = null;
+        Material   = org.bukkit.Material.PAPER;
     }
 
     private final int FirstSlot;
     private final int SecondSlot;
     private final String Name;
     private final String Lore;
+    private final Material Material;
     private final Consumer<InventoryClickEvent> Action;
 
 
     @Override
     public void place(Inventory inventory) {
         for (var coordinate : getCoordinates())
-            inventory.setItem(coordinate, new Item(Name, Lore, Material.PAPER, 1, MenuFramework.Config.getInt("buttons_data_model")));
+            inventory.setItem(coordinate, new Item(Name, Lore, Material, 1, MenuFramework.Config.getInt("buttons_data_model")));
     }
 
     @Override
