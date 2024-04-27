@@ -11,7 +11,11 @@ import java.util.List;
 
 
 public class InventoryClickHandler implements Listener {
-    private HashMap<String, List<Component>> handlers;
+    public InventoryClickHandler() {
+        handlers = new HashMap<>();
+    }
+
+    private final HashMap<String, List<Component>> handlers;
 
     @EventHandler
     @SuppressWarnings("deprecation")
