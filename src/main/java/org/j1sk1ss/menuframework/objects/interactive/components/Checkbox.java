@@ -8,15 +8,15 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
+import org.j1sk1ss.itemmanager.manager.Item;
+import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
-import org.j1sk1ss.menuframework.objects.item.Item;
-import org.j1sk1ss.menuframework.objects.item.ItemManager;
 
 import lombok.experimental.ExtensionMethod;
 
 
-@ExtensionMethod({ItemManager.class})
+@ExtensionMethod({Manager.class})
 public class Checkbox extends Component {
     public Checkbox(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
         FirstSlot  = firstSlot;

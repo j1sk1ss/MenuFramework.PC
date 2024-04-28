@@ -5,10 +5,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
-import org.j1sk1ss.menuframework.objects.item.Item;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -5,17 +5,17 @@ import lombok.experimental.ExtensionMethod;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.j1sk1ss.itemmanager.manager.Item;
+import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
-import org.j1sk1ss.menuframework.objects.item.Item;
-import org.j1sk1ss.menuframework.objects.item.ItemManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 
-@ExtensionMethod({ItemManager.class})
+@ExtensionMethod({Manager.class})
 public class Button extends Component {
     public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
         FirstSlot  = firstSlot;
