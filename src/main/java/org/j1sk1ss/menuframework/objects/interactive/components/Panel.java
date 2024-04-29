@@ -88,8 +88,9 @@ public class Panel extends Component {
                 continue;
             }
 
-            if (Components.get(component).getName().equals(names.get(component)))
-                Components.get(component).place(inventory, customLore.get(component));
+            for (var value : Components)
+                if (value.getName().equals(names.get(component)))
+                    value.place(inventory, customLore.get(component));
         }
     }
 
