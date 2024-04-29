@@ -56,8 +56,6 @@ public class Slider extends Component {
 
     private final List<Integer> Coordinates;
     private final List<String> Options;
-    private final String Lore;
-    private final String Name;
     private final Consumer<InventoryClickEvent> Action;
 
     @Override
@@ -65,6 +63,13 @@ public class Slider extends Component {
         for (var i = 0; i < Coordinates.size(); i++)
             if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.PURPLE_WOOL, 1, MenuFramework.Config.getInt("slider_data_models.default")));
             else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.GLASS, 1, MenuFramework.Config.getInt("slider_data_models.chosen")));
+    }
+
+    @Override
+    public void place(Inventory inventory, List<String> lore) {
+        for (var i = 0; i < Coordinates.size(); i++)
+            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), Material.PURPLE_WOOL, 1, MenuFramework.Config.getInt("slider_data_models.default")));
+            else inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), Material.GLASS, 1, MenuFramework.Config.getInt("slider_data_models.chosen")));
     }
 
     @Override
@@ -78,16 +83,6 @@ public class Slider extends Component {
     @Override
     public boolean isClicked(int click) {
         return Coordinates.contains(click);
-    }
-
-    @Override
-    public String getName() {
-        return Name;
-    }
-
-    @Override
-    public String getLoreLines() {
-        return Lore;
     }
 
     @Override

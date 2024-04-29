@@ -6,6 +6,9 @@ import org.bukkit.inventory.Inventory;
 import java.util.List;
 
 public abstract class Component {
+    protected String Lore;
+    protected String Name;
+
     /**
      * Click interaction
      * @param slot Slot in inventory
@@ -23,11 +26,18 @@ public abstract class Component {
     }
 
     public abstract void place(Inventory inventory);
+    public abstract void place(Inventory inventory, List<String> lore);
     public abstract void displace(Inventory inventory);
     public abstract boolean isClicked(int click);
 
-    public abstract String getName();
-    public abstract String getLoreLines();
+    public String getName() {
+        return Name;
+    }
+
+    public String getLoreLines() {
+        return Lore;
+    }
+
     public abstract List<Integer> getCoordinates();
 
     /**

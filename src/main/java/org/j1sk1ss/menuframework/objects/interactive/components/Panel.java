@@ -21,12 +21,12 @@ public class Panel extends Component {
      */
     public Panel(List<Component> components, String name) {
         Name       = name;
+        Lore       = "Panel lore lines";
         Components = components;
 
         MenuFramework.ClickHandler.addHandler(this, name);
     }
 
-    private final String Name;
     private final List<Component> Components;
 
     /**
@@ -71,23 +71,25 @@ public class Panel extends Component {
         for (var component : Components) component.place(inventory);
     }
 
+    @Override
+    public void place(Inventory inventory, List<String> lore) {
+        for (var component : Components) component.place(inventory, lore);
+    }
+
     /**
      * Place components body to new inventory
      * @param inventory Inventory where should be placed components
      * @param customLore If you need to use custom lore
      */
-    public void place(Inventory inventory, List<String> customLore) {
+    public void place(Inventory inventory, List<List<String>> customLore, List<String> names) {
         for (var component = 0; component < Components.size(); component++) {
-            var coordinates = Components.get(component).getCoordinates();
+            if (customLore.get(component) == null) {
+                Components.get(component).place(inventory);
+                continue;
+            }
 
-            if (Components.get(component) instanceof Button button) {
-                var text = button.getName();
-                for (var coordinate : coordinates)
-                    inventory.setItem(coordinate, new Item(text, customLore.get(component), Material.PAPER, 1, MenuFramework.Config.getInt("buttons_data_model")));
-            
-            } 
-            else if (Components.get(component) instanceof Slider slider) 
-                slider.place(inventory);
+            if (Components.get(component).getName().equals(names.get(component)))
+                Components.get(component).place(inventory, customLore.get(component));
         }
     }
 
@@ -198,16 +200,6 @@ public class Panel extends Component {
     public boolean isClicked(int click) {
         for (var component : Components) if (component.isClicked(click)) return true;
         return false;
-    }
-
-    @Override
-    public String getName() {
-        return Name;
-    }
-
-    @Override
-    public String getLoreLines() {
-        return "Panel lore lines";
     }
 
     @Override

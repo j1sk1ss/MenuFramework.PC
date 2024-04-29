@@ -58,8 +58,6 @@ public class Button extends Component {
 
     private final int FirstSlot;
     private final int SecondSlot;
-    private final String Name;
-    private final String Lore;
     private final Material Material;
     private final Consumer<InventoryClickEvent> Action;
 
@@ -68,6 +66,12 @@ public class Button extends Component {
     public void place(Inventory inventory) {
         for (var coordinate : getCoordinates())
             inventory.setItem(coordinate, new Item(Name, Lore, Material, 1, MenuFramework.Config.getInt("buttons_data_model")));
+    }
+
+    @Override
+    public void place(Inventory inventory, List<String> lore) {
+        for (var coordinate : getCoordinates())
+            inventory.setItem(coordinate, new Item(Name, String.join(", ", lore), Material, 1, MenuFramework.Config.getInt("buttons_data_model")));
     }
 
     @Override
@@ -81,16 +85,6 @@ public class Button extends Component {
     @Override
     public boolean isClicked(int click) {
         return getCoordinates().contains(click);
-    }
-
-    @Override
-    public String getName() {
-        return Name;
-    }
-
-    @Override
-    public String getLoreLines() {
-        return Lore;
     }
 
     @Override

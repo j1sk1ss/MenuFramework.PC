@@ -35,8 +35,6 @@ public class Checkbox extends Component {
         Action = null;
     }
 
-    private final String Name;
-    private final String Lore;
     private final int FirstSlot;
     private final int SecondSlot;
     private final Consumer<InventoryClickEvent> Action;
@@ -45,6 +43,12 @@ public class Checkbox extends Component {
     public void place(Inventory inventory) {
         for (var coordinate : getCoordinates())
             inventory.setItem(coordinate, new Item(Name, Lore, Material.RED_STAINED_GLASS, 1, MenuFramework.Config.getInt("checkbox_data_models.default")));
+    }
+
+    @Override
+    public void place(Inventory inventory, List<String> lore) {
+        for (var coordinate : getCoordinates())
+            inventory.setItem(coordinate, new Item(Name, String.join(" ", lore), Material.RED_STAINED_GLASS, 1, MenuFramework.Config.getInt("checkbox_data_models.default")));
     }
 
     @Override
@@ -58,16 +62,6 @@ public class Checkbox extends Component {
     @Override
     public boolean isClicked(int click) {
         return getCoordinates().contains(click);
-    }
-
-    @Override
-    public String getName() {
-        return Name;
-    }
-
-    @Override
-    public String getLoreLines() {
-        return Lore;
     }
 
     @Override
