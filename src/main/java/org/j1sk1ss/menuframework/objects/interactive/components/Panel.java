@@ -186,7 +186,7 @@ public class Panel extends Component {
      * @param name Name of checkbox
      * @return Bar
      */
-    public Bar getBar(String name) {
+    public Bar getBars(String name) {
         for (var component : Components)
             if (component instanceof Bar bar)
                 if (bar.getName().equals(name))
