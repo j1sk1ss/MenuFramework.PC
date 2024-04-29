@@ -24,6 +24,8 @@ public class Bar extends Component {
 
         Options     = new ArrayList<>();
         Action      = null;
+        Name        = "Bar";
+        Lore        = "Bar lore";
     }
 
     public Bar(List<Integer> coordinates, Direction direction, List<String> options) {
@@ -32,6 +34,8 @@ public class Bar extends Component {
         Options     = options;
 
         Action      = null;
+        Name        = "Bar";
+        Lore        = "Bar lore";
     }
 
     public Bar(List<Integer> coordinates, Direction direction, List<String> options, Consumer<InventoryClickEvent> delegate) {
@@ -39,6 +43,18 @@ public class Bar extends Component {
         Direction   = direction;
         Action      = delegate;
         Options     = options;
+
+        Name        = "Bar";
+        Lore        = "Bar lore";
+    }
+
+    public Bar(List<Integer> coordinates, Direction direction, String name, String lore, List<String> options, Consumer<InventoryClickEvent> delegate) {
+        Coordinates = coordinates;
+        Direction   = direction;
+        Action      = delegate;
+        Options     = options;
+        Name        = name;
+        Lore        = lore;
     }
 
     private final List<Integer> Coordinates;
