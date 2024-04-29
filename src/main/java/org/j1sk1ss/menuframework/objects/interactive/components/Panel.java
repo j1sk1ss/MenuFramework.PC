@@ -182,6 +182,32 @@ public class Panel extends Component {
     }
 
     /**
+     * Get bar from panel by name
+     * @param name Name of checkbox
+     * @return Bar
+     */
+    public Bar getBar(String name) {
+        for (var component : Components)
+            if (component instanceof Bar bar)
+                if (bar.getName().equals(name))
+                    return bar;
+
+        return null;
+    }
+
+    /**
+     * Get bars from panel
+     * @return Bars
+     */
+    public List<Bar> getBars() {
+        var bars = new ArrayList<Bar>();
+        for (var component : Components)
+            if (component instanceof Bar bar) bars.add(bar);
+
+        return bars;
+    }
+
+    /**
      * Add component to panel
      * @param component Component for adding
      */

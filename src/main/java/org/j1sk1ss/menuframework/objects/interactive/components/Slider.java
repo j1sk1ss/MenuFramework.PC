@@ -11,6 +11,7 @@ import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 
@@ -76,7 +77,7 @@ public class Slider extends Component {
     public void displace(Inventory inventory) {
         for (var coordinate = 0; coordinate < Coordinates.size(); coordinate++)
             if (inventory.getItem(coordinate) != null)
-                if (inventory.getItem(coordinate).getName().equals(Name))
+                if (Objects.requireNonNull(inventory.getItem(coordinate)).getName().equals(Name))
                     inventory.setItem(coordinate, null);
     }
 

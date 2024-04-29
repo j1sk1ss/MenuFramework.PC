@@ -13,3 +13,6 @@ slider_data_models:
 checkbox_data_models:
   chosen: 17000
   default: 17000
+bar_data_model:
+  loaded: 17000
+  unloaded: 17000
