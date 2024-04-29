@@ -1,5 +1,9 @@
 [![](https://jitpack.io/v/j1sk1ss/MenuFramework.PC.svg)](https://jitpack.io/#j1sk1ss/MenuFramework.PC)
 
+# **Dependencies:**</br>
+- ItemManager.PC</br>
+
+# **Main info:**
 This is a very simple basis for creating your own menu in Minecraft.</br>
 To get started, you will need to create a new inventory: </br>
 
@@ -22,7 +26,7 @@ As you can see, panels should take **Components**. **Components** is a UI object
 
 
 
-<h1 align="center"> Buttons </h1>
+<h2 align="center"> Buttons </h2>
 
 **Buttons** can be created by next code:</br>
 
@@ -46,7 +50,7 @@ Also, example of adding delegate to **button**:
 
 
 
-<h1 align="center"> Slider </h1>
+<h2 align="center"> Slider </h2>
 
 **Sliders** can be created by next code:</br>
 
@@ -79,7 +83,7 @@ This **slider`s** ability give us a opportunity to connect **Buttons** and **Sli
 
 
 
-<h1 align="center"> Checkbox </h1>
+<h2 align="center"> Checkbox </h2>
 
 **Checkboxes** can be created by next code:</br>
 
@@ -90,22 +94,19 @@ Here first slot and second slot works like in **Button** part. One difference in
     var check = checkbox.isChecked(event) // event -> InventoryClickEvent
 
 
-<h1 align="center"> How to use it? </h1>
+<h2 align="center"> How to use it? </h2>
 
 **Components** placed in **panels**. **Panels** placed in **Menu**. After all preparations we can start using all stuff what we make earlier.</br>
 
-    public static MenuWindow Menu = ... // Create new menu with buttons, sliders, checkboxes and logic
+    public static MenuWindow Menu = ... // Create new menu with panels
 
-Then you should create new **Listener** that will listen all player`s inventory clicks with simple switch. 
+After this, MenuFramework listen all inventory clicks and anvoke functions that was linked to **buttons** in **panels**.
 
-    public class ClickListener implements IWindowListener {
-        @SuppressWarnings("deprecation")
-        @EventHandler
-        public void onClick(InventoryClickEvent event) {
-            var windowTitle = event.getView().getTitle();
-            if (windowTitle.contains("FirstMenu")) FMenu.getPanel("FirstMenu").click(event);
-            if (windowTitle.contains("SecondMenu")) FMenu.getPanel("SecondMenu").click(event);
-            if (windowTitle.contains("ThirdMenu")) FMenu.getPanel("ThirdMenu").click(event);
-        }
-    }
+<h2 align="center"> Panel </h2>
+
+**Panel** is a representation of every inventory that used as menu in your plugin. Creation of panel is simple:
+
+    var panel = new Panel(Arrays.asList( ... ), "InventoryTitlePart");
+
+Remember that **MenuFramework** will execute linked function in situation, when used inventory have same name with panel. (Or **panel** name is a part of inventory title).
 
