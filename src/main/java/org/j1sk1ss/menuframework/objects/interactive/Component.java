@@ -11,6 +11,10 @@ import java.util.List;
 
 
 public abstract class Component {
+    public Component() {
+        PersistentDataContainer = PersistentDataContainer.getAdapterContext().newPersistentDataContainer(); 
+    }
+
     protected String Lore;
     protected String Name;
     protected PersistentDataContainer PersistentDataContainer;
