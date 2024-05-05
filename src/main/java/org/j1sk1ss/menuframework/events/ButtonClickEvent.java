@@ -9,14 +9,13 @@ import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.jetbrains.annotations.NotNull;
 
 
-public class ComponentClickEvent extends Event implements Cancellable {
-    public ComponentClickEvent(Component component, Player player, int slot, InventoryClickEvent event) {
-        clickedComponent    = component;
-        inventoryClickEvent = event;
-        handlers    = new HandlerList();
-        isCancelled = false;
+public class ButtonClickEvent extends Event implements Cancellable {
+    public ButtonClickEvent(int slot, Component component, Player player, InventoryClickEvent event) {
+        this.slot = slot;
+        this.clickedComponent = component;
+        this.handlers = new HandlerList();
         this.player = player;
-        this.slot   = slot;
+        this.inventoryClickEvent = event;
     }
 
     private final int slot;
@@ -26,6 +25,7 @@ public class ComponentClickEvent extends Event implements Cancellable {
     private final InventoryClickEvent inventoryClickEvent;
 
     private boolean isCancelled;
+
 
     @Override
     public boolean isCancelled() {

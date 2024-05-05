@@ -49,10 +49,18 @@ public class MenuWindow {
         getPanel(name).displace(inventory);
     }
 
+    /**
+     * Add panel to menu
+     * @param panel Panel
+     */
     public void addPanel(Panel panel) {
         Panels.add(panel);
     }
 
+    /**
+     * Remove panel from menu
+     * @param panel Panel
+     */
     public void deletePanel(Panel panel) {
         Panels.remove(panel);
     }

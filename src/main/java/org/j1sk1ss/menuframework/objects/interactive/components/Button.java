@@ -2,12 +2,16 @@ package org.j1sk1ss.menuframework.objects.interactive.components;
 
 
 import lombok.experimental.ExtensionMethod;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.events.ButtonClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import java.util.ArrayList;
@@ -103,6 +107,9 @@ public class Button extends Component {
 
     @Override
     public void action(InventoryClickEvent event) {
+        var clickEvent = new ButtonClickEvent(event.getSlot(), this, (Player)event.getWhoClicked(), event);
+        Bukkit.getPluginManager().callEvent(clickEvent);
+
         if (Action != null) Action.accept(event);
     }
 }

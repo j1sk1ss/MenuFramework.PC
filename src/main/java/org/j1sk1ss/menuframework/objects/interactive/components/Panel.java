@@ -1,13 +1,13 @@
 package org.j1sk1ss.menuframework.objects.interactive.components;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.j1sk1ss.itemmanager.manager.Item;
+
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.events.ComponentClickEvent;
+import org.j1sk1ss.menuframework.objects.MenuSizes;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import java.util.ArrayList;
@@ -18,16 +18,34 @@ public class Panel extends Component {
     /**
      * Buttons panel
      * @param components Components of panel
+     * @param name Panel name
      */
     public Panel(List<Component> components, String name) {
         Name       = name;
         Lore       = "Panel lore lines";
         Components = components;
+        MenuSize   = MenuSizes.SixLines;
+
+        MenuFramework.ClickHandler.addHandler(this, name);
+    }
+
+    /**
+     * Buttons panel
+     * @param components Components of panel
+     * @param name Panel name
+     * @param size Size of menu
+     */
+    public Panel(List<Component> components, String name, MenuSizes size) {
+        Name       = name;
+        Lore       = "Panel lore lines";
+        Components = components;
+        MenuSize   = size;
 
         MenuFramework.ClickHandler.addHandler(this, name);
     }
 
     private final List<Component> Components;
+    private final MenuSizes MenuSize;
 
     /**
      * Get button what was clicked
@@ -36,7 +54,7 @@ public class Panel extends Component {
     public void click(int click) {
         for (var component : Components) {
             if (component.isClicked(click)) {
-                var clickEvent = new ComponentClickEvent(component, null, click);
+                var clickEvent = new ComponentClickEvent(component, null, click, null);
                 Bukkit.getPluginManager().callEvent(clickEvent);
 
                 if (!clickEvent.isCancelled())
@@ -53,7 +71,7 @@ public class Panel extends Component {
     public void click(InventoryClickEvent click) {
         for (var component : Components) {
             if (component.isClicked(click.getSlot())) {
-                var clickEvent = new ComponentClickEvent(component, (Player)click.getWhoClicked(), click.getSlot());
+                var clickEvent = new ComponentClickEvent(component, (Player)click.getWhoClicked(), click.getSlot(), click);
                 Bukkit.getPluginManager().callEvent(clickEvent);
 
                 if (!clickEvent.isCancelled())
@@ -92,6 +110,16 @@ public class Panel extends Component {
                 if (value.getName().equals(names.get(component)))
                     value.place(inventory, customLore.get(component));
         }
+    }
+
+    /**
+     * Place panel to inventory with additionsl components
+     * @param inventory Player inventory
+     * @param newComponents Additional components
+     */
+    public void placeWith(Inventory inventory, List<Component> newComponents) {
+        for (var component : Components) component.place(inventory);
+        for (var component : newComponents) component.place(inventory);
     }
 
     /**
@@ -232,5 +260,29 @@ public class Panel extends Component {
     @Override
     public List<Integer> getCoordinates() {
         return null;
+    }
+
+    public void getView(Player player) {
+        var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
+        place(window);
+        player.openInventory(window);
+    }
+
+    public void getView(Player player, List<String> lore) {
+        var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
+        place(window, lore);
+        player.openInventory(window);
+    }
+
+    public void getView(Player player, List<List<String>> customLore, List<String> names) {
+        var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
+        place(window, customLore, names);
+        player.openInventory(window);
+    }
+    
+    public void getViewWith(Player player, List<Component> newComponents) {
+        var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
+        placeWith(window, newComponents);
+        player.openInventory(window);
     }
 }

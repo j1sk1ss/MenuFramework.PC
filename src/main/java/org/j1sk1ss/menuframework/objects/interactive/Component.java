@@ -29,6 +29,7 @@ public abstract class Component {
     public abstract void place(Inventory inventory, List<String> lore);
     public abstract void displace(Inventory inventory);
     public abstract boolean isClicked(int click);
+    public abstract List<Integer> getCoordinates();
 
     public String getName() {
         return Name;
@@ -37,8 +38,6 @@ public abstract class Component {
     public String getLoreLines() {
         return Lore;
     }
-
-    public abstract List<Integer> getCoordinates();
 
     /**
      * Action for button
