@@ -68,14 +68,26 @@ public class Button extends Component {
 
     @Override
     public void place(Inventory inventory) {
+        var item = new Item(Name, Lore, Material, 1, MenuFramework.Config.getInt("buttons_data_model"));
+        var meta = item.getItemMeta();
+
+        PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
+        item.setItemMeta(meta);
+
         for (var coordinate : getCoordinates())
-            inventory.setItem(coordinate, new Item(Name, Lore, Material, 1, MenuFramework.Config.getInt("buttons_data_model")));
+            inventory.setItem(coordinate, item);
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
+        var item = new Item(Name, String.join(", ", lore), Material, 1, MenuFramework.Config.getInt("buttons_data_model"));
+        var meta = item.getItemMeta();
+
+        PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
+        item.setItemMeta(meta);
+
         for (var coordinate : getCoordinates())
-            inventory.setItem(coordinate, new Item(Name, String.join(", ", lore), Material, 1, MenuFramework.Config.getInt("buttons_data_model")));
+            inventory.setItem(coordinate, item);
     }
 
     @Override

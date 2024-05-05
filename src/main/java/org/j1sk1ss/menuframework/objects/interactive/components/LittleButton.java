@@ -6,14 +6,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
+import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.events.ButtonClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
+
+import lombok.experimental.ExtensionMethod;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 
+@ExtensionMethod({Manager.class})
 public class LittleButton extends Component {
     public LittleButton(int position) {
         this.Position = position;
@@ -56,12 +60,24 @@ public class LittleButton extends Component {
 
     @Override
     public void place(Inventory inventory) {
-        inventory.setItem(Position, new Item(Name, Lore, Material, 1, MenuFramework.Config.getInt("little_button_data_model")));
+        var item = new Item(Name, Lore, Material, 1, MenuFramework.Config.getInt("little_button_data_model"));
+        var meta = item.getItemMeta();
+
+        PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
+        item.setItemMeta(meta);
+
+        inventory.setItem(Position, item);
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        inventory.setItem(Position, new Item(Name, String.join(" ", lore), Material, 1, MenuFramework.Config.getInt("little_button_data_model")));
+        var item = new Item(Name, String.join(" ", lore), Material, 1, MenuFramework.Config.getInt("little_button_data_model"));
+        var meta = item.getItemMeta();
+
+        PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
+        item.setItemMeta(meta);
+
+        inventory.setItem(Position, item);
     }
 
     @Override
