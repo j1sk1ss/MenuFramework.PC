@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
+import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.events.ButtonClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
@@ -55,12 +56,12 @@ public class LittleButton extends Component {
 
     @Override
     public void place(Inventory inventory) {
-        inventory.setItem(Position, new Item(Name, Lore, Material));
+        inventory.setItem(Position, new Item(Name, Lore, Material, 1, MenuFramework.Config.getInt("little_button_data_model")));
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        inventory.setItem(Position, new Item(Name, String.join(" ", lore), Material));
+        inventory.setItem(Position, new Item(Name, String.join(" ", lore), Material, 1, MenuFramework.Config.getInt("little_button_data_model")));
     }
 
     @Override
