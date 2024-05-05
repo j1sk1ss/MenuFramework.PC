@@ -285,4 +285,20 @@ public class Panel extends Component {
         placeWith(window, newComponents);
         player.openInventory(window);
     }
+
+    public void getView(Player player, Inventory inventory) {
+        place(inventory);
+    }
+
+    public void getView(Player player, List<String> lore, Inventory inventory) {
+        place(inventory, lore);
+    }
+
+    public void getView(Player player, List<List<String>> customLore, List<String> names, Inventory inventory) {
+        place(inventory, customLore, names);
+    }
+    
+    public void getViewWith(Player player, List<Component> newComponents, Inventory inventory) {
+        placeWith(inventory, newComponents);
+    }
 }
