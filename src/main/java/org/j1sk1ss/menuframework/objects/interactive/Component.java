@@ -1,8 +1,10 @@
 package org.j1sk1ss.menuframework.objects.interactive;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.j1sk1ss.itemmanager.ItemManager;
@@ -12,7 +14,8 @@ import java.util.List;
 
 public abstract class Component {
     public Component() {
-        PersistentDataContainer = PersistentDataContainer.getAdapterContext().newPersistentDataContainer(); 
+        var item = new ItemStack(Material.PAPER);
+        PersistentDataContainer = item.getItemMeta().getPersistentDataContainer().getAdapterContext().newPersistentDataContainer();
     }
 
     protected String Lore;

@@ -24,7 +24,16 @@ public class InventoryClickHandler implements Listener {
             if (!player.equals(event.getWhoClicked())) return;
 
             for (var key : handlers.keySet()) {
-                if (windowTitle.contains(key)) {
+                var keyWords = key.split("\\s+");
+                var containsAllWords = true;
+                for (var word : keyWords) {
+                    if (!windowTitle.contains(word)) {
+                        containsAllWords = false;
+                        break;
+                    }
+                }
+
+                if (containsAllWords) {
                     handlers.get(key).click(event);
                     event.setCancelled(true);
                     break;
