@@ -73,6 +73,7 @@ If you need to take chosen param from **Slider**, you can use next code:</br>
 
 This **slider`s** ability give us a opportunity to connect **Buttons** and **Sliders** like in example below:</br>
 
+    public static MenuWindow Menu = new MenuWindow(Arrays.asList(
     var panel = new Panel(Arrays.asList(
         new Slider(Arrays.asList(
             0, 1, 2, 3, 4, 5
@@ -83,12 +84,12 @@ This **slider`s** ability give us a opportunity to connect **Buttons** and **Sli
         new Button(9, 21, "TestButton", "Lore",
             (event) -> {
                 var player = (Player)event.getWhoClicked();
-                var slider = new Slider(Menu.getPanel("TestPanel").getSliders("Slider"), event.getInventory());
-                if (slider.getChose(event).equals("none")) return;
+                var sliderChose = Menu.getPanel("TestPanel").getSliders("Slider").getChose(event);
+                if (sliderChose.equals("none")) return;
     
-                player.sendMessage(slider.getChose(event)); // It will prints current slider parameter
+                player.sendMessage(sliderChose); // Will prints current slider parameter
             }),
-    ), "TestPanel"),
+    ), "TestPanel")));
 
 
 
