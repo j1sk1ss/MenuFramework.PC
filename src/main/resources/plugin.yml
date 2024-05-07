@@ -16,3 +16,6 @@ checkbox_data_models:
 bar_data_model:
   loaded: 17000
   unloaded: 17000
+icons_data_models:
+  default: 17000
+resource_pack: "none"
