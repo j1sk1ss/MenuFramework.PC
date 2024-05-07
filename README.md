@@ -25,6 +25,7 @@ As you can see, panels should take **Components**. **Components** is a UI object
 - **Bar**
 - **ClickArea**
 - **LittleButton**
+- **Icon**
 </br>
 
 
