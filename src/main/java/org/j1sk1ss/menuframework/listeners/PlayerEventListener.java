@@ -13,7 +13,7 @@ public class PlayerEventListener implements Listener {
         var player = event.getPlayer();
         if (player == null) return;
 
-        var packUrl = MenuFramework.Config.getString("resource_pack");
+        var packUrl = MenuFramework.Config.getString("resource_pack", "none");
         if (!packUrl.equals("none")) player.setResourcePack(packUrl);
     }
 }

@@ -8,19 +8,25 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.j1sk1ss.itemmanager.ItemManager;
+import org.j1sk1ss.menuframework.MenuFramework;
 
 import java.util.List;
 
 
 public abstract class Component {
     public Component() {
-        var item = new ItemStack(Material.PAPER);
-        PersistentDataContainer = item.getItemMeta().getPersistentDataContainer().getAdapterContext().newPersistentDataContainer();
+        BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
+        BodyMaterial = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
+        PersistentDataContainer = new ItemStack(BodyMaterial)
+            .getItemMeta().getPersistentDataContainer().getAdapterContext().newPersistentDataContainer();
     }
 
     protected String Lore;
     protected String Name;
     protected PersistentDataContainer PersistentDataContainer;
+
+    protected int BodyCustomModelData;
+    protected Material BodyMaterial;
 
     /**
      * Click interaction
@@ -127,9 +133,17 @@ public abstract class Component {
             getPersistentDataContainer().remove(containerKey);
     }
 
+    /**
+     * Return true if clicked current components
+     * @param click Click position
+     * @return True or False
+     */
+    public boolean isClicked(int click) {
+        return getCoordinates().contains(click);
+    }
+
     public abstract void place(Inventory inventory);
     public abstract void place(Inventory inventory, List<String> lore);
     public abstract void displace(Inventory inventory);
-    public abstract boolean isClicked(int click);
     public abstract List<Integer> getCoordinates(); 
 }

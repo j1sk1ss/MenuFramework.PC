@@ -10,15 +10,15 @@ import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 
 public class ClickArea extends Component {
-    public ClickArea(int firstCoordinate, int secondCoordinate) {
-        Coordinates = positions2coordinates(firstCoordinate, secondCoordinate);
+    public ClickArea(List<Integer> coordinates) {
+        Coordinates = coordinates;
         Action = null;
         Name = "ClickArea";
         Lore = "ClickAreaLore";
     }
 
-    public ClickArea(List<Integer> coordinates) {
-        Coordinates = coordinates;
+    public ClickArea(int firstCoordinate, int secondCoordinate) {
+        Coordinates = positions2coordinates(firstCoordinate, secondCoordinate);
         Action = null;
         Name = "ClickArea";
         Lore = "ClickAreaLore";
@@ -55,7 +55,6 @@ public class ClickArea extends Component {
     private final List<Integer> Coordinates;
     private final Consumer<InventoryClickEvent> Action;
 
-
     @Override
     public void place(Inventory inventory) { return; }
 
@@ -64,11 +63,6 @@ public class ClickArea extends Component {
 
     @Override
     public void displace(Inventory inventory) { return; }
-
-    @Override
-    public boolean isClicked(int click) {
-        return Coordinates.contains(click);
-    }
 
     @Override
     public List<Integer> getCoordinates() {

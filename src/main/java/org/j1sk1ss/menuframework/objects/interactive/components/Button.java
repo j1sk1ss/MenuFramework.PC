@@ -10,7 +10,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
-import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.events.ButtonClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
@@ -21,23 +20,13 @@ import java.util.function.Consumer;
 
 @ExtensionMethod({Manager.class})
 public class Button extends Component {
-    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
+    public Button(int firstSlot, int secondSlot, String name) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
         Name       = name;
-        Lore       = lore;
-        Action     = delegate;
-        Material   = material;
-    }
 
-    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
-        FirstSlot  = firstSlot;
-        SecondSlot = secondSlot;
-        Name       = name;
-        Lore       = lore;
-        Action     = delegate;
-
-        Material   = org.bukkit.Material.PAPER;
+        Lore   = "";
+        Action = null;
     }
 
     public Button(int firstSlot, int secondSlot, String name, String lore) {
@@ -46,29 +35,44 @@ public class Button extends Component {
         Name       = name;
         Lore       = lore;
 
-        Action     = null;
-        Material   = org.bukkit.Material.PAPER;
+        Action = null;
     }
 
-    public Button(int firstSlot, int secondSlot, String name) {
+    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
         Name       = name;
+        Lore       = lore;
+        Action     = delegate;
+    }
 
-        Lore       = "";
-        Action     = null;
-        Material   = org.bukkit.Material.PAPER;
+    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
+        FirstSlot    = firstSlot;
+        SecondSlot   = secondSlot;
+        Name         = name;
+        Lore         = lore;
+        Action       = delegate;
+        BodyMaterial = material;
+    }
+
+    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
+        FirstSlot           = firstSlot;
+        SecondSlot          = secondSlot;
+        Name                = name;
+        Lore                = lore;
+        Action              = delegate;
+        BodyMaterial        = material;
+        BodyCustomModelData = model;
     }
 
     private final int FirstSlot;
     private final int SecondSlot;
-    private final Material Material;
     private final Consumer<InventoryClickEvent> Action;
 
 
     @Override
     public void place(Inventory inventory) {
-        var item = new Item(Name, Lore, Material, 1, MenuFramework.Config.getInt("buttons_data_model"));
+        var item = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
         var meta = item.getItemMeta();
 
         PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
@@ -80,7 +84,7 @@ public class Button extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        var item = new Item(Name, String.join(", ", lore), Material, 1, MenuFramework.Config.getInt("buttons_data_model"));
+        var item = new Item(Name, String.join(", ", lore), BodyMaterial, 1, BodyCustomModelData);
         var meta = item.getItemMeta();
 
         PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
@@ -96,11 +100,6 @@ public class Button extends Component {
             if (inventory.getItem(coordinate) != null)
                 if (inventory.getItem(coordinate).getName().equals(Name))
                     inventory.setItem(coordinate, null);
-    }
-
-    @Override
-    public boolean isClicked(int click) {
-        return getCoordinates().contains(click);
     }
 
     @Override

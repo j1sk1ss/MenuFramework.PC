@@ -22,6 +22,23 @@ import java.util.function.Consumer;
 @ExtensionMethod({Manager.class})
 public class Slider extends Component {
     /**
+     * Deep copy of slider
+     * @param slider Slider that will be copied
+     */
+    public Slider(Slider slider) {
+        Coordinates = new ArrayList<>(slider.Coordinates);
+        Options     = new ArrayList<>(slider.Options);
+        Name        = slider.getName();
+        Lore        = slider.Lore;
+        Action      = null;
+
+        ChosenDataModel  = MenuFramework.Config.getInt("slider_data.chosen.data", 17000);
+        DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17001);
+        ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
+        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("slider_data.default.material", "PURPLE_WOOL"));
+    }
+    
+    /**
      * Slider component
      * @param slider Base of slider
      * @param inventory Inventory where placed slider
@@ -32,6 +49,11 @@ public class Slider extends Component {
         Name        = slider.Name;
         Lore        = slider.Lore;
         Action      = null;
+
+        ChosenDataModel  = MenuFramework.Config.getInt("slider_data.chosen.data", 17000);
+        DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17001);
+        ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
+        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("slider_data.default.material", "PURPLE_WOOL"));
     }
 
     /**
@@ -45,36 +67,34 @@ public class Slider extends Component {
         Name        = name;
         Lore        = lore;
         Action      = delegate;
-    }
 
-    /**
-     * Deep copy of slider
-     * @param slider Slider that will be copied
-     */
-    public Slider(Slider slider) {
-        Coordinates = new ArrayList<>(slider.Coordinates);
-        Options     = new ArrayList<>(slider.Options);
-        Name        = slider.getName();
-        Lore        = slider.Lore;
-        Action      = null;
+        ChosenDataModel  = MenuFramework.Config.getInt("slider_data.chosen.data", 17000);
+        DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17001);
+        ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
+        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("slider_data.default.material", "PURPLE_WOOL"));
     }
 
     private final List<Integer> Coordinates;
     private final List<String> Options;
     private final Consumer<InventoryClickEvent> Action;
+    
+    private final int ChosenDataModel;
+    private final Material ChosenMaterial;
+    private final int DefaultDataModel;
+    private final Material DefaultMaterial;
 
     @Override
     public void place(Inventory inventory) {
         for (var i = 0; i < Coordinates.size(); i++)
-            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.PURPLE_WOOL, 1, MenuFramework.Config.getInt("slider_data_models.default")));
-            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.GLASS, 1, MenuFramework.Config.getInt("slider_data_models.chosen")));
+            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), DefaultMaterial, 1, DefaultDataModel));
+            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), ChosenMaterial, 1, ChosenDataModel));
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
         for (var i = 0; i < Coordinates.size(); i++)
-            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), Material.PURPLE_WOOL, 1, MenuFramework.Config.getInt("slider_data_models.default")));
-            else inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), Material.GLASS, 1, MenuFramework.Config.getInt("slider_data_models.chosen")));
+            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), DefaultMaterial, 1, DefaultDataModel));
+            else inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), ChosenMaterial, 1, ChosenDataModel));
     }
 
     @Override
@@ -83,11 +103,6 @@ public class Slider extends Component {
             if (inventory.getItem(coordinate) != null)
                 if (Objects.requireNonNull(inventory.getItem(coordinate)).getName().equals(Name))
                     inventory.setItem(coordinate, null);
-    }
-
-    @Override
-    public boolean isClicked(int click) {
-        return Coordinates.contains(click);
     }
 
     @Override
@@ -104,8 +119,8 @@ public class Slider extends Component {
 
         var inventory = event.getInventory();
         for (var i = 0; i < Coordinates.size(); i++)
-            if (Coordinates.get(i) != event.getSlot()) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.PURPLE_WOOL, 1, MenuFramework.Config.getInt("slider_data_models.default")));
-            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.GLASS, 1, MenuFramework.Config.getInt("slider_data_models.chosen")));
+            if (Coordinates.get(i) != event.getSlot()) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), DefaultMaterial, 1, DefaultDataModel));
+            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), ChosenMaterial, 1, ChosenDataModel));
     }
 
     /**
@@ -115,7 +130,7 @@ public class Slider extends Component {
     public String getChose(InventoryClickEvent inventory) {
         for (var i = 0; i < Coordinates.size(); i++)
             if (inventory.getInventory().getItem(Coordinates.get(i)) != null)
-                if (inventory.getInventory().getItem(Coordinates.get(i)).getType().equals(Material.GLASS)) return Options.get(i);
+                if (inventory.getInventory().getItem(Coordinates.get(i)).getType().equals(ChosenMaterial)) return Options.get(i);
 
         return "none";
     }
