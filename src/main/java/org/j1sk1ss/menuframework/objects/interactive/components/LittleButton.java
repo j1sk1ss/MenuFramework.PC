@@ -7,7 +7,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
-import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.events.ButtonClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
@@ -24,7 +23,6 @@ public class LittleButton extends Component {
 
         this.Name     = "LButton";
         this.Lore     = "LButtonLore";
-        this.Material = org.bukkit.Material.PAPER;
         this.Action   = null;
     }
 
@@ -33,7 +31,6 @@ public class LittleButton extends Component {
         this.Name     = name;
         this.Lore     = lore;
 
-        this.Material = org.bukkit.Material.PAPER;
         this.Action   = null;
     }
 
@@ -42,25 +39,31 @@ public class LittleButton extends Component {
         this.Name     = name;
         this.Lore     = lore;
         this.Action   = delegate;
-
-        this.Material = org.bukkit.Material.PAPER;
     }
 
     public LittleButton(int position, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
         this.Position = position;
         this.Name     = name;
         this.Lore     = lore;
-        this.Material = material;
+        BodyMaterial  = material;
         this.Action   = delegate;
     }
 
+    public LittleButton(int position, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
+        this.Position       = position;
+        this.Name           = name;
+        this.Lore           = lore;
+        BodyMaterial        = material;
+        BodyCustomModelData = model;
+        this.Action         = delegate;
+    }
+
     private final int Position;
-    private final Material Material;
     private final Consumer<InventoryClickEvent> Action;
 
     @Override
     public void place(Inventory inventory) {
-        var item = new Item(Name, Lore, Material, 1, MenuFramework.Config.getInt("little_button_data_model"));
+        var item = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
         var meta = item.getItemMeta();
 
         PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
@@ -71,7 +74,7 @@ public class LittleButton extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        var item = new Item(Name, String.join(" ", lore), Material, 1, MenuFramework.Config.getInt("little_button_data_model"));
+        var item = new Item(Name, String.join(" ", lore), BodyMaterial, 1, BodyCustomModelData);
         var meta = item.getItemMeta();
 
         PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
@@ -83,11 +86,6 @@ public class LittleButton extends Component {
     @Override
     public void displace(Inventory inventory) {
         inventory.setItem(Position, null);
-    }
-
-    @Override
-    public boolean isClicked(int click) {
-        return Position == click;
     }
 
     @Override

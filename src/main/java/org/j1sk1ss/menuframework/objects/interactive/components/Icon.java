@@ -6,7 +6,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.j1sk1ss.itemmanager.manager.Item;
-import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 
@@ -16,7 +15,7 @@ public class Icon extends Component {
 
         Name  = "Icon";
         Lore  = "IconLore";
-        Image = new Item(Name, Lore, Material.PAPER, 1, MenuFramework.Config.getInt("icons_data_models.default"));
+        Image = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
     }
 
     public Icon(int position, String name, String lore) {
@@ -24,7 +23,7 @@ public class Icon extends Component {
         Name     = name;
         Lore     = lore;
 
-        Image = new Item(Name, Lore, Material.PAPER, 1, MenuFramework.Config.getInt("icons_data_models.default"));
+        Image = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
     }
 
     public Icon(int position, String name, String lore, Material material) {
@@ -32,7 +31,7 @@ public class Icon extends Component {
         Name     = name;
         Lore     = lore;
 
-        Image = new Item(Name, Lore, material, 1, MenuFramework.Config.getInt("icons_data_models.default"));
+        Image = new Item(Name, Lore, material, 1, BodyCustomModelData);
     }
 
     public Icon(int position, String name, String lore, Material material, int dataModel) {
@@ -59,11 +58,6 @@ public class Icon extends Component {
     @Override
     public void displace(Inventory inventory) {
         inventory.setItem(Position, null);
-    }
-
-    @Override
-    public boolean isClicked(int click) {
-        return click == Position;
     }
 
     @Override

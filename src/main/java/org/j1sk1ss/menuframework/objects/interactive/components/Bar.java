@@ -26,6 +26,11 @@ public class Bar extends Component {
         Action      = null;
         Name        = "Bar";
         Lore        = "Bar lore";
+
+        LoadedDataModel  = MenuFramework.Config.getInt("bar_data.loaded.data", 17000);
+        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17001);
+        LoadedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("bar_data.loaded.material", "GREEN_WOOL"));
+        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("bar_data.default.material", "RED_WOOL"));
     }
 
     public Bar(List<Integer> coordinates, Direction direction, List<String> options) {
@@ -36,6 +41,11 @@ public class Bar extends Component {
         Action      = null;
         Name        = "Bar";
         Lore        = "Bar lore";
+
+        LoadedDataModel  = MenuFramework.Config.getInt("bar_data.loaded.data", 17000);
+        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17001);
+        LoadedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("bar_data.loaded.material", "GREEN_WOOL"));
+        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("bar_data.default.material", "RED_WOOL"));
     }
 
     public Bar(List<Integer> coordinates, Direction direction, List<String> options, Consumer<InventoryClickEvent> delegate) {
@@ -46,6 +56,11 @@ public class Bar extends Component {
 
         Name        = "Bar";
         Lore        = "Bar lore";
+
+        LoadedDataModel  = MenuFramework.Config.getInt("bar_data.loaded.data", 17000);
+        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17001);
+        LoadedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("bar_data.loaded.material", "GREEN_WOOL"));
+        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("bar_data.default.material", "RED_WOOL"));
     }
 
     public Bar(List<Integer> coordinates, Direction direction, String name, String lore, List<String> options, Consumer<InventoryClickEvent> delegate) {
@@ -55,6 +70,11 @@ public class Bar extends Component {
         Options     = options;
         Name        = name;
         Lore        = lore;
+
+        LoadedDataModel  = MenuFramework.Config.getInt("bar_data.loaded.data", 17000);
+        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17001);
+        LoadedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("bar_data.loaded.material", "GREEN_WOOL"));
+        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("bar_data.default.material", "RED_WOOL"));
     }
 
     private final List<Integer> Coordinates;
@@ -62,18 +82,23 @@ public class Bar extends Component {
     private final Direction Direction;
     private final Consumer<InventoryClickEvent> Action;
 
+    private final int LoadedDataModel;
+    private final Material LoadedMaterial;
+    private final int DefaultDataModel;
+    private final Material DefaultMaterial;
+
     @Override
     public void place(Inventory inventory) {
         for (var i = 0; i < Coordinates.size(); i++)
-            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.RED_WOOL, 1, MenuFramework.Config.getInt("bar_data_model.unloaded")));
-            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), Material.GREEN_WOOL, 1, MenuFramework.Config.getInt("bar_data_model.loaded")));
+            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), DefaultMaterial, 1, DefaultDataModel));
+            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), LoadedMaterial, 1, LoadedDataModel));
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
         for (var i = 0; i < Coordinates.size(); i++)
-            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), Material.RED_WOOL, 1, MenuFramework.Config.getInt("bar_data_model.unloaded")));
-            else inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), Material.GREEN_WOOL, 1, MenuFramework.Config.getInt("bar_data_model.loaded")));
+            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), DefaultMaterial, 1, DefaultDataModel));
+            else inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), LoadedMaterial, 1, LoadedDataModel));
     }
 
     public void setValue(Inventory inventory, int downBorder, int upperBorder) {
@@ -144,8 +169,8 @@ public class Bar extends Component {
         var item = inventory.getItem(pos);
         if (item == null) return;
 
-        item.setModelData(MenuFramework.Config.getInt("bar_data_model.loaded"));
-        item.setMaterial(Material.GREEN_WOOL);
+        item.setModelData(LoadedDataModel);
+        item.setMaterial(LoadedMaterial);
 
         inventory.setItem(pos, item);
     }
@@ -154,8 +179,8 @@ public class Bar extends Component {
         var item = inventory.getItem(pos);
         if (item == null) return;
 
-        item.setModelData(MenuFramework.Config.getInt("bar_data_model.unloaded"));
-        item.setMaterial(Material.RED_WOOL);
+        item.setModelData(DefaultDataModel);
+        item.setMaterial(DefaultMaterial);
 
         inventory.setItem(pos, item);
     }
@@ -166,11 +191,6 @@ public class Bar extends Component {
             if (inventory.getItem(coordinate) != null)
                 if (Objects.requireNonNull(inventory.getItem(coordinate)).getName().equals(Name))
                     inventory.setItem(coordinate, null);
-    }
-
-    @Override
-    public boolean isClicked(int click) {
-        return Coordinates.contains(click);
     }
 
     @Override

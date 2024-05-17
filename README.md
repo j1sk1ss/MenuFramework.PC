@@ -60,7 +60,12 @@ Also, example of adding delegate to **button**:
 
     var slider = new Slider(ArrayList<Integer> coordinates, ArrayList<String> Options, String lore, String name, Action action);
 
-Note, that slider has default delegate. This "default" delegate regenerate **slider** body on click when chosen parametr changes. </br>
+<p align="center">
+  <img width="600" height="800" src="https://github.com/j1sk1ss/MenuFramework.PC/blob/master/covers/SliderCover.png">
+</br><text> Red slot - chosen option in slider </text>
+</p>
+
+Note, that slider has default delegate. This "default" delegate regenerate **slider** body on click when chosen parameter changes. </br>
 If you need to take chosen param from **Slider**, you can use next code:</br>
 
     var slider = new Slider(panelWhereStoredSlider.getSliders("SliderName"), event.getInventory());
@@ -68,6 +73,7 @@ If you need to take chosen param from **Slider**, you can use next code:</br>
 
 This **slider`s** ability give us a opportunity to connect **Buttons** and **Sliders** like in example below:</br>
 
+    public static MenuWindow Menu = new MenuWindow(Arrays.asList(
     var panel = new Panel(Arrays.asList(
         new Slider(Arrays.asList(
             0, 1, 2, 3, 4, 5
@@ -78,12 +84,12 @@ This **slider`s** ability give us a opportunity to connect **Buttons** and **Sli
         new Button(9, 21, "TestButton", "Lore",
             (event) -> {
                 var player = (Player)event.getWhoClicked();
-                var slider = new Slider(Menu.getPanel("TestPanel").getSliders("Slider"), event.getInventory());
-                if (slider.getChose(event).equals("none")) return;
+                var sliderChose = Menu.getPanel("TestPanel").getSliders("Slider").getChose(event);
+                if (sliderChose.equals("none")) return;
     
-                player.sendMessage(slider.getChose(event)); // It will prints current slider parameter
+                player.sendMessage(sliderChose); // Will prints current slider parameter
             }),
-    ), "TestPanel"),
+    ), "TestPanel")));
 
 
 
@@ -93,10 +99,67 @@ This **slider`s** ability give us a opportunity to connect **Buttons** and **Sli
 
     var checkbox = new Checkbox(int firstSlot, int secondSlot, String name, String lore, Action action);
 
+<p align="center">
+  <img width="600" height="800" src="https://github.com/j1sk1ss/MenuFramework.PC/blob/master/covers/CheckBoxCover.png">
+</p>
+
+Note, that checkbox has default delegate too. This "default" delegate regenerate **checkbox** body on click (Checked and unchecked). </br>
 Here first slot and second slot works like in **Button** part. One difference in method *isChecked*.
 
     var check = checkbox.isChecked(event) // event -> InventoryClickEvent
 
+<h2 align="center"> Click area </h2>
+
+**ClickArea** can be created by next code:</br>
+
+    var clickArea = ClickArea(firstCoordinate, secondCoordinate, action, name, lore);
+    var clickArea = ClickArea(coordinates, action, name, lore);
+
+**ClickArea** solves problem with generated (non-static) buttons. You can just put  **ClickArea** where will be generated non-static **Components** then just handle any clicks in action delegate. </br>
+For example next code shoulde handle clicks on generated options in menu:
+
+    new ClickArea(0, 44,
+        (event) -> {
+            var player = (Player) event.getWhoClicked();
+            var option = event.getCurrentItem();
+            if (option == null) return;
+    
+            if (option.getLoreLines().size() < 2) return;
+            var amount = option.getDoubleFromContainer("item-bank-value");
+    
+            func1(Math.abs(amount), player);
+            openMenu(player, event.getInventory());
+        }),
+
+*Note*: **Component** class has his own **PDC**. You can use it with next methods:
+
+    public void setDouble2Container(value, key);
+    public void setInteger2Container(value, key);
+    public double getDoubleFromContainer(key);
+    public int getIntegerFromContainer(key);
+    public void deleteKeyFromContainer(key);
+
+<p align="center">
+  <img width="600" height="800" src="https://github.com/j1sk1ss/MenuFramework.PC/blob/master/covers/ClickAreaCover.png">
+</p>
+
+<h2 align="center"> Little buttons </h2>
+
+**LittleButton** can be created by next code:</br>
+
+    var button = new LittleButton(41, "LB", "\n" + Math.round(playerBalance * 100) / 100 + CashManager.currencySigh);
+
+<p align="center">
+  <img width="600" height="800" src="https://github.com/j1sk1ss/MenuFramework.PC/blob/master/covers/LittleButtonCover.png">
+</p>
+
+**LittleButton** works like **Button**, but this component has onlu one position.
+
+<h2 align="center"> Icons </h2>
+
+**Icon** can be created by next code:</br>
+
+    var icon = Icon(position, name, lore, material, dataModel);
 
 <h2 align="center"> How to use it? </h2>
 
@@ -110,7 +173,25 @@ After this, MenuFramework listen all inventory clicks and anvoke functions that 
 
 **Panel** is a representation of every inventory that used as menu in your plugin. Creation of panel is simple:
 
-    var panel = new Panel(Arrays.asList( ... ), "InventoryTitlePart");
+    var panel = new Panel(Arrays.asList( ... ), "InventoryTitlePart", MenuSizes.SixLines);
 
-Remember that **MenuFramework** will execute linked function in situation, when used inventory have same name with panel. (Or **panel** name is a part of inventory title).
+<p align="center">
+  <img width="600" height="800" src="https://github.com/j1sk1ss/MenuFramework.PC/blob/master/covers/PanelCover.png">
+    </br><text> Example of panel with click area, stider, checkbox \ button and little button \ icon </text>
+</p>
+
+Remember that **MenuFramework** will execute linked function in situation, when used inventory have same name with panel. (Or **panel** name is a part of inventory title). </br>
+To place all components to inventory you shoukd use next code:
+
+    public void getView(player);
+    public void getView(player, inventory);
+
+    // Or
+
+    public void getView(player, lore);
+    public void getView(player, customLore, names);
+    public void getViewWith(player, newComponents); // newComponents - non-static components
+    public void getView(player, lore, inventory);
+    public void getView(player, customLore, names, inventory); // customLore - lore for components with names from names
+    public void getViewWith(player, newComponents, inventory); // newComponents - non-static components
 

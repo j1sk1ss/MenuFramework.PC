@@ -18,14 +18,6 @@ import lombok.experimental.ExtensionMethod;
 
 @ExtensionMethod({Manager.class})
 public class Checkbox extends Component {
-    public Checkbox(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
-        FirstSlot  = firstSlot;
-        SecondSlot = secondSlot;
-        Name       = name;
-        Lore       = lore;
-        Action     = delegate;
-    }
-
     public Checkbox(int firstSlot, int secondSlot, String name, String lore) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
@@ -33,22 +25,45 @@ public class Checkbox extends Component {
         Lore       = lore;
 
         Action = null;
+
+        CheckedDataModel  = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
+        DefaultDataModel  = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
+        CheckedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.checked.material", "GREEN_STAINED_GLASS"));
+        DefaultMaterial   = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
+    }
+
+    public Checkbox(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+        FirstSlot  = firstSlot;
+        SecondSlot = secondSlot;
+        Name       = name;
+        Lore       = lore;
+        Action     = delegate;
+
+        CheckedDataModel  = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
+        DefaultDataModel  = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
+        CheckedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.checked.material", "GREEN_STAINED_GLASS"));
+        DefaultMaterial   = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
     }
 
     private final int FirstSlot;
     private final int SecondSlot;
     private final Consumer<InventoryClickEvent> Action;
 
+    private final int CheckedDataModel;
+    private final Material CheckedMaterial;
+    private final int DefaultDataModel;
+    private final Material DefaultMaterial;
+
     @Override
     public void place(Inventory inventory) {
         for (var coordinate : getCoordinates())
-            inventory.setItem(coordinate, new Item(Name, Lore, Material.RED_STAINED_GLASS, 1, MenuFramework.Config.getInt("checkbox_data_models.default")));
+            inventory.setItem(coordinate, new Item(Name, Lore, DefaultMaterial, 1, DefaultDataModel));
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
         for (var coordinate : getCoordinates())
-            inventory.setItem(coordinate, new Item(Name, String.join(" ", lore), Material.RED_STAINED_GLASS, 1, MenuFramework.Config.getInt("checkbox_data_models.default")));
+            inventory.setItem(coordinate, new Item(Name, String.join(" ", lore), DefaultMaterial, 1, DefaultDataModel));
     }
 
     @Override
@@ -57,11 +72,6 @@ public class Checkbox extends Component {
             if (inventory.getItem(coordinate) != null)
                 if (inventory.getItem(coordinate).getName().equals(Name))
                     inventory.setItem(coordinate, null);
-    }
-
-    @Override
-    public boolean isClicked(int click) {
-        return getCoordinates().contains(click);
     }
 
     @Override
@@ -83,17 +93,17 @@ public class Checkbox extends Component {
         if (Action != null) Action.accept(event);
         var inventory = event.getInventory();
 
-        if (inventory.getItem(event.getSlot()).getType().equals(Material.RED_STAINED_GLASS)) {
+        if (inventory.getItem(event.getSlot()).getType().equals(DefaultMaterial)) {
             for (var coordinate : getCoordinates()) 
-                inventory.setItem(coordinate, new Item(Name, Lore, Material.RED_STAINED_GLASS, 1, MenuFramework.Config.getInt("checkbox_data_models.default")));
+                inventory.setItem(coordinate, new Item(Name, Lore, CheckedMaterial, 1, CheckedDataModel));
         }
         else {
             for (var coordinate : getCoordinates()) 
-                inventory.setItem(coordinate, new Item(Name, Lore, Material.GREEN_STAINED_GLASS, 1, MenuFramework.Config.getInt("checkbox_data_models.chosen")));
+                inventory.setItem(coordinate, new Item(Name, Lore, DefaultMaterial, 1, DefaultDataModel));
         }
     }
 
     public boolean isChecked(InventoryClickEvent event) {
-        return event.getInventory().getItem(FirstSlot).getType().equals(Material.GREEN_STAINED_GLASS);
+        return event.getInventory().getItem(FirstSlot).getType().equals(CheckedMaterial);
     }
 }
