@@ -11,9 +11,9 @@ public class PlayerEventListener implements Listener {
     @EventHandler
     public void onPlayerEnter(PlayerJoinEvent event) {
         var player = event.getPlayer();
-        if (player == null) return;
-
         var packUrl = MenuFramework.Config.getString("resource_pack");
+
+        if (packUrl == null) return;
         if (!packUrl.equals("none")) player.setResourcePack(packUrl);
     }
 }

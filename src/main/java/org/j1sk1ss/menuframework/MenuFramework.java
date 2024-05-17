@@ -16,7 +16,8 @@ public final class MenuFramework extends JavaPlugin {
         Config = JavaPlugin.getPlugin(MenuFramework.class).getConfig();
         System.out.print("Menu framework enabled");
 
-        Bukkit.getPluginManager().registerEvents(new InventoryClickHandler(), this);
+        ClickHandler = new InventoryClickHandler();
+        Bukkit.getPluginManager().registerEvents(ClickHandler, this);
         System.out.print("Inventory handler registered");
 
         Bukkit.getPluginManager().registerEvents(new PlayerEventListener(), this);
