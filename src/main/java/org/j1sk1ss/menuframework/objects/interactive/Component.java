@@ -1,5 +1,6 @@
 package org.j1sk1ss.menuframework.objects.interactive;
 
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,13 +18,13 @@ public abstract class Component {
     public Component() {
         BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
         BodyMaterial = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
-        PersistentDataContainer = new ItemStack(BodyMaterial)
+        PersistentDataContainer = new ItemStack(BodyMaterial != null ? BodyMaterial : null)
             .getItemMeta().getPersistentDataContainer().getAdapterContext().newPersistentDataContainer();
     }
 
     protected String Lore;
-    protected String Name;
-    protected PersistentDataContainer PersistentDataContainer;
+    @Getter protected String Name;
+    @Getter protected PersistentDataContainer PersistentDataContainer;
 
     protected int BodyCustomModelData;
     protected Material BodyMaterial;
@@ -45,27 +46,11 @@ public abstract class Component {
     }
 
     /**
-     * Get name of component
-     * @return Name
-     */
-    public String getName() {
-        return Name;
-    }
-
-    /**
      * Get lore from component
      * @return Lore
      */
     public String getLoreLines() {
         return Lore;
-    }
-
-    /**
-     * Get PDC from component
-     * @return PDC
-     */
-    public PersistentDataContainer getPersistentDataContainer() {
-        return PersistentDataContainer;
     }
 
     /**

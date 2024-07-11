@@ -130,7 +130,7 @@ public class Slider extends Component {
     public String getChose(InventoryClickEvent inventory) {
         for (var i = 0; i < Coordinates.size(); i++)
             if (inventory.getInventory().getItem(Coordinates.get(i)) != null)
-                if (inventory.getInventory().getItem(Coordinates.get(i)).getType().equals(ChosenMaterial)) return Options.get(i);
+                if (Objects.requireNonNull(inventory.getInventory().getItem(Coordinates.get(i))).getType().equals(ChosenMaterial)) return Options.get(i);
 
         return "none";
     }

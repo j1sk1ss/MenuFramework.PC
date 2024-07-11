@@ -2,6 +2,7 @@ package org.j1sk1ss.menuframework.objects.interactive.components;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.bukkit.Material;
@@ -26,10 +27,10 @@ public class Checkbox extends Component {
 
         Action = null;
 
-        CheckedDataModel  = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
-        DefaultDataModel  = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
-        CheckedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.checked.material", "GREEN_STAINED_GLASS"));
-        DefaultMaterial   = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
+        CheckedDataModel = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
+        DefaultDataModel = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
+        CheckedMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.checked.material", "GREEN_STAINED_GLASS"));
+        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
     }
 
     public Checkbox(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
@@ -39,10 +40,10 @@ public class Checkbox extends Component {
         Lore       = lore;
         Action     = delegate;
 
-        CheckedDataModel  = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
-        DefaultDataModel  = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
-        CheckedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.checked.material", "GREEN_STAINED_GLASS"));
-        DefaultMaterial   = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
+        CheckedDataModel = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
+        DefaultDataModel = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
+        CheckedMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.checked.material", "GREEN_STAINED_GLASS"));
+        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
     }
 
     private final int FirstSlot;
@@ -70,7 +71,7 @@ public class Checkbox extends Component {
     public void displace(Inventory inventory) {
         for (var coordinate : getCoordinates())
             if (inventory.getItem(coordinate) != null)
-                if (inventory.getItem(coordinate).getName().equals(Name))
+                if (Objects.requireNonNull(inventory.getItem(coordinate)).getName().equals(Name))
                     inventory.setItem(coordinate, null);
     }
 
@@ -93,7 +94,7 @@ public class Checkbox extends Component {
         if (Action != null) Action.accept(event);
         var inventory = event.getInventory();
 
-        if (inventory.getItem(event.getSlot()).getType().equals(DefaultMaterial)) {
+        if (Objects.requireNonNull(inventory.getItem(event.getSlot())).getType().equals(DefaultMaterial)) {
             for (var coordinate : getCoordinates()) 
                 inventory.setItem(coordinate, new Item(Name, Lore, CheckedMaterial, 1, CheckedDataModel));
         }
@@ -104,6 +105,6 @@ public class Checkbox extends Component {
     }
 
     public boolean isChecked(InventoryClickEvent event) {
-        return event.getInventory().getItem(FirstSlot).getType().equals(CheckedMaterial);
+        return Objects.requireNonNull(event.getInventory().getItem(FirstSlot)).getType().equals(CheckedMaterial);
     }
 }

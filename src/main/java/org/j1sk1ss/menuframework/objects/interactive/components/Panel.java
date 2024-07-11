@@ -63,10 +63,6 @@ public class Panel extends Component {
         }
     }
 
-    /**
-     * Get button what was clicked
-     * @param click Slot of inventory what was clicked
-     */
     @Override
     public void click(InventoryClickEvent click) {
         for (var component : Components) {
@@ -80,10 +76,6 @@ public class Panel extends Component {
         }
     }
 
-    /**
-     * Place components body to new inventory
-     * @param inventory Inventory where should be placed components
-     */
     @Override
     public void place(Inventory inventory) {
         for (var component : Components) component.place(inventory);
@@ -122,10 +114,6 @@ public class Panel extends Component {
         for (var component : newComponents) component.place(inventory);
     }
 
-    /**
-     * Displace components body to new inventory
-     * @param inventory Inventory where should be displaced components
-     */
     @Override
     public void displace(Inventory inventory) {
         for (var component : Components) component.displace(inventory);
@@ -262,43 +250,83 @@ public class Panel extends Component {
         return null;
     }
 
+    /**
+     * Open panel as inventory
+     * @param player Player, who will see panel as inventory
+     */
     public void getView(Player player) {
         var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
         place(window);
         player.openInventory(window);
     }
 
+    /**
+     * Open panel as inventory with custom lore for components
+     * @param player Player, who will see panel as inventory
+     * @param lore Custom lore
+     */
     public void getView(Player player, List<String> lore) {
         var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
         place(window, lore);
         player.openInventory(window);
     }
 
+    /**
+     * Open panel as inventory with custom lore for components
+     * @param player Player, who will see panel as inventory
+     * @param customLore Custom lore
+     * @param names Names of components, that will take custom lore
+     */
     public void getView(Player player, List<List<String>> customLore, List<String> names) {
         var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
         place(window, customLore, names);
         player.openInventory(window);
     }
-    
+
+    /**
+     * Open panel as inventory with additional components
+     * @param player Player, who will see panel as inventory
+     * @param newComponents Additional components
+     */
     public void getViewWith(Player player, List<Component> newComponents) {
         var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
         placeWith(window, newComponents);
         player.openInventory(window);
     }
 
-    public void getView(Player player, Inventory inventory) {
+    /**
+     * Place components to inventory
+     * @param inventory Inventory
+     */
+    public void getView(Inventory inventory) {
         place(inventory);
     }
 
-    public void getView(Player player, List<String> lore, Inventory inventory) {
+    /**
+     * Place components to inventory with custom lore
+     * @param lore custom lore
+     * @param inventory Inventory
+     */
+    public void getView(List<String> lore, Inventory inventory) {
         place(inventory, lore);
     }
 
-    public void getView(Player player, List<List<String>> customLore, List<String> names, Inventory inventory) {
+    /**
+     * Place components to inventory with custom lore
+     * @param customLore custom lore
+     * @param names Names of components, that will take custom lore
+     * @param inventory Inventory
+     */
+    public void getView(List<List<String>> customLore, List<String> names, Inventory inventory) {
         place(inventory, customLore, names);
     }
-    
-    public void getViewWith(Player player, List<Component> newComponents, Inventory inventory) {
+
+    /**
+     * Open panel as inventory with additional components
+     * @param newComponents Additional components
+     * @param inventory Inventory
+     */
+    public void getViewWith(List<Component> newComponents, Inventory inventory) {
         placeWith(inventory, newComponents);
     }
 }
