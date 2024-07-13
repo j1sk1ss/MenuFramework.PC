@@ -1,0 +1,25 @@
+default:
+  default_data: 7000
+  default_material: "PAPER"
+slider_data:
+  chosen:
+    material: "GLASS"
+    data: 17000
+  default:
+    material: "PURPLE_WOOL"
+    data: 17000
+checkbox_data:
+  checked:
+    material: "GREEN_STAINED_GLASS"
+    data: 17000
+  default:
+    material: "RED_STAINED_GLASS"
+    data: 17000
+bar_data:
+  loaded:
+    material: "GREEN_WOOL"
+    data: 17000
+  default:
+    material: "RED_WOOL"
+    data: 17000
+resource_pack: "none"

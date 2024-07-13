@@ -14,6 +14,9 @@ public class PlayerEventListener implements Listener {
         var packUrl = MenuFramework.Config.getString("resource_pack");
 
         if (packUrl == null) return;
-        if (!packUrl.equals("none")) player.setResourcePack(packUrl);
+        if (!packUrl.equals("none")) {
+            System.out.println("[MenuFramework] Loaded resource pack: " + packUrl);
+            player.setResourcePack(packUrl);
+        }
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.common.CharSpacing;
 import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.MenuSizes;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
@@ -37,6 +38,21 @@ public class Panel extends Component {
      */
     public Panel(List<Component> components, String name, MenuSizes size) {
         Name       = name;
+        Lore       = "Panel lore lines";
+        Components = components;
+        MenuSize   = size;
+
+        MenuFramework.ClickHandler.addHandler(this, name);
+    }
+
+    /**
+     * Buttons panel
+     * @param components Components of panel
+     * @param name Panel name
+     * @param size Size of menu
+     */
+    public Panel(List<Component> components, String name, MenuSizes size, String ui) {
+        Name       = CharSpacing.getNeg(8) + "&f" + ui + name;
         Lore       = "Panel lore lines";
         Components = components;
         MenuSize   = size;
