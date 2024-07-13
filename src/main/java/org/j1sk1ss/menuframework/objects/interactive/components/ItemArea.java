@@ -1,6 +1,7 @@
 package org.j1sk1ss.menuframework.objects.interactive.components;
 
 import lombok.experimental.ExtensionMethod;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.j1sk1ss.itemmanager.manager.Manager;
@@ -8,16 +9,19 @@ import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 @ExtensionMethod({Manager.class})
 public class ItemArea extends Component {
-    public ItemArea(int firstSlot, int secondSlot, List<ItemStack> items) {
-        FirstSlot = firstSlot;
+    public ItemArea(int firstSlot, int secondSlot, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {
+        FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
-        Items = items;
+        Items      = items;
+        Action     = delegate;
     }
 
+    private final Consumer<InventoryClickEvent> Action;
     private final int FirstSlot;
     private final int SecondSlot;
     private final List<ItemStack> Items;
@@ -49,5 +53,10 @@ public class ItemArea extends Component {
                 list.add(9 * i + j);
 
         return list;
+    }
+
+    @Override
+    public void action(InventoryClickEvent event) {
+        if (Action != null) Action.accept(event);
     }
 }
