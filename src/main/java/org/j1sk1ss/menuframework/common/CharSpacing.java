@@ -96,10 +96,12 @@ public enum CharSpacing {
     }
 
     public static String getNeg(int pixelAmount) {
+        if (pixelAmount == 0) return "";
         return getSpacing(-Math.abs(pixelAmount));
     }
 
     public static String getPos(int pixelAmount) {
+        if (pixelAmount == 0) return "";
         return getSpacing(Math.abs(pixelAmount));
     }
 }

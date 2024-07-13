@@ -1,5 +1,7 @@
 package org.j1sk1ss.menuframework.objects.interactive.components;
 
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -22,6 +24,7 @@ public class Panel extends Component {
      * @param name Panel name
      */
     public Panel(List<Component> components, String name) {
+        Ui         = "";
         Name       = name;
         Lore       = "Panel lore lines";
         Components = components;
@@ -37,6 +40,7 @@ public class Panel extends Component {
      * @param size Size of menu
      */
     public Panel(List<Component> components, String name, MenuSizes size) {
+        Ui         = "";
         Name       = name;
         Lore       = "Panel lore lines";
         Components = components;
@@ -52,7 +56,8 @@ public class Panel extends Component {
      * @param size Size of menu
      */
     public Panel(List<Component> components, String name, MenuSizes size, String ui) {
-        Name       = CharSpacing.getNeg(8) + "&f" + ui + name;
+        Ui         = CharSpacing.getNeg(8) + ui;
+        Name       = name;
         Lore       = "Panel lore lines";
         Components = components;
         MenuSize   = size;
@@ -60,6 +65,7 @@ public class Panel extends Component {
         MenuFramework.ClickHandler.addHandler(this, name);
     }
 
+    private final String Ui;
     private final List<Component> Components;
     private final MenuSizes MenuSize;
 
@@ -271,7 +277,7 @@ public class Panel extends Component {
      * @param player Player, who will see panel as inventory
      */
     public void getView(Player player) {
-        var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
+        var window = getWindow(player, Ui + getName(), MenuSize.size);
         place(window);
         player.openInventory(window);
     }
@@ -282,7 +288,7 @@ public class Panel extends Component {
      * @param lore Custom lore
      */
     public void getView(Player player, List<String> lore) {
-        var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
+        var window = getWindow(player, Ui + getName(), MenuSize.size);
         place(window, lore);
         player.openInventory(window);
     }
@@ -294,19 +300,44 @@ public class Panel extends Component {
      * @param names Names of components, that will take custom lore
      */
     public void getView(Player player, List<List<String>> customLore, List<String> names) {
-        var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
+        var window = getWindow(player, Ui + getName(), MenuSize.size);
         place(window, customLore, names);
         player.openInventory(window);
     }
 
     /**
-     * Open panel as inventory with additional components
-     * @param player Player, who will see panel as inventory
-     * @param newComponents Additional components
+     * Open panel in inventory with different title
+     * @param player Player owner
+     * @param newTitle New title
      */
-    public void getViewWith(Player player, List<Component> newComponents) {
-        var window = Bukkit.createInventory(player, MenuSize.size, net.kyori.adventure.text.Component.text(getName()));
-        placeWith(window, newComponents);
+    public void getView(Player player, String newTitle) {
+        var window = getWindow(player, Ui + newTitle, MenuSize.size);
+        place(window);
+        player.openInventory(window);
+    }
+
+    /**
+     * Open panel as inventory with custom lore for components and different title
+     * @param player Player, who will see panel as inventory
+     * @param newTitle New title
+     * @param lore Custom lore
+     */
+    public void getView(Player player, String newTitle, List<String> lore) {
+        var window = getWindow(player, Ui + newTitle, MenuSize.size);
+        place(window, lore);
+        player.openInventory(window);
+    }
+
+    /**
+     * Open panel as inventory with custom lore for components and different title
+     * @param player Player, who will see panel as inventory
+     * @param newTitle New title
+     * @param customLore Custom lore
+     * @param names Names of components, that will take custom lore
+     */
+    public void getView(Player player, String newTitle, List<List<String>> customLore, List<String> names) {
+        var window = getWindow(player, Ui + newTitle, MenuSize.size);
+        place(window, customLore, names);
         player.openInventory(window);
     }
 
@@ -323,7 +354,7 @@ public class Panel extends Component {
      * @param lore custom lore
      * @param inventory Inventory
      */
-    public void getView(List<String> lore, Inventory inventory) {
+    public void getView(Inventory inventory, List<String> lore) {
         place(inventory, lore);
     }
 
@@ -333,8 +364,19 @@ public class Panel extends Component {
      * @param names Names of components, that will take custom lore
      * @param inventory Inventory
      */
-    public void getView(List<List<String>> customLore, List<String> names, Inventory inventory) {
+    public void getView(Inventory inventory, List<List<String>> customLore, List<String> names) {
         place(inventory, customLore, names);
+    }
+
+    /**
+     * Open panel as inventory with additional components
+     * @param player Player, who will see panel as inventory
+     * @param newComponents Additional components
+     */
+    public void getViewWith(Player player, List<Component> newComponents) {
+        var window = getWindow(player, Ui + getName(), MenuSize.size);
+        placeWith(window, newComponents);
+        player.openInventory(window);
     }
 
     /**
@@ -344,5 +386,11 @@ public class Panel extends Component {
      */
     public void getViewWith(List<Component> newComponents, Inventory inventory) {
         placeWith(inventory, newComponents);
+    }
+
+    private Inventory getWindow(Player player, String title, int size) {
+        var componentTitle = net.kyori.adventure.text.Component.text(Ui + getName());
+        if (!Ui.isEmpty()) componentTitle = componentTitle.color(TextColor.color(255, 255, 255));
+        return Bukkit.createInventory(player, size, componentTitle);
     }
 }
