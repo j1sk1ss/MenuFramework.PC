@@ -68,14 +68,6 @@ public class Checkbox extends Component {
     }
 
     @Override
-    public void displace(Inventory inventory) {
-        for (var coordinate : getCoordinates())
-            if (inventory.getItem(coordinate) != null)
-                if (Objects.requireNonNull(inventory.getItem(coordinate)).getName().equals(Name))
-                    inventory.setItem(coordinate, null);
-    }
-
-    @Override
     public List<Integer> getCoordinates() {
         var list = new ArrayList<Integer>();
         var secondCoordinate = SecondSlot - FirstSlot;

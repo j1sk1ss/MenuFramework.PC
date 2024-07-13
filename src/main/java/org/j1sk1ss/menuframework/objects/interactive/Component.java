@@ -1,6 +1,7 @@
 package org.j1sk1ss.menuframework.objects.interactive;
 
 import lombok.Getter;
+import lombok.experimental.ExtensionMethod;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -9,11 +10,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.j1sk1ss.itemmanager.ItemManager;
+import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
 
 import java.util.List;
+import java.util.Objects;
 
 
+@ExtensionMethod({Manager.class})
 public abstract class Component {
     public Component() {
         BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
@@ -128,7 +132,14 @@ public abstract class Component {
     }
 
     public abstract void place(Inventory inventory);
+
     public abstract void place(Inventory inventory, List<String> lore);
-    public abstract void displace(Inventory inventory);
+
+    public void displace(Inventory inventory) {
+        for (var pos : getCoordinates())
+            if (Objects.requireNonNull(inventory.getItem(pos)).getName().equals(Name))
+                inventory.setItem(pos, null);
+    }
+
     public abstract List<Integer> getCoordinates(); 
 }

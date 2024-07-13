@@ -186,14 +186,6 @@ public class Bar extends Component {
     }
 
     @Override
-    public void displace(Inventory inventory) {
-        for (var coordinate = 0; coordinate < Coordinates.size(); coordinate++)
-            if (inventory.getItem(coordinate) != null)
-                if (Objects.requireNonNull(inventory.getItem(coordinate)).getName().equals(Name))
-                    inventory.setItem(coordinate, null);
-    }
-
-    @Override
     public List<Integer> getCoordinates() {
         return Coordinates;
     }

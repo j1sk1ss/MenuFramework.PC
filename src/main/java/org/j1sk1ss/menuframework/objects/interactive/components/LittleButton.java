@@ -84,11 +84,6 @@ public class LittleButton extends Component {
     }
 
     @Override
-    public void displace(Inventory inventory) {
-        inventory.setItem(Position, null);
-    }
-
-    @Override
     public List<Integer> getCoordinates() {
         return List.of(Position);
     }

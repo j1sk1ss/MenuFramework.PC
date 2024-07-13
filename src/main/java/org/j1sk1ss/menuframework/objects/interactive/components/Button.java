@@ -70,7 +70,6 @@ public class Button extends Component {
     private final int SecondSlot;
     private final Consumer<InventoryClickEvent> Action;
 
-
     @Override
     public void place(Inventory inventory) {
         var item = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
@@ -93,14 +92,6 @@ public class Button extends Component {
 
         for (var coordinate : getCoordinates())
             inventory.setItem(coordinate, item);
-    }
-
-    @Override
-    public void displace(Inventory inventory) {
-        for (var coordinate : getCoordinates())
-            if (inventory.getItem(coordinate) != null)
-                if (Objects.requireNonNull(inventory.getItem(coordinate)).getName().equals(Name))
-                    inventory.setItem(coordinate, null);
     }
 
     @Override
