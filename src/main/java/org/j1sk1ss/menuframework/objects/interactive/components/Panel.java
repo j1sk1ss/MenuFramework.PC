@@ -381,6 +381,18 @@ public class Panel extends Component {
 
     /**
      * Open panel as inventory with additional components
+     * @param player Player, who will see panel as inventory
+     * @param newTitle New title
+     * @param newComponents Additional components
+     */
+    public void getViewWith(Player player, String newTitle, List<Component> newComponents) {
+        var window = getWindow(player, Ui + newTitle, MenuSize.size);
+        placeWith(window, newComponents);
+        player.openInventory(window);
+    }
+
+    /**
+     * Open panel as inventory with additional components
      * @param newComponents Additional components
      * @param inventory Inventory
      */
@@ -389,7 +401,7 @@ public class Panel extends Component {
     }
 
     private Inventory getWindow(Player player, String title, int size) {
-        var componentTitle = net.kyori.adventure.text.Component.text(Ui + getName());
+        var componentTitle = net.kyori.adventure.text.Component.text(Ui + title);
         if (!Ui.isEmpty()) componentTitle = componentTitle.color(TextColor.color(255, 255, 255));
         return Bukkit.createInventory(player, size, componentTitle);
     }
