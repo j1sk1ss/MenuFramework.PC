@@ -37,24 +37,6 @@ public class Slider extends Component {
         ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("slider_data.default.material", "PURPLE_WOOL"));
     }
-    
-    /**
-     * Slider component
-     * @param slider Base of slider
-     * @param inventory Inventory where placed slider
-     */
-    public Slider(Slider slider, Inventory inventory) {
-        Coordinates = new ArrayList<>(slider.Coordinates);
-        Options     = new ArrayList<>(slider.Options);
-        Name        = slider.Name;
-        Lore        = slider.Lore;
-        Action      = null;
-
-        ChosenDataModel  = MenuFramework.Config.getInt("slider_data.chosen.data", 17000);
-        DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17001);
-        ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
-        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("slider_data.default.material", "PURPLE_WOOL"));
-    }
 
     /**
      * Slider component
@@ -72,6 +54,33 @@ public class Slider extends Component {
         DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17001);
         ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("slider_data.default.material", "PURPLE_WOOL"));
+    }
+
+    /**
+     * Slider component
+     * @param coordinates Coordinates of slider
+     * @param options Options of slider
+     * @param lore Lore of options
+     * @param name Name of slider
+     * @param delegate Action
+     * @param cdm Chosen option data model
+     * @param ddm Default option data model
+     * @param cm Chosen option material
+     * @param dm Default option material
+     */
+    public Slider(List<Integer> coordinates, List<String> options,
+                  String lore, String name, Consumer<InventoryClickEvent> delegate,
+                  int cdm, int ddm, Material cm, Material dm) {
+        Coordinates = coordinates;
+        Options     = options;
+        Name        = name;
+        Lore        = lore;
+        Action      = delegate;
+
+        ChosenDataModel  = cdm;
+        DefaultDataModel = ddm;
+        ChosenMaterial   = cm;
+        DefaultMaterial  = dm;
     }
 
     private final List<Integer> Coordinates;
