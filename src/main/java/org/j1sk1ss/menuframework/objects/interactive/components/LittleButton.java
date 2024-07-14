@@ -18,6 +18,10 @@ import java.util.function.Consumer;
 
 @ExtensionMethod({Manager.class})
 public class LittleButton extends Component {
+    /**
+     * Little button component
+     * @param position Position of little button
+     */
     public LittleButton(int position) {
         this.Position = position;
 
@@ -26,6 +30,12 @@ public class LittleButton extends Component {
         this.Action   = null;
     }
 
+    /**
+     * Little button component
+     * @param position Position of little button
+     * @param name Little button name
+     * @param lore Little button lore
+     */
     public LittleButton(int position, String name, String lore) {
         this.Position = position;
         this.Name     = name;
@@ -34,6 +44,13 @@ public class LittleButton extends Component {
         this.Action   = null;
     }
 
+    /**
+     * Little button component
+     * @param position Position of little button
+     * @param name Little button name
+     * @param lore Little button lore
+     * @param delegate Action
+     */
     public LittleButton(int position, String name, String lore, Consumer<InventoryClickEvent> delegate) {
         this.Position = position;
         this.Name     = name;
@@ -41,6 +58,14 @@ public class LittleButton extends Component {
         this.Action   = delegate;
     }
 
+    /**
+     * Little button component
+     * @param position Position of little button
+     * @param name Little button name
+     * @param lore Little button lore
+     * @param delegate Action
+     * @param material Little button material
+     */
     public LittleButton(int position, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
         this.Position = position;
         this.Name     = name;
@@ -49,6 +74,15 @@ public class LittleButton extends Component {
         this.Action   = delegate;
     }
 
+    /**
+     * Little button component
+     * @param position Position of little button
+     * @param name Little button name
+     * @param lore Little button lore
+     * @param delegate Action
+     * @param material Little button material
+     * @param model Little button model data
+     */
     public LittleButton(int position, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
         this.Position       = position;
         this.Name           = name;

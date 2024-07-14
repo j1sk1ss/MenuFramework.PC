@@ -33,7 +33,7 @@ public class Slider extends Component {
         Action      = null;
 
         ChosenDataModel  = MenuFramework.Config.getInt("slider_data.chosen.data", 17000);
-        DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17001);
+        DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17000);
         ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("slider_data.default.material", "PURPLE_WOOL"));
     }
@@ -41,7 +41,10 @@ public class Slider extends Component {
     /**
      * Slider component
      * @param coordinates Coordinates of slider
-     * @param options List of options
+     * @param options Options of slider
+     * @param lore Lore of options
+     * @param name Name of slider
+     * @param delegate Action
      */
     public Slider(List<Integer> coordinates, List<String> options, String lore, String name, Consumer<InventoryClickEvent> delegate) {
         Coordinates = coordinates;
@@ -51,7 +54,7 @@ public class Slider extends Component {
         Action      = delegate;
 
         ChosenDataModel  = MenuFramework.Config.getInt("slider_data.chosen.data", 17000);
-        DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17001);
+        DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17000);
         ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("slider_data.default.material", "PURPLE_WOOL"));
     }
@@ -71,12 +74,11 @@ public class Slider extends Component {
     public Slider(List<Integer> coordinates, List<String> options,
                   String lore, String name, Consumer<InventoryClickEvent> delegate,
                   int cdm, int ddm, Material cm, Material dm) {
-        Coordinates = coordinates;
-        Options     = options;
-        Name        = name;
-        Lore        = lore;
-        Action      = delegate;
-
+        Coordinates      = coordinates;
+        Options          = options;
+        Name             = name;
+        Lore             = lore;
+        Action           = delegate;
         ChosenDataModel  = cdm;
         DefaultDataModel = ddm;
         ChosenMaterial   = cm;
@@ -86,7 +88,6 @@ public class Slider extends Component {
     private final List<Integer> Coordinates;
     private final List<String> Options;
     private final Consumer<InventoryClickEvent> Action;
-    
     private final int ChosenDataModel;
     private final Material ChosenMaterial;
     private final int DefaultDataModel;

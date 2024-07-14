@@ -46,10 +46,23 @@ public class Checkbox extends Component {
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
     }
 
+    public Checkbox(int firstSlot, int secondSlot, String name,
+                    String lore, Consumer<InventoryClickEvent> delegate,
+                    int cdm, int ddm, Material cm, Material dm) {
+        FirstSlot  = firstSlot;
+        SecondSlot = secondSlot;
+        Name       = name;
+        Lore       = lore;
+        Action     = delegate;
+        CheckedDataModel = cdm;
+        DefaultDataModel = ddm;
+        CheckedMaterial  = cm;
+        DefaultMaterial  = dm;
+    }
+
     private final int FirstSlot;
     private final int SecondSlot;
     private final Consumer<InventoryClickEvent> Action;
-
     private final int CheckedDataModel;
     private final Material CheckedMaterial;
     private final int DefaultDataModel;

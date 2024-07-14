@@ -18,6 +18,11 @@ import java.util.function.Consumer;
 
 @ExtensionMethod({Manager.class})
 public class Bar extends Component {
+    /**
+     * Bar component
+     * @param coordinates Coordinates of bar
+     * @param direction direction of filling
+     */
     public Bar(List<Integer> coordinates, Direction direction) {
         Coordinates = coordinates;
         Direction   = direction;
@@ -28,11 +33,17 @@ public class Bar extends Component {
         Lore        = "Bar lore";
 
         LoadedDataModel  = MenuFramework.Config.getInt("bar_data.loaded.data", 17000);
-        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17001);
+        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17000);
         LoadedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("bar_data.loaded.material", "GREEN_WOOL"));
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("bar_data.default.material", "RED_WOOL"));
     }
 
+    /**
+     * Bar component
+     * @param coordinates Coordinates of bar
+     * @param direction direction of filling
+     * @param options Lore of items in bar
+     */
     public Bar(List<Integer> coordinates, Direction direction, List<String> options) {
         Coordinates = coordinates;
         Direction   = direction;
@@ -43,11 +54,18 @@ public class Bar extends Component {
         Lore        = "Bar lore";
 
         LoadedDataModel  = MenuFramework.Config.getInt("bar_data.loaded.data", 17000);
-        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17001);
+        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17000);
         LoadedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("bar_data.loaded.material", "GREEN_WOOL"));
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("bar_data.default.material", "RED_WOOL"));
     }
 
+    /**
+     * Bar component
+     * @param coordinates Coordinates of bar
+     * @param direction direction of filling
+     * @param options Lore of items in bar
+     * @param delegate Action
+     */
     public Bar(List<Integer> coordinates, Direction direction, List<String> options, Consumer<InventoryClickEvent> delegate) {
         Coordinates = coordinates;
         Direction   = direction;
@@ -58,11 +76,20 @@ public class Bar extends Component {
         Lore        = "Bar lore";
 
         LoadedDataModel  = MenuFramework.Config.getInt("bar_data.loaded.data", 17000);
-        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17001);
+        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17000);
         LoadedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("bar_data.loaded.material", "GREEN_WOOL"));
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("bar_data.default.material", "RED_WOOL"));
     }
 
+    /**
+     * Bar component
+     * @param coordinates Coordinates of bar
+     * @param direction direction of filling
+     * @param name Name of Bar
+     * @param lore Lore of Bar items
+     * @param options Lore of items in bar
+     * @param delegate Action
+     */
     public Bar(List<Integer> coordinates, Direction direction, String name, String lore, List<String> options, Consumer<InventoryClickEvent> delegate) {
         Coordinates = coordinates;
         Direction   = direction;
@@ -72,16 +99,43 @@ public class Bar extends Component {
         Lore        = lore;
 
         LoadedDataModel  = MenuFramework.Config.getInt("bar_data.loaded.data", 17000);
-        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17001);
+        DefaultDataModel = MenuFramework.Config.getInt("bar_data.default.data", 17000);
         LoadedMaterial   = Material.matchMaterial(MenuFramework.Config.getString("bar_data.loaded.material", "GREEN_WOOL"));
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("bar_data.default.material", "RED_WOOL"));
+    }
+
+    /**
+     * Bar component
+     * @param coordinates Coordinates of bar
+     * @param direction direction of filling
+     * @param name Name of Bar
+     * @param lore Lore of Bar items
+     * @param options Lore of items in bar
+     * @param delegate Action
+     * @param ldm Loaded option data model
+     * @param ddm Default option data model
+     * @param lm Loaded option material
+     * @param dm Default option material
+     */
+    public Bar(List<Integer> coordinates, Direction direction, String name, String lore,
+               List<String> options, Consumer<InventoryClickEvent> delegate,
+               int ldm, int ddm, Material lm, Material dm) {
+        Coordinates      = coordinates;
+        Direction        = direction;
+        Action           = delegate;
+        Options          = options;
+        Name             = name;
+        Lore             = lore;
+        LoadedDataModel  = ldm;
+        DefaultDataModel = ddm;
+        LoadedMaterial   = lm;
+        DefaultMaterial  = dm;
     }
 
     private final List<Integer> Coordinates;
     private final List<String> Options;
     private final Direction Direction;
     private final Consumer<InventoryClickEvent> Action;
-
     private final int LoadedDataModel;
     private final Material LoadedMaterial;
     private final int DefaultDataModel;

@@ -277,7 +277,7 @@ public class Panel extends Component {
      * @param player Player, who will see panel as inventory
      */
     public void getView(Player player) {
-        var window = getWindow(player, Ui + getName(), MenuSize.size);
+        var window = getWindow(player, getName(), MenuSize.size);
         place(window);
         player.openInventory(window);
     }
@@ -288,7 +288,7 @@ public class Panel extends Component {
      * @param lore Custom lore
      */
     public void getView(Player player, List<String> lore) {
-        var window = getWindow(player, Ui + getName(), MenuSize.size);
+        var window = getWindow(player, getName(), MenuSize.size);
         place(window, lore);
         player.openInventory(window);
     }
@@ -300,7 +300,7 @@ public class Panel extends Component {
      * @param names Names of components, that will take custom lore
      */
     public void getView(Player player, List<List<String>> customLore, List<String> names) {
-        var window = getWindow(player, Ui + getName(), MenuSize.size);
+        var window = getWindow(player, getName(), MenuSize.size);
         place(window, customLore, names);
         player.openInventory(window);
     }
@@ -311,7 +311,7 @@ public class Panel extends Component {
      * @param newTitle New title
      */
     public void getView(Player player, String newTitle) {
-        var window = getWindow(player, Ui + newTitle, MenuSize.size);
+        var window = getWindow(player, newTitle, MenuSize.size);
         place(window);
         player.openInventory(window);
     }
@@ -323,7 +323,7 @@ public class Panel extends Component {
      * @param lore Custom lore
      */
     public void getView(Player player, String newTitle, List<String> lore) {
-        var window = getWindow(player, Ui + newTitle, MenuSize.size);
+        var window = getWindow(player, newTitle, MenuSize.size);
         place(window, lore);
         player.openInventory(window);
     }
@@ -336,7 +336,7 @@ public class Panel extends Component {
      * @param names Names of components, that will take custom lore
      */
     public void getView(Player player, String newTitle, List<List<String>> customLore, List<String> names) {
-        var window = getWindow(player, Ui + newTitle, MenuSize.size);
+        var window = getWindow(player, newTitle, MenuSize.size);
         place(window, customLore, names);
         player.openInventory(window);
     }
@@ -374,7 +374,7 @@ public class Panel extends Component {
      * @param newComponents Additional components
      */
     public void getViewWith(Player player, List<Component> newComponents) {
-        var window = getWindow(player, Ui + getName(), MenuSize.size);
+        var window = getWindow(player, getName(), MenuSize.size);
         placeWith(window, newComponents);
         player.openInventory(window);
     }
@@ -386,7 +386,7 @@ public class Panel extends Component {
      * @param newComponents Additional components
      */
     public void getViewWith(Player player, String newTitle, List<Component> newComponents) {
-        var window = getWindow(player, Ui + newTitle, MenuSize.size);
+        var window = getWindow(player, newTitle, MenuSize.size);
         placeWith(window, newComponents);
         player.openInventory(window);
     }

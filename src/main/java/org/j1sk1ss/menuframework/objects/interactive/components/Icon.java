@@ -10,6 +10,10 @@ import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 
 public class Icon extends Component {
+    /**
+     * Icon component
+     * @param position Icon position
+     */
     public Icon(int position) {
         Position = position;
 
@@ -18,6 +22,12 @@ public class Icon extends Component {
         Image = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
     }
 
+    /**
+     * Icon component
+     * @param position Icon position
+     * @param name Icon name
+     * @param lore Icon lore
+     */
     public Icon(int position, String name, String lore) {
         Position = position;
         Name     = name;
@@ -26,6 +36,13 @@ public class Icon extends Component {
         Image = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
     }
 
+    /**
+     * Icon component
+     * @param position Icon position
+     * @param name Icon name
+     * @param lore Icon lore
+     * @param material Icon material
+     */
     public Icon(int position, String name, String lore, Material material) {
         Position = position;
         Name     = name;
@@ -34,6 +51,14 @@ public class Icon extends Component {
         Image = new Item(Name, Lore, material, 1, BodyCustomModelData);
     }
 
+    /**
+     * Icon component
+     * @param position Icon position
+     * @param name Icon name
+     * @param lore Icon lore
+     * @param material Icon material
+     * @param dataModel Icon data model
+     */
     public Icon(int position, String name, String lore, Material material, int dataModel) {
         Position = position;
         Name     = name;

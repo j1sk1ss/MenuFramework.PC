@@ -14,17 +14,21 @@ import java.util.function.Consumer;
 
 @ExtensionMethod({Manager.class})
 public class ItemArea extends Component {
+    public ItemArea(List<Integer> coordinates, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {
+        Coordinates = coordinates;
+        Items       = items;
+        Action      = delegate;
+    }
+
     public ItemArea(int firstSlot, int secondSlot, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {
-        FirstSlot  = firstSlot;
-        SecondSlot = secondSlot;
-        Items      = items;
-        Action     = delegate;
+        Coordinates = positions2coordinates(firstSlot, secondSlot);
+        Items       = items;
+        Action      = delegate;
     }
 
     private final Consumer<InventoryClickEvent> Action;
-    private final int FirstSlot;
-    private final int SecondSlot;
     private final List<ItemStack> Items;
+    private final List<Integer> Coordinates;
 
     @Override
     public void place(Inventory inventory) {
@@ -43,20 +47,24 @@ public class ItemArea extends Component {
 
     @Override
     public List<Integer> getCoordinates() {
-        var list = new ArrayList<Integer>();
-        var secondCoordinate = SecondSlot - FirstSlot;
-
-        var height = (secondCoordinate / 9) + 1;
-        var weight = (secondCoordinate % 9) + 1;
-        for (var i = FirstSlot / 9; i < FirstSlot / 9 + height; i++)
-            for (var j = FirstSlot % 9; j < FirstSlot % 9 + weight; j++)
-                list.add(9 * i + j);
-
-        return list;
+        return Coordinates;
     }
 
     @Override
     public void action(InventoryClickEvent event) {
         if (Action != null) Action.accept(event);
+    }
+
+    private List<Integer> positions2coordinates(int first, int second) {
+        var list = new ArrayList<Integer>();
+        var secondCoordinate = second - first;
+
+        var height = (secondCoordinate / 9) + 1;
+        var weight = (secondCoordinate % 9) + 1;
+        for (var i = first / 9; i < first / 9 + height; i++)
+            for (var j = first % 9; j < first % 9 + weight; j++)
+                list.add(9 * i + j);
+
+        return list;
     }
 }
