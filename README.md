@@ -1,7 +1,7 @@
 [![](https://jitpack.io/v/j1sk1ss/MenuFramework.PC.svg)](https://jitpack.io/#j1sk1ss/MenuFramework.PC)
 
 <p align="center">
-  <img width="600" height="800" src="https://github.com/j1sk1ss/MenuFramework.PC/blob/master/main_cover.png">
+  <img width="1920" height="600" src="https://github.com/j1sk1ss/MenuFramework.PC/blob/master/main_cover.png">
 </p>
 
 # **Dependencies:**</br>
