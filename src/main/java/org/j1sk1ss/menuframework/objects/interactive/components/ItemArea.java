@@ -1,10 +1,10 @@
 package org.j1sk1ss.menuframework.objects.interactive.components;
 
 import lombok.experimental.ExtensionMethod;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.j1sk1ss.itemmanager.manager.Manager;
-import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import java.util.ArrayList;
@@ -20,19 +20,19 @@ public class ItemArea extends Component {
         Items = itemArea.Items;
     }
 
-    public ItemArea(List<Integer> coordinates, List<ItemStack> items, Consumer<ComponentClickEvent> delegate) {
+    public ItemArea(List<Integer> coordinates, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {
         Coordinates = coordinates;
         Items       = items;
         Action      = delegate;
     }
 
-    public ItemArea(int firstSlot, int secondSlot, List<ItemStack> items, Consumer<ComponentClickEvent> delegate) {
+    public ItemArea(int firstSlot, int secondSlot, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {
         Coordinates = positions2coordinates(firstSlot, secondSlot);
         Items       = items;
         Action      = delegate;
     }
 
-    private final Consumer<ComponentClickEvent> Action;
+    private final Consumer<InventoryClickEvent> Action;
     private final List<ItemStack> Items;
     private final List<Integer> Coordinates;
 
@@ -57,7 +57,7 @@ public class ItemArea extends Component {
     }
 
     @Override
-    public void action(ComponentClickEvent event) {
+    public void action(InventoryClickEvent event) {
         if (Action != null) Action.accept(event);
     }
 

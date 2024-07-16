@@ -32,28 +32,28 @@ public class ClickArea extends Component {
         Lore        = "ClickAreaLore";
     }
 
-    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<ComponentClickEvent> delegate) {
+    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<InventoryClickEvent> delegate) {
         Coordinates = positions2coordinates(firstCoordinate, secondCoordinate);
         Action      = delegate;
         Name        = "ClickArea";
         Lore        = "ClickAreaLore";
     }
 
-    public ClickArea(List<Integer> coordinates, Consumer<ComponentClickEvent> delegate) {
+    public ClickArea(List<Integer> coordinates, Consumer<InventoryClickEvent> delegate) {
         Coordinates = coordinates;
         Action      = delegate;
         Name        = "ClickArea";
         Lore        = "ClickAreaLore";
     }
 
-    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<ComponentClickEvent> delegate, String name, String lore) {
+    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<InventoryClickEvent> delegate, String name, String lore) {
         Coordinates = positions2coordinates(firstCoordinate, secondCoordinate);
         Action      = delegate;
         Name        = name;
         Lore        = lore;
     }
 
-    public ClickArea(List<Integer> coordinates, Consumer<ComponentClickEvent> delegate, String name, String lore) {
+    public ClickArea(List<Integer> coordinates, Consumer<InventoryClickEvent> delegate, String name, String lore) {
         Coordinates = coordinates;
         Action      = delegate;
         Name        = name;
@@ -61,7 +61,7 @@ public class ClickArea extends Component {
     }
 
     private final List<Integer> Coordinates;
-    private final Consumer<ComponentClickEvent> Action;
+    private final Consumer<InventoryClickEvent> Action;
 
     @Override
     public void place(Inventory inventory) { return; }
@@ -78,7 +78,7 @@ public class ClickArea extends Component {
     }
     
     @Override
-    public void action(ComponentClickEvent event) {
+    public void action(InventoryClickEvent event) {
         if (Action != null) Action.accept(event);
     }
 

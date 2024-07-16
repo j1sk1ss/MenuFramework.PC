@@ -35,7 +35,7 @@ public class InventoryClickHandler implements Listener {
                 }
 
                 if (containsAllWords) {
-                    handlers.get(key).click(new ComponentClickEvent(handlers.get(key), player, event.getSlot(), event));
+                    handlers.get(key).click(event);
                     event.setCancelled(true);
                 }
             }

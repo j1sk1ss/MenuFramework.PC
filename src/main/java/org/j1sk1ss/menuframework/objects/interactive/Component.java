@@ -51,8 +51,8 @@ public abstract class Component {
      * Click interaction
      * @param click InventoryClickEvent
      */
-    public void click(ComponentClickEvent click) {
-        if (isClicked(click.getClickedSlot())) action(click);
+    public void click(InventoryClickEvent click) {
+        if (isClicked(click.getSlot())) action(click);
     }
 
     /**
@@ -67,7 +67,7 @@ public abstract class Component {
      * Action for button
      * @param event InventoryClickEvent
      */
-    public void action(ComponentClickEvent event) {
+    public void action(InventoryClickEvent event) {
         return;
     }
 

@@ -5,6 +5,7 @@ import lombok.Setter;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 import org.j1sk1ss.menuframework.MenuFramework;
@@ -94,10 +95,10 @@ public class Panel extends Component {
     }
 
     @Override
-    public void click(ComponentClickEvent click) {
+    public void click(InventoryClickEvent click) {
         for (var component : Components) {
-            if (component.isClicked(click.getClickedSlot())) {
-                var clickEvent = new ComponentClickEvent(component, click.getPlayer(), click.getClickedSlot(), click.getInventoryClickEvent());
+            if (component.isClicked(click.getSlot())) {
+                var clickEvent = new ComponentClickEvent(component, (Player) click.getWhoClicked(), click.getSlot(), click);
                 Bukkit.getPluginManager().callEvent(clickEvent);
 
                 if (!clickEvent.isCancelled())
