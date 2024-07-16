@@ -10,6 +10,13 @@ import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 
 public class Icon extends Component {
+    public Icon(Icon icon) {
+        Position = icon.Position;
+        Name     = icon.Name;
+        Lore     = icon.Lore;
+        Image    = icon.Image;
+    }
+
     /**
      * Icon component
      * @param position Icon position
@@ -83,5 +90,10 @@ public class Icon extends Component {
     @Override
     public List<Integer> getCoordinates() {
         return List.of(Position);
+    }
+
+    @Override
+    public Component deepCopy() {
+        return new Icon(this);
     }
 }

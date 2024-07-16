@@ -32,10 +32,10 @@ public class Slider extends Component {
         Lore        = slider.Lore;
         Action      = null;
 
-        ChosenDataModel  = MenuFramework.Config.getInt("slider_data.chosen.data", 17000);
-        DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17000);
-        ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
-        DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("slider_data.default.material", "PURPLE_WOOL"));
+        ChosenDataModel  = slider.ChosenDataModel;
+        DefaultDataModel = slider.DefaultDataModel;
+        ChosenMaterial   = slider.ChosenMaterial;
+        DefaultMaterial  = slider.DefaultMaterial;
     }
 
     /**
@@ -123,6 +123,11 @@ public class Slider extends Component {
         for (var i = 0; i < Coordinates.size(); i++)
             if (Coordinates.get(i) != event.getSlot()) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), DefaultMaterial, 1, DefaultDataModel));
             else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), ChosenMaterial, 1, ChosenDataModel));
+    }
+
+    @Override
+    public Component deepCopy() {
+        return new Slider(this);
     }
 
     /**

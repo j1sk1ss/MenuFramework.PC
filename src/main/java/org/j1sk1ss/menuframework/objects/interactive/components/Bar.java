@@ -18,6 +18,19 @@ import java.util.function.Consumer;
 
 @ExtensionMethod({Manager.class})
 public class Bar extends Component {
+    public Bar(Bar bar) {
+        Coordinates = bar.Coordinates;
+        Direction   = bar.Direction;
+        Options = bar.Options;
+        Action  = bar.Action;
+        Name    = bar.Name;
+        Lore    = bar.Lore;
+        LoadedDataModel  = bar.LoadedDataModel;
+        LoadedMaterial   = bar.LoadedMaterial;
+        DefaultDataModel = bar.DefaultDataModel;
+        DefaultMaterial  = bar.DefaultMaterial;
+    }
+
     /**
      * Bar component
      * @param coordinates Coordinates of bar
@@ -242,6 +255,11 @@ public class Bar extends Component {
     @Override
     public List<Integer> getCoordinates() {
         return Coordinates;
+    }
+
+    @Override
+    public Component deepCopy() {
+        return new Bar(this);
     }
 
     @Override

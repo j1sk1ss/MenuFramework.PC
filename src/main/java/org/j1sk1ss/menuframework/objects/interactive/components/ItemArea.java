@@ -14,6 +14,12 @@ import java.util.function.Consumer;
 
 @ExtensionMethod({Manager.class})
 public class ItemArea extends Component {
+    public ItemArea(ItemArea itemArea) {
+        Action = itemArea.Action;
+        Coordinates = itemArea.Coordinates;
+        Items = itemArea.Items;
+    }
+
     public ItemArea(List<Integer> coordinates, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {
         Coordinates = coordinates;
         Items       = items;
@@ -53,6 +59,11 @@ public class ItemArea extends Component {
     @Override
     public void action(InventoryClickEvent event) {
         if (Action != null) Action.accept(event);
+    }
+
+    @Override
+    public Component deepCopy() {
+        return new ItemArea(this);
     }
 
     private List<Integer> positions2coordinates(int first, int second) {

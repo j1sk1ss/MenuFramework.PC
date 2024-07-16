@@ -19,6 +19,16 @@ import java.util.List;
 
 
 public class Panel extends Component {
+    public Panel(Panel panel) {
+        Ui         = panel.Ui;
+        Name       = panel.Name;
+        Lore       = panel.Lore;
+        Components = panel.Components;
+        MenuSize   = panel.MenuSize;
+
+        MenuFramework.ClickHandler.addHandler(this, Name);
+    }
+
     /**
      * Buttons panel
      * @param components Components of panel
@@ -140,6 +150,11 @@ public class Panel extends Component {
     @Override
     public void displace(Inventory inventory) {
         for (var component : Components) component.displace(inventory);
+    }
+
+    @Override
+    public Component deepCopy() {
+        return new Panel(this);
     }
 
     /**

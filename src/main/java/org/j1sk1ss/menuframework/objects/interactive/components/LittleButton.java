@@ -18,6 +18,15 @@ import java.util.function.Consumer;
 
 @ExtensionMethod({Manager.class})
 public class LittleButton extends Component {
+    public LittleButton(LittleButton littleButton) {
+        Position            = littleButton.Position;
+        Name                = littleButton.Name;
+        Lore                = littleButton.Lore;
+        Action              = littleButton.Action;
+        BodyMaterial        = littleButton.BodyMaterial;
+        BodyCustomModelData = littleButton.BodyCustomModelData;
+    }
+
     /**
      * Little button component
      * @param position Position of little button
@@ -120,6 +129,11 @@ public class LittleButton extends Component {
     @Override
     public List<Integer> getCoordinates() {
         return List.of(Position);
+    }
+
+    @Override
+    public Component deepCopy() {
+        return new LittleButton(this);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.j1sk1ss.menuframework.objects.interactive.components;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -10,46 +11,53 @@ import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 
 public class ClickArea extends Component {
+    public ClickArea(ClickArea clickArea) {
+        Coordinates = clickArea.Coordinates;
+        Action      = clickArea.Action;
+        Name        = clickArea.Name;
+        Lore        = clickArea.Lore;
+    }
+
     public ClickArea(List<Integer> coordinates) {
         Coordinates = coordinates;
-        Action = null;
-        Name = "ClickArea";
-        Lore = "ClickAreaLore";
+        Action      = null;
+        Name        = "ClickArea";
+        Lore        = "ClickAreaLore";
     }
 
     public ClickArea(int firstCoordinate, int secondCoordinate) {
         Coordinates = positions2coordinates(firstCoordinate, secondCoordinate);
-        Action = null;
-        Name = "ClickArea";
-        Lore = "ClickAreaLore";
+        Action      = null;
+        Name        = "ClickArea";
+        Lore        = "ClickAreaLore";
     }
 
     public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<InventoryClickEvent> delegate) {
         Coordinates = positions2coordinates(firstCoordinate, secondCoordinate);
-        Action = delegate;
-        Name = "ClickArea";
-        Lore = "ClickAreaLore";
+        Action      = delegate;
+        Name        = "ClickArea";
+        Lore        = "ClickAreaLore";
     }
 
     public ClickArea(List<Integer> coordinates, Consumer<InventoryClickEvent> delegate) {
         Coordinates = coordinates;
-        Action = delegate;
-        Name = "ClickArea";
-        Lore = "ClickAreaLore";
+        Action      = delegate;
+        Name        = "ClickArea";
+        Lore        = "ClickAreaLore";
     }
 
     public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<InventoryClickEvent> delegate, String name, String lore) {
         Coordinates = positions2coordinates(firstCoordinate, secondCoordinate);
-        Action = delegate;
-        Name = name;
-        Lore = lore;
+        Action      = delegate;
+        Name        = name;
+        Lore        = lore;
     }
 
     public ClickArea(List<Integer> coordinates, Consumer<InventoryClickEvent> delegate, String name, String lore) {
         Coordinates = coordinates;
-        Action = delegate;
-        Name = name;
-        Lore = lore;
+        Action      = delegate;
+        Name        = name;
+        Lore        = lore;
     }
 
     private final List<Integer> Coordinates;
@@ -72,6 +80,11 @@ public class ClickArea extends Component {
     @Override
     public void action(InventoryClickEvent event) {
         if (Action != null) Action.accept(event);
+    }
+
+    @Override
+    public Component deepCopy() {
+        return new ClickArea(this);
     }
 
     private List<Integer> positions2coordinates(int first, int second) {

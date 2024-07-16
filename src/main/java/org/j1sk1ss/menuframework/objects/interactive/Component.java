@@ -140,11 +140,7 @@ public abstract class Component {
      * Deep copy object
      * @return New object
      */
-    public Component deepCopy() {
-        var gson = new GsonBuilder().create();
-        var text = gson.toJson(this);
-        return gson.fromJson(text, Component.class);
-    }
+    public abstract Component deepCopy();
 
     public abstract void place(Inventory inventory);
 

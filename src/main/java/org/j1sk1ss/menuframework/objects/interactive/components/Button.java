@@ -21,6 +21,14 @@ import java.util.function.Consumer;
 
 @ExtensionMethod({Manager.class})
 public class Button extends Component {
+    public Button(Button button) {
+        FirstSlot  = button.FirstSlot;
+        SecondSlot = button.SecondSlot;
+        Name       = button.Name;
+        Lore       = button.Lore;
+        Action     = button.Action;
+    }
+
     public Button(int firstSlot, int secondSlot, String name) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
@@ -106,6 +114,11 @@ public class Button extends Component {
                 list.add(9 * i + j);
 
         return list;
+    }
+
+    @Override
+    public Component deepCopy() {
+        return new Button(this);
     }
 
     @Override

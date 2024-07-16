@@ -25,12 +25,13 @@ public class LocalizationManager {
      * @return Translated component (deep copy)
      */
     public Component translate(Component component, String language) {
-        var translatedComponent = component.deepCopy();
         try {
             var localKey = LocManager.getString(language + "_" + component.getName());
             if (localKey == null) return component;
 
-            var translation = localKey.split("/");
+            var translation = localKey.split("/", 2);
+
+            var translatedComponent = component.deepCopy();
             if (!translation[0].equals("-")) translatedComponent.setName(translation[0]);
             if (!translation[1].equals("-")) translatedComponent.setLore(translation[1]);
 
@@ -40,10 +41,15 @@ public class LocalizationManager {
                 for (var cmp : panel.getComponents())
                     translatedPanel.addComponent(translate(cmp, language));
             }
+
+            System.out.println("Translated component: " + translatedComponent.getName() + " to " + language);
+
+            return translatedComponent;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Error while trying to translate component " + component.getName() + " to " + language
+            + "\nLOG: " + e);
         }
 
-        return translatedComponent;
+        return component;
     }
 }

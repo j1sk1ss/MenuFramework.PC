@@ -19,6 +19,18 @@ import lombok.experimental.ExtensionMethod;
 
 @ExtensionMethod({Manager.class})
 public class Checkbox extends Component {
+    public Checkbox(Checkbox checkbox) {
+        FirstSlot  = checkbox.FirstSlot;
+        SecondSlot = checkbox.SecondSlot;
+        Name   = checkbox.Name;
+        Lore   = checkbox.Lore;
+        Action = checkbox.Action;
+        CheckedMaterial  = checkbox.CheckedMaterial;
+        CheckedDataModel = checkbox.CheckedDataModel;
+        DefaultDataModel = checkbox.DefaultDataModel;
+        DefaultMaterial  = checkbox.DefaultMaterial;
+    }
+
     public Checkbox(int firstSlot, int secondSlot, String name, String lore) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
@@ -107,6 +119,11 @@ public class Checkbox extends Component {
             for (var coordinate : getCoordinates()) 
                 inventory.setItem(coordinate, new Item(Name, Lore, DefaultMaterial, 1, DefaultDataModel));
         }
+    }
+
+    @Override
+    public Component deepCopy() {
+        return new Checkbox(this);
     }
 
     public boolean isChecked(InventoryClickEvent event) {
