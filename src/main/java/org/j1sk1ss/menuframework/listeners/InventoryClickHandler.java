@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class InventoryClickHandler implements Listener {
                 }
 
                 if (containsAllWords) {
-                    handlers.get(key).click(event);
+                    handlers.get(key).click(new ComponentClickEvent(handlers.get(key), player, event.getSlot(), event));
                     event.setCancelled(true);
                 }
             }

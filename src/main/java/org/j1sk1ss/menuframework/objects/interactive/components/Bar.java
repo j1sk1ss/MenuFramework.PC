@@ -7,6 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Direction;
 
@@ -79,7 +80,7 @@ public class Bar extends Component {
      * @param options Lore of items in bar
      * @param delegate Action
      */
-    public Bar(List<Integer> coordinates, Direction direction, List<String> options, Consumer<InventoryClickEvent> delegate) {
+    public Bar(List<Integer> coordinates, Direction direction, List<String> options, Consumer<ComponentClickEvent> delegate) {
         Coordinates = coordinates;
         Direction   = direction;
         Action      = delegate;
@@ -103,7 +104,7 @@ public class Bar extends Component {
      * @param options Lore of items in bar
      * @param delegate Action
      */
-    public Bar(List<Integer> coordinates, Direction direction, String name, String lore, List<String> options, Consumer<InventoryClickEvent> delegate) {
+    public Bar(List<Integer> coordinates, Direction direction, String name, String lore, List<String> options, Consumer<ComponentClickEvent> delegate) {
         Coordinates = coordinates;
         Direction   = direction;
         Action      = delegate;
@@ -131,7 +132,7 @@ public class Bar extends Component {
      * @param dm Default option material
      */
     public Bar(List<Integer> coordinates, Direction direction, String name, String lore,
-               List<String> options, Consumer<InventoryClickEvent> delegate,
+               List<String> options, Consumer<ComponentClickEvent> delegate,
                int ldm, int ddm, Material lm, Material dm) {
         Coordinates      = coordinates;
         Direction        = direction;
@@ -148,7 +149,7 @@ public class Bar extends Component {
     private final List<Integer> Coordinates;
     private final List<String> Options;
     private final Direction Direction;
-    private final Consumer<InventoryClickEvent> Action;
+    private final Consumer<ComponentClickEvent> Action;
     private final int LoadedDataModel;
     private final Material LoadedMaterial;
     private final int DefaultDataModel;
@@ -263,7 +264,7 @@ public class Bar extends Component {
     }
 
     @Override
-    public void action(InventoryClickEvent event) {
+    public void action(ComponentClickEvent event) {
         if (Action != null) Action.accept(event);
     }
 }

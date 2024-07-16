@@ -1,5 +1,6 @@
 package org.j1sk1ss.menuframework.events;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class SliderClickEvent extends Event implements Cancellable {
-    public SliderClickEvent(int slot, Component component, Player player, InventoryClickEvent event) {
+    public SliderClickEvent(int slot, Component component, Player player, ComponentClickEvent event) {
         this.slot = slot;
         this.clickedComponent = component;
         this.handlers = new HandlerList();
@@ -19,10 +20,10 @@ public class SliderClickEvent extends Event implements Cancellable {
     }
 
     private final int slot;
-    private final Component clickedComponent;
-    private final Player player;
+    @Getter private final Component clickedComponent;
+    @Getter private final Player player;
     private final HandlerList handlers;
-    private final InventoryClickEvent inventoryClickEvent;
+    @Getter private final ComponentClickEvent inventoryClickEvent;
 
     private boolean isCancelled;
 
@@ -42,17 +43,7 @@ public class SliderClickEvent extends Event implements Cancellable {
         return handlers;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public Component getClickedComponent() {
-        return clickedComponent;
-    }
-
     public int getClickedSlot() {
         return slot;
     }
-
-    public InventoryClickEvent getInventoryClickEvent() { return inventoryClickEvent; }
 }

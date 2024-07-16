@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.events.ButtonClickEvent;
+import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class Button extends Component {
         Name       = button.Name;
         Lore       = button.Lore;
         Action     = button.Action;
+        BodyMaterial        = button.BodyMaterial;
+        BodyCustomModelData = button.BodyCustomModelData;
     }
 
     public Button(int firstSlot, int secondSlot, String name) {
@@ -47,7 +50,7 @@ public class Button extends Component {
         Action = null;
     }
 
-    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<ComponentClickEvent> delegate) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
         Name       = name;
@@ -55,7 +58,7 @@ public class Button extends Component {
         Action     = delegate;
     }
 
-    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
+    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<ComponentClickEvent> delegate, Material material) {
         FirstSlot    = firstSlot;
         SecondSlot   = secondSlot;
         Name         = name;
@@ -64,7 +67,7 @@ public class Button extends Component {
         BodyMaterial = material;
     }
 
-    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
+    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<ComponentClickEvent> delegate, Material material, int model) {
         FirstSlot           = firstSlot;
         SecondSlot          = secondSlot;
         Name                = name;
@@ -76,7 +79,7 @@ public class Button extends Component {
 
     private final int FirstSlot;
     private final int SecondSlot;
-    private final Consumer<InventoryClickEvent> Action;
+    private final Consumer<ComponentClickEvent> Action;
 
     @Override
     public void place(Inventory inventory) {
@@ -122,8 +125,8 @@ public class Button extends Component {
     }
 
     @Override
-    public void action(InventoryClickEvent event) {
-        var clickEvent = new ButtonClickEvent(event.getSlot(), this, (Player)event.getWhoClicked(), event);
+    public void action(ComponentClickEvent event) {
+        var clickEvent = new ButtonClickEvent(event.getClickedSlot(), this, event.getPlayer(), event);
         Bukkit.getPluginManager().callEvent(clickEvent);
 
         if (Action != null) Action.accept(event);

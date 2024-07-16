@@ -15,6 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.j1sk1ss.itemmanager.ItemManager;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.MenuWindow;
 
 import java.util.List;
@@ -50,8 +51,8 @@ public abstract class Component {
      * Click interaction
      * @param click InventoryClickEvent
      */
-    public void click(InventoryClickEvent click) {
-        if (isClicked(click.getSlot())) action(click);
+    public void click(ComponentClickEvent click) {
+        if (isClicked(click.getClickedSlot())) action(click);
     }
 
     /**
@@ -66,7 +67,7 @@ public abstract class Component {
      * Action for button
      * @param event InventoryClickEvent
      */
-    public void action(InventoryClickEvent event) {
+    public void action(ComponentClickEvent event) {
         return;
     }
 

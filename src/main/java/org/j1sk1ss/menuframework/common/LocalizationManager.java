@@ -42,8 +42,6 @@ public class LocalizationManager {
                     translatedPanel.addComponent(translate(cmp, language));
             }
 
-            System.out.println("Translated component: " + translatedComponent.getName() + " to " + language);
-
             return translatedComponent;
         } catch (IOException e) {
             System.err.println("Error while trying to translate component " + component.getName() + " to " + language

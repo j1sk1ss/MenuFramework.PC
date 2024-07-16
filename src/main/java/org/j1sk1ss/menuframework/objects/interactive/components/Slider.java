@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.events.SliderClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
@@ -46,7 +47,7 @@ public class Slider extends Component {
      * @param name Name of slider
      * @param delegate Action
      */
-    public Slider(List<Integer> coordinates, List<String> options, String lore, String name, Consumer<InventoryClickEvent> delegate) {
+    public Slider(List<Integer> coordinates, List<String> options, String lore, String name, Consumer<ComponentClickEvent> delegate) {
         Coordinates = coordinates;
         Options     = options;
         Name        = name;
@@ -72,7 +73,7 @@ public class Slider extends Component {
      * @param dm Default option material
      */
     public Slider(List<Integer> coordinates, List<String> options,
-                  String lore, String name, Consumer<InventoryClickEvent> delegate,
+                  String lore, String name, Consumer<ComponentClickEvent> delegate,
                   int cdm, int ddm, Material cm, Material dm) {
         Coordinates      = coordinates;
         Options          = options;
@@ -87,7 +88,7 @@ public class Slider extends Component {
 
     private final List<Integer> Coordinates;
     private final List<String> Options;
-    private final Consumer<InventoryClickEvent> Action;
+    private final Consumer<ComponentClickEvent> Action;
     private final int ChosenDataModel;
     private final Material ChosenMaterial;
     private final int DefaultDataModel;
@@ -113,15 +114,15 @@ public class Slider extends Component {
     }
 
     @Override
-    public void action(InventoryClickEvent event) {
-        var clickEvent = new SliderClickEvent(event.getSlot(), this, (Player)event.getWhoClicked(), event);
+    public void action(ComponentClickEvent event) {
+        var clickEvent = new SliderClickEvent(event.getClickedSlot(), this, event.getPlayer(), event);
         Bukkit.getPluginManager().callEvent(clickEvent);
 
         if (Action != null) Action.accept(event);
 
-        var inventory = event.getInventory();
+        var inventory = event.getInventoryClickEvent().getInventory();
         for (var i = 0; i < Coordinates.size(); i++)
-            if (Coordinates.get(i) != event.getSlot()) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), DefaultMaterial, 1, DefaultDataModel));
+            if (Coordinates.get(i) != event.getClickedSlot()) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), DefaultMaterial, 1, DefaultDataModel));
             else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), ChosenMaterial, 1, ChosenDataModel));
     }
 

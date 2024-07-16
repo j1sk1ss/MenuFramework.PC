@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.events.ButtonClickEvent;
+import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import lombok.experimental.ExtensionMethod;
@@ -60,7 +61,7 @@ public class LittleButton extends Component {
      * @param lore Little button lore
      * @param delegate Action
      */
-    public LittleButton(int position, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+    public LittleButton(int position, String name, String lore, Consumer<ComponentClickEvent> delegate) {
         this.Position = position;
         this.Name     = name;
         this.Lore     = lore;
@@ -75,7 +76,7 @@ public class LittleButton extends Component {
      * @param delegate Action
      * @param material Little button material
      */
-    public LittleButton(int position, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
+    public LittleButton(int position, String name, String lore, Consumer<ComponentClickEvent> delegate, Material material) {
         this.Position = position;
         this.Name     = name;
         this.Lore     = lore;
@@ -92,7 +93,7 @@ public class LittleButton extends Component {
      * @param material Little button material
      * @param model Little button model data
      */
-    public LittleButton(int position, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
+    public LittleButton(int position, String name, String lore, Consumer<ComponentClickEvent> delegate, Material material, int model) {
         this.Position       = position;
         this.Name           = name;
         this.Lore           = lore;
@@ -102,7 +103,7 @@ public class LittleButton extends Component {
     }
 
     private final int Position;
-    private final Consumer<InventoryClickEvent> Action;
+    private final Consumer<ComponentClickEvent> Action;
 
     @Override
     public void place(Inventory inventory) {
@@ -137,8 +138,8 @@ public class LittleButton extends Component {
     }
 
     @Override
-    public void action(InventoryClickEvent event) {
-        var clickEvent = new ButtonClickEvent(event.getSlot(), this, (Player)event.getWhoClicked(), event);
+    public void action(ComponentClickEvent event) {
+        var clickEvent = new ButtonClickEvent(event.getClickedSlot(), this, event.getPlayer(), event);
         Bukkit.getPluginManager().callEvent(clickEvent);
 
         if (Action != null) Action.accept(event);

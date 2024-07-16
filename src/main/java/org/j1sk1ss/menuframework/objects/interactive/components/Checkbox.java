@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import lombok.experimental.ExtensionMethod;
@@ -45,7 +46,7 @@ public class Checkbox extends Component {
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
     }
 
-    public Checkbox(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+    public Checkbox(int firstSlot, int secondSlot, String name, String lore, Consumer<ComponentClickEvent> delegate) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
         Name       = name;
@@ -59,7 +60,7 @@ public class Checkbox extends Component {
     }
 
     public Checkbox(int firstSlot, int secondSlot, String name,
-                    String lore, Consumer<InventoryClickEvent> delegate,
+                    String lore, Consumer<ComponentClickEvent> delegate,
                     int cdm, int ddm, Material cm, Material dm) {
         FirstSlot  = firstSlot;
         SecondSlot = secondSlot;
@@ -74,7 +75,7 @@ public class Checkbox extends Component {
 
     private final int FirstSlot;
     private final int SecondSlot;
-    private final Consumer<InventoryClickEvent> Action;
+    private final Consumer<ComponentClickEvent> Action;
     private final int CheckedDataModel;
     private final Material CheckedMaterial;
     private final int DefaultDataModel;
@@ -107,11 +108,11 @@ public class Checkbox extends Component {
     }
     
     @Override
-    public void action(InventoryClickEvent event) {
+    public void action(ComponentClickEvent event) {
         if (Action != null) Action.accept(event);
-        var inventory = event.getInventory();
+        var inventory = event.getInventoryClickEvent().getInventory();
 
-        if (Objects.requireNonNull(inventory.getItem(event.getSlot())).getType().equals(DefaultMaterial)) {
+        if (Objects.requireNonNull(inventory.getItem(event.getClickedSlot())).getType().equals(DefaultMaterial)) {
             for (var coordinate : getCoordinates()) 
                 inventory.setItem(coordinate, new Item(Name, Lore, CheckedMaterial, 1, CheckedDataModel));
         }

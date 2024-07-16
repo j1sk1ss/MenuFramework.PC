@@ -5,7 +5,6 @@ import lombok.Setter;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 import org.j1sk1ss.menuframework.MenuFramework;
@@ -25,8 +24,6 @@ public class Panel extends Component {
         Lore       = panel.Lore;
         Components = panel.Components;
         MenuSize   = panel.MenuSize;
-
-        MenuFramework.ClickHandler.addHandler(this, Name);
     }
 
     /**
@@ -97,10 +94,10 @@ public class Panel extends Component {
     }
 
     @Override
-    public void click(InventoryClickEvent click) {
+    public void click(ComponentClickEvent click) {
         for (var component : Components) {
-            if (component.isClicked(click.getSlot())) {
-                var clickEvent = new ComponentClickEvent(component, (Player)click.getWhoClicked(), click.getSlot(), click);
+            if (component.isClicked(click.getClickedSlot())) {
+                var clickEvent = new ComponentClickEvent(component, click.getPlayer(), click.getClickedSlot(), click.getInventoryClickEvent());
                 Bukkit.getPluginManager().callEvent(clickEvent);
 
                 if (!clickEvent.isCancelled())

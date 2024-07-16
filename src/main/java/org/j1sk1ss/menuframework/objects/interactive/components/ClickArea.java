@@ -1,12 +1,12 @@
 package org.j1sk1ss.menuframework.objects.interactive.components;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 
@@ -32,28 +32,28 @@ public class ClickArea extends Component {
         Lore        = "ClickAreaLore";
     }
 
-    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<InventoryClickEvent> delegate) {
+    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<ComponentClickEvent> delegate) {
         Coordinates = positions2coordinates(firstCoordinate, secondCoordinate);
         Action      = delegate;
         Name        = "ClickArea";
         Lore        = "ClickAreaLore";
     }
 
-    public ClickArea(List<Integer> coordinates, Consumer<InventoryClickEvent> delegate) {
+    public ClickArea(List<Integer> coordinates, Consumer<ComponentClickEvent> delegate) {
         Coordinates = coordinates;
         Action      = delegate;
         Name        = "ClickArea";
         Lore        = "ClickAreaLore";
     }
 
-    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<InventoryClickEvent> delegate, String name, String lore) {
+    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<ComponentClickEvent> delegate, String name, String lore) {
         Coordinates = positions2coordinates(firstCoordinate, secondCoordinate);
         Action      = delegate;
         Name        = name;
         Lore        = lore;
     }
 
-    public ClickArea(List<Integer> coordinates, Consumer<InventoryClickEvent> delegate, String name, String lore) {
+    public ClickArea(List<Integer> coordinates, Consumer<ComponentClickEvent> delegate, String name, String lore) {
         Coordinates = coordinates;
         Action      = delegate;
         Name        = name;
@@ -61,7 +61,7 @@ public class ClickArea extends Component {
     }
 
     private final List<Integer> Coordinates;
-    private final Consumer<InventoryClickEvent> Action;
+    private final Consumer<ComponentClickEvent> Action;
 
     @Override
     public void place(Inventory inventory) { return; }
@@ -78,7 +78,7 @@ public class ClickArea extends Component {
     }
     
     @Override
-    public void action(InventoryClickEvent event) {
+    public void action(ComponentClickEvent event) {
         if (Action != null) Action.accept(event);
     }
 
