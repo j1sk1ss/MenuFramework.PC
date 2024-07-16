@@ -8,6 +8,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
+/**
+ * Localization manager based on CordellDB
+ * Main idea, that every MenuWindow will have own CDB for translation
+ * For creation a new localization file you will need:
+ *      - Every line of file - one component
+ *      - Key and value in CordellDB separated by ":"
+ *      - Key should have LNG_ prefix. Also key should copy name of component for localization
+ *          - Example: EN_button1:ButtonName/ButtonLore
+ *          - Example: EN_panel:InventoryName/-
+ *          - Example: IT_button1:ButtonNome/ButtonStoria
+ *          - Example: RU_button1:Кнопка/- (- means saving lore (Or name))
+ *  Then just get panel with lang (from prefix), and show it for player:
+ *      - Example: windowMenu.getPanel("panel1", "RU").getView(player);
+ *  Notes:
+ *      - Avoid localization for panels
+ *      - Remember that MenuFramework don`t know player`s native language. You should detect this by yourself.
+ */
 public class LocalizationManager {
     public LocalizationManager(String localization) {
         LocManager = new Manager(localization);
