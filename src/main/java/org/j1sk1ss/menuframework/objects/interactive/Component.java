@@ -1,7 +1,10 @@
 package org.j1sk1ss.menuframework.objects.interactive;
 
+import com.google.gson.GsonBuilder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.ExtensionMethod;
+import org.apache.commons.lang3.SerializationUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,6 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.j1sk1ss.itemmanager.ItemManager;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.objects.MenuWindow;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,9 +30,10 @@ public abstract class Component {
             .getItemMeta().getPersistentDataContainer().getAdapterContext().newPersistentDataContainer();
     }
 
-    protected String Lore;
-    @Getter protected String Name;
-    @Getter protected PersistentDataContainer PersistentDataContainer;
+    @Setter @Getter private MenuWindow Parent;
+    @Setter @Getter protected String Lore;
+    @Setter @Getter protected String Name;
+    @Setter @Getter protected PersistentDataContainer PersistentDataContainer;
 
     protected int BodyCustomModelData;
     protected Material BodyMaterial;
@@ -129,6 +134,16 @@ public abstract class Component {
      */
     public boolean isClicked(int click) {
         return getCoordinates().contains(click);
+    }
+
+    /**
+     * Deep copy object
+     * @return New object
+     */
+    public Component deepCopy() {
+        var gson = new GsonBuilder().create();
+        var text = gson.toJson(this);
+        return gson.fromJson(text, Component.class);
     }
 
     public abstract void place(Inventory inventory);

@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>1.18.34</version>
             <scope>compile</scope>
         </dependency>
 
@@ -88,6 +88,14 @@
             <groupId>com.github.j1sk1ss</groupId>
             <artifactId>ItemManager.PC</artifactId>
             <version>ver0.5</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.j1sk1ss</groupId>
+            <artifactId>CordellDB.EXMPL</artifactId>
+            <version>24d508f8d1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.j1sk1ss.menuframework.common.LocalizationManager;
 import org.j1sk1ss.menuframework.listeners.InventoryClickHandler;
 import org.j1sk1ss.menuframework.listeners.PlayerEventListener;
 
@@ -12,12 +13,14 @@ import java.io.IOException;
 
 
 public final class MenuFramework extends JavaPlugin {
+    public static LocalizationManager LocManager = null;
     public static FileConfiguration Config = new YamlConfiguration();
     public static InventoryClickHandler ClickHandler = new InventoryClickHandler();
 
     @Override
     public void onEnable() {
         var file = new File(getDataFolder() + File.separator + "config.yml");
+        var localization = new File(getDataFolder() + File.separator + "localization.cdb");
         if (!file.exists()) saveDefaultConfig();
         else {
             try {
@@ -29,6 +32,10 @@ public final class MenuFramework extends JavaPlugin {
             CheckConfig();
             saveConfig();
             reloadConfig();
+        }
+
+        if (localization.exists()) {
+            // LocManager = new Manager(getDataFolder().getAbsolutePath(), "localization.cdb");
         }
 
         Config = JavaPlugin.getPlugin(MenuFramework.class).getConfig();

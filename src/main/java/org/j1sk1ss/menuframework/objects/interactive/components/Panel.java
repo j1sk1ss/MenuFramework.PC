@@ -1,6 +1,7 @@
 package org.j1sk1ss.menuframework.objects.interactive.components;
 
-import net.kyori.adventure.text.TextComponent;
+import lombok.Getter;
+import lombok.Setter;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -66,7 +67,7 @@ public class Panel extends Component {
     }
 
     private final String Ui;
-    private final List<Component> Components;
+    @Getter @Setter private List<Component> Components;
     private final MenuSizes MenuSize;
 
     /**
