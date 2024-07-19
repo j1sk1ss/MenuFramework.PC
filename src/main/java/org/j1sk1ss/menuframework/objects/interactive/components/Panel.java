@@ -25,6 +25,9 @@ public class Panel extends Component {
         Lore       = panel.Lore;
         Components = panel.Components;
         MenuSize   = panel.MenuSize;
+
+        setParent(panel.getParent());
+        setPersistentDataContainer(panel.getPersistentDataContainer());
     }
 
     /**
@@ -142,7 +145,10 @@ public class Panel extends Component {
      */
     public void placeWith(Inventory inventory, List<Component> newComponents) {
         for (var component : Components) component.place(inventory);
-        for (var component : newComponents) component.place(inventory);
+        for (var component : newComponents) {
+            if (getParent().getLocManager() != null) getParent().getLocManager().translate(component, Language).place(inventory);
+            else component.place(inventory);
+        }
     }
 
     @Override

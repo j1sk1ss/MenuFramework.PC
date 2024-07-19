@@ -25,6 +25,9 @@ public class Button extends Component {
         Action     = button.Action;
         BodyMaterial        = button.BodyMaterial;
         BodyCustomModelData = button.BodyCustomModelData;
+
+        setParent(button.getParent());
+        setPersistentDataContainer(button.getPersistentDataContainer());
     }
 
     public Button(int firstSlot, int secondSlot, String name) {

@@ -18,6 +18,9 @@ public class ItemArea extends Component {
         Action = itemArea.Action;
         Coordinates = itemArea.Coordinates;
         Items = itemArea.Items;
+
+        setParent(itemArea.getParent());
+        setPersistentDataContainer(itemArea.getPersistentDataContainer());
     }
 
     public ItemArea(List<Integer> coordinates, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {

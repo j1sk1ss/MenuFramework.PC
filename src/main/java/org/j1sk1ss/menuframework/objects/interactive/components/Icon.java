@@ -15,6 +15,9 @@ public class Icon extends Component {
         Name     = icon.Name;
         Lore     = icon.Lore;
         Image    = icon.Image;
+
+        setParent(icon.getParent());
+        setPersistentDataContainer(icon.getPersistentDataContainer());
     }
 
     /**
@@ -23,10 +26,9 @@ public class Icon extends Component {
      */
     public Icon(int position) {
         Position = position;
-
-        Name  = "Icon";
-        Lore  = "IconLore";
-        Image = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
+        Name     = "Icon";
+        Lore     = "IconLore";
+        Image    = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
     }
 
     /**
@@ -39,8 +41,7 @@ public class Icon extends Component {
         Position = position;
         Name     = name;
         Lore     = lore;
-
-        Image = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
+        Image    = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
     }
 
     /**
@@ -54,8 +55,7 @@ public class Icon extends Component {
         Position = position;
         Name     = name;
         Lore     = lore;
-
-        Image = new Item(Name, Lore, material, 1, BodyCustomModelData);
+        Image    = new Item(Name, Lore, material, 1, BodyCustomModelData);
     }
 
     /**
@@ -78,7 +78,8 @@ public class Icon extends Component {
 
     @Override
     public void place(Inventory inventory) {
-        inventory.setItem(Position, Image);
+        var item = new Item(Name, Lore, Image.getType(), 1, Image.getItemMeta().getCustomModelData());
+        inventory.setItem(Position, item);
     }
 
     @Override

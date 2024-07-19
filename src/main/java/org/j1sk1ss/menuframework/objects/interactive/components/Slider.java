@@ -33,6 +33,9 @@ public class Slider extends Component {
         DefaultDataModel = slider.DefaultDataModel;
         ChosenMaterial   = slider.ChosenMaterial;
         DefaultMaterial  = slider.DefaultMaterial;
+
+        setParent(slider.getParent());
+        setPersistentDataContainer(slider.getPersistentDataContainer());
     }
 
     /**

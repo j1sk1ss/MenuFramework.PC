@@ -22,6 +22,9 @@ public class LittleButton extends Component {
         Action              = littleButton.Action;
         BodyMaterial        = littleButton.BodyMaterial;
         BodyCustomModelData = littleButton.BodyCustomModelData;
+
+        setParent(littleButton.getParent());
+        setPersistentDataContainer(littleButton.getPersistentDataContainer());
     }
 
     /**

@@ -1,10 +1,8 @@
 package org.j1sk1ss.menuframework.objects.interactive;
 
-import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.ExtensionMethod;
-import org.apache.commons.lang3.SerializationUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,7 +13,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.j1sk1ss.itemmanager.ItemManager;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
-import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.MenuWindow;
 
 import java.util.List;
@@ -25,6 +22,7 @@ import java.util.Objects;
 @ExtensionMethod({Manager.class})
 public abstract class Component {
     public Component() {
+        Language = "RU";
         BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
         BodyMaterial = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
         PersistentDataContainer = new ItemStack(BodyMaterial != null ? BodyMaterial : null)
@@ -35,6 +33,7 @@ public abstract class Component {
     @Setter @Getter protected String Lore;
     @Setter @Getter protected String Name;
     @Setter @Getter protected PersistentDataContainer PersistentDataContainer;
+    @Setter @Getter protected String Language;
 
     protected int BodyCustomModelData;
     protected Material BodyMaterial;

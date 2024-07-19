@@ -30,6 +30,9 @@ public class Checkbox extends Component {
         CheckedDataModel = checkbox.CheckedDataModel;
         DefaultDataModel = checkbox.DefaultDataModel;
         DefaultMaterial  = checkbox.DefaultMaterial;
+
+        setParent(checkbox.getParent());
+        setPersistentDataContainer(checkbox.getPersistentDataContainer());
     }
 
     public Checkbox(int firstSlot, int secondSlot, String name, String lore) {

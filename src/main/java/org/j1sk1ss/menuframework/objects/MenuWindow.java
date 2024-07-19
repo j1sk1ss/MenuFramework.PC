@@ -61,7 +61,7 @@ public class MenuWindow {
 
     @Getter private final String Name;
     private final List<Panel> Panels;
-    private final LocalizationManager LocManager;
+    @Getter private final LocalizationManager LocManager;
 
     /**
      * Get panel by name

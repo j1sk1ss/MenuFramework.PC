@@ -27,14 +27,20 @@ import java.util.ArrayList;
  */
 public class LocalizationManager {
     public LocalizationManager(String localization) {
-        LocManager = new Manager(localization);
+        try {
+            LocManager = new Manager(localization);
+        }
+        catch (Exception e) {
+            System.out.println("Unable access to data: " + e.getMessage());
+            LocManager = null;
+        }
     }
 
     public LocalizationManager(Manager manager) {
         LocManager = manager;
     }
 
-    private final Manager LocManager;
+    private Manager LocManager;
 
     /**
      * Translate component
@@ -43,15 +49,9 @@ public class LocalizationManager {
      */
     public Component translate(Component component, String language) {
         try {
-            var localKey = LocManager.getString(language + "_" + component.getName());
-            if (localKey == null) return component;
-
-            var translation = localKey.split("/", 2);
+            if (LocManager == null) return component;
 
             var translatedComponent = component.deepCopy();
-            if (!translation[0].equals("-")) translatedComponent.setName(translation[0]);
-            if (!translation[1].equals("-")) translatedComponent.setLore(translation[1]);
-
             if (component instanceof Panel panel) {
                 var translatedPanel = ((Panel)translatedComponent);
                 translatedPanel.setComponents(new ArrayList<>());
@@ -59,6 +59,14 @@ public class LocalizationManager {
                     translatedPanel.addComponent(translate(cmp, language));
             }
 
+            var localKey = LocManager.getString(language + "_" + component.getName());
+            if (localKey == null) return translatedComponent;
+
+            var translation = localKey.split("/", 2);
+            if (!translation[0].equals("-")) translatedComponent.setName(translation[0]);
+            if (!translation[1].equals("-")) translatedComponent.setLore(translation[1]);
+
+            translatedComponent.setLanguage(language);
             return translatedComponent;
         } catch (IOException e) {
             System.err.println("Error while trying to translate component " + component.getName() + " to " + language

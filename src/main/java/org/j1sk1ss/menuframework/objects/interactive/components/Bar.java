@@ -30,6 +30,9 @@ public class Bar extends Component {
         LoadedMaterial   = bar.LoadedMaterial;
         DefaultDataModel = bar.DefaultDataModel;
         DefaultMaterial  = bar.DefaultMaterial;
+
+        setParent(bar.getParent());
+        setPersistentDataContainer(bar.getPersistentDataContainer());
     }
 
     /**

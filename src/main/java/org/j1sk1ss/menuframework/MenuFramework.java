@@ -13,18 +13,16 @@ import java.io.IOException;
 
 
 public final class MenuFramework extends JavaPlugin {
-    public static LocalizationManager LocManager = null;
     public static FileConfiguration Config = new YamlConfiguration();
     public static InventoryClickHandler ClickHandler = new InventoryClickHandler();
 
     @Override
     public void onEnable() {
         var file = new File(getDataFolder() + File.separator + "config.yml");
-        var localization = new File(getDataFolder() + File.separator + "localization.cdb");
-        if (!file.exists()) saveDefaultConfig();
+        if (file.exists()) saveDefaultConfig();
         else {
             try {
-                if (!file.createNewFile()) System.out.println("Error creating config.yml");
+                if (!file.createNewFile()) System.err.println("Error creating config.yml");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -32,10 +30,6 @@ public final class MenuFramework extends JavaPlugin {
             CheckConfig();
             saveConfig();
             reloadConfig();
-        }
-
-        if (localization.exists()) {
-            // LocManager = new Manager(getDataFolder().getAbsolutePath(), "localization.cdb");
         }
 
         Config = JavaPlugin.getPlugin(MenuFramework.class).getConfig();

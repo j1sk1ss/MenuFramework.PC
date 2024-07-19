@@ -16,6 +16,9 @@ public class ClickArea extends Component {
         Action      = clickArea.Action;
         Name        = clickArea.Name;
         Lore        = clickArea.Lore;
+
+        setParent(clickArea.getParent());
+        setPersistentDataContainer(clickArea.getPersistentDataContainer());
     }
 
     public ClickArea(List<Integer> coordinates) {
