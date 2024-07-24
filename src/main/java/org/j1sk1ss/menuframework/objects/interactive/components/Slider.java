@@ -23,19 +23,13 @@ public class Slider extends Component {
      * @param slider Slider that will be copied
      */
     public Slider(Slider slider) {
-        Coordinates = new ArrayList<>(slider.Coordinates);
-        Options     = new ArrayList<>(slider.Options);
-        Name        = slider.getName();
-        Lore        = slider.Lore;
-        Action      = null;
+        super(slider);
 
+        Options = new ArrayList<>(slider.Options);
         ChosenDataModel  = slider.ChosenDataModel;
         DefaultDataModel = slider.DefaultDataModel;
         ChosenMaterial   = slider.ChosenMaterial;
         DefaultMaterial  = slider.DefaultMaterial;
-
-        setParent(slider.getParent());
-        setPersistentDataContainer(slider.getPersistentDataContainer());
     }
 
     /**
@@ -47,12 +41,9 @@ public class Slider extends Component {
      * @param delegate Action
      */
     public Slider(List<Integer> coordinates, List<String> options, String lore, String name, Consumer<InventoryClickEvent> delegate) {
-        Coordinates = coordinates;
-        Options     = options;
-        Name        = name;
-        Lore        = lore;
-        Action      = delegate;
+        super(coordinates, name, lore, delegate);
 
+        Options = options;
         ChosenDataModel  = MenuFramework.Config.getInt("slider_data.chosen.data", 17000);
         DefaultDataModel = MenuFramework.Config.getInt("slider_data.default.data", 17000);
         ChosenMaterial   = Material.matchMaterial(MenuFramework.Config.getString("slider_data.chosen.material", "GLASS"));
@@ -74,20 +65,18 @@ public class Slider extends Component {
     public Slider(List<Integer> coordinates, List<String> options,
                   String lore, String name, Consumer<InventoryClickEvent> delegate,
                   int cdm, int ddm, Material cm, Material dm) {
-        Coordinates      = coordinates;
+        super(coordinates, name, lore, delegate);
+
         Options          = options;
-        Name             = name;
-        Lore             = lore;
-        Action           = delegate;
         ChosenDataModel  = cdm;
         DefaultDataModel = ddm;
         ChosenMaterial   = cm;
         DefaultMaterial  = dm;
     }
 
-    private final List<Integer> Coordinates;
+    public static String SliderNone = "|-none-|";
+
     private final List<String> Options;
-    private final Consumer<InventoryClickEvent> Action;
     private final int ChosenDataModel;
     private final Material ChosenMaterial;
     private final int DefaultDataModel;
@@ -95,16 +84,14 @@ public class Slider extends Component {
 
     @Override
     public void place(Inventory inventory) {
-        for (var i = 0; i < Coordinates.size(); i++)
-            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), DefaultMaterial, 1, DefaultDataModel));
-            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), ChosenMaterial, 1, ChosenDataModel));
+        place(inventory, Options);
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        for (var i = 0; i < Coordinates.size(); i++)
-            if (Coordinates.get(i) != 0) inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), DefaultMaterial, 1, DefaultDataModel));
-            else inventory.setItem(Coordinates.get(i), new Item(Name, lore.get(i), ChosenMaterial, 1, ChosenDataModel));
+        for (var i = 0; i < getCoordinates().size(); i++)
+            if (getCoordinates().get(i) != 0) inventory.setItem(getCoordinates().get(i), new Item(getName(), lore.get(i), DefaultMaterial, 1, DefaultDataModel));
+            else inventory.setItem(getCoordinates().get(i), new Item(getName(), lore.get(i), ChosenMaterial, 1, ChosenDataModel));
     }
 
     @Override
@@ -114,12 +101,12 @@ public class Slider extends Component {
 
     @Override
     public void action(InventoryClickEvent event) {
-        if (Action != null) Action.accept(event);
+        if (getAction() != null) getAction().accept(event);
 
         var inventory = event.getInventory();
-        for (var i = 0; i < Coordinates.size(); i++)
-            if (Coordinates.get(i) != event.getSlot()) inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), DefaultMaterial, 1, DefaultDataModel));
-            else inventory.setItem(Coordinates.get(i), new Item(Name, Options.get(i), ChosenMaterial, 1, ChosenDataModel));
+        for (var i = 0; i < getCoordinates().size(); i++)
+            if (getCoordinates().get(i) != event.getSlot()) inventory.setItem(getCoordinates().get(i), new Item(getName(), Options.get(i), DefaultMaterial, 1, DefaultDataModel));
+            else inventory.setItem(getCoordinates().get(i), new Item(getName(), Options.get(i), ChosenMaterial, 1, ChosenDataModel));
     }
 
     @Override
@@ -129,13 +116,14 @@ public class Slider extends Component {
 
     /**
      * Get coordinate of chose
-     * @return Coordinate of chose
+     * @return Coordinate of chose or SliderNone
      */
     public String getChose(InventoryClickEvent inventory) {
-        for (var i = 0; i < Coordinates.size(); i++)
-            if (inventory.getInventory().getItem(Coordinates.get(i)) != null)
-                if (Objects.requireNonNull(inventory.getInventory().getItem(Coordinates.get(i))).getType().equals(ChosenMaterial)) return Options.get(i);
+        for (var i = 0; i < getCoordinates().size(); i++)
+            if (inventory.getInventory().getItem(getCoordinates().get(i)) != null)
+                if (Objects.requireNonNull(inventory.getInventory().getItem(getCoordinates().get(i))).getType().equals(ChosenMaterial))
+                    return Options.get(i);
 
-        return "none";
+        return SliderNone;
     }
 }

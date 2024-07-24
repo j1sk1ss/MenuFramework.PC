@@ -1,13 +1,15 @@
 package org.j1sk1ss.menuframework.objects.interactive.components;
 
 import lombok.experimental.ExtensionMethod;
+
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 import org.j1sk1ss.itemmanager.manager.Manager;
+import org.j1sk1ss.menuframework.common.SlotsManager;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -15,29 +17,21 @@ import java.util.function.Consumer;
 @ExtensionMethod({Manager.class})
 public class ItemArea extends Component {
     public ItemArea(ItemArea itemArea) {
-        Action = itemArea.Action;
-        Coordinates = itemArea.Coordinates;
+        super(itemArea);
         Items = itemArea.Items;
-
-        setParent(itemArea.getParent());
-        setPersistentDataContainer(itemArea.getPersistentDataContainer());
     }
 
     public ItemArea(List<Integer> coordinates, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {
-        Coordinates = coordinates;
-        Items       = items;
-        Action      = delegate;
+        super(coordinates, "ItemArea", "ItemAreaLore", delegate);
+        Items = items;
     }
 
     public ItemArea(int firstSlot, int secondSlot, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {
-        Coordinates = positions2coordinates(firstSlot, secondSlot);
-        Items       = items;
-        Action      = delegate;
+        super(SlotsManager.slots2list(firstSlot, secondSlot), "ItemArea", "ItemAreaLore", delegate);
+        Items = items;
     }
 
-    private final Consumer<InventoryClickEvent> Action;
     private final List<ItemStack> Items;
-    private final List<Integer> Coordinates;
 
     @Override
     public void place(Inventory inventory) {
@@ -55,30 +49,7 @@ public class ItemArea extends Component {
     }
 
     @Override
-    public List<Integer> getCoordinates() {
-        return Coordinates;
-    }
-
-    @Override
-    public void action(InventoryClickEvent event) {
-        if (Action != null) Action.accept(event);
-    }
-
-    @Override
     public Component deepCopy() {
         return new ItemArea(this);
-    }
-
-    private List<Integer> positions2coordinates(int first, int second) {
-        var list = new ArrayList<Integer>();
-        var secondCoordinate = second - first;
-
-        var height = (secondCoordinate / 9) + 1;
-        var weight = (secondCoordinate % 9) + 1;
-        for (var i = first / 9; i < first / 9 + height; i++)
-            for (var j = first % 9; j < first % 9 + weight; j++)
-                list.add(9 * i + j);
-
-        return list;
     }
 }

@@ -1,6 +1,5 @@
 package org.j1sk1ss.menuframework.objects.interactive.components;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -12,7 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
-import org.j1sk1ss.menuframework.events.ComponentClickEvent;
+import org.j1sk1ss.menuframework.common.SlotsManager;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import lombok.experimental.ExtensionMethod;
@@ -21,27 +20,16 @@ import lombok.experimental.ExtensionMethod;
 @ExtensionMethod({Manager.class})
 public class Checkbox extends Component {
     public Checkbox(Checkbox checkbox) {
-        FirstSlot  = checkbox.FirstSlot;
-        SecondSlot = checkbox.SecondSlot;
-        Name   = checkbox.Name;
-        Lore   = checkbox.Lore;
-        Action = checkbox.Action;
+        super(checkbox);
+
         CheckedMaterial  = checkbox.CheckedMaterial;
         CheckedDataModel = checkbox.CheckedDataModel;
         DefaultDataModel = checkbox.DefaultDataModel;
         DefaultMaterial  = checkbox.DefaultMaterial;
-
-        setParent(checkbox.getParent());
-        setPersistentDataContainer(checkbox.getPersistentDataContainer());
     }
 
     public Checkbox(int firstSlot, int secondSlot, String name, String lore) {
-        FirstSlot  = firstSlot;
-        SecondSlot = secondSlot;
-        Name       = name;
-        Lore       = lore;
-
-        Action = null;
+        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, null);
 
         CheckedDataModel = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
         DefaultDataModel = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
@@ -50,11 +38,7 @@ public class Checkbox extends Component {
     }
 
     public Checkbox(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
-        FirstSlot  = firstSlot;
-        SecondSlot = secondSlot;
-        Name       = name;
-        Lore       = lore;
-        Action     = delegate;
+        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, delegate);
 
         CheckedDataModel = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
         DefaultDataModel = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
@@ -65,20 +49,14 @@ public class Checkbox extends Component {
     public Checkbox(int firstSlot, int secondSlot, String name,
                     String lore, Consumer<InventoryClickEvent> delegate,
                     int cdm, int ddm, Material cm, Material dm) {
-        FirstSlot  = firstSlot;
-        SecondSlot = secondSlot;
-        Name       = name;
-        Lore       = lore;
-        Action     = delegate;
+        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, delegate);
+
         CheckedDataModel = cdm;
         DefaultDataModel = ddm;
         CheckedMaterial  = cm;
         DefaultMaterial  = dm;
     }
 
-    private final int FirstSlot;
-    private final int SecondSlot;
-    private final Consumer<InventoryClickEvent> Action;
     private final int CheckedDataModel;
     private final Material CheckedMaterial;
     private final int DefaultDataModel;
@@ -87,27 +65,13 @@ public class Checkbox extends Component {
     @Override
     public void place(Inventory inventory) {
         for (var coordinate : getCoordinates())
-            inventory.setItem(coordinate, new Item(Name, Lore, DefaultMaterial, 1, DefaultDataModel));
+            inventory.setItem(coordinate, new Item(getName(), getLore(), DefaultMaterial, 1, DefaultDataModel));
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
         for (var coordinate : getCoordinates())
-            inventory.setItem(coordinate, new Item(Name, String.join(" ", lore), DefaultMaterial, 1, DefaultDataModel));
-    }
-
-    @Override
-    public List<Integer> getCoordinates() {
-        var list = new ArrayList<Integer>();
-        var secondCoordinate = SecondSlot - FirstSlot;
-
-        var height = (secondCoordinate / 9) + 1;
-        var weight = (secondCoordinate % 9) + 1;
-        for (var i = FirstSlot / 9; i < FirstSlot / 9 + height; i++)
-            for (var j = FirstSlot % 9; j < FirstSlot % 9 + weight; j++)
-                list.add(9 * i + j);
-
-        return list;
+            inventory.setItem(coordinate, new Item(getName(), String.join(" ", lore), DefaultMaterial, 1, DefaultDataModel));
     }
     
     @Override
@@ -131,6 +95,6 @@ public class Checkbox extends Component {
     }
 
     public boolean isChecked(InventoryClickEvent event) {
-        return Objects.requireNonNull(event.getInventory().getItem(FirstSlot)).getType().equals(CheckedMaterial);
+        return Objects.requireNonNull(event.getInventory().getItem(getCoordinates().getFirst())).getType().equals(CheckedMaterial);
     }
 }

@@ -5,19 +5,15 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 
 public class Icon extends Component {
     public Icon(Icon icon) {
-        Position = icon.Position;
-        Name     = icon.Name;
-        Lore     = icon.Lore;
-        Image    = icon.Image;
-
-        setParent(icon.getParent());
-        setPersistentDataContainer(icon.getPersistentDataContainer());
+        super(icon);
+        Image = icon.Image;
     }
 
     /**
@@ -25,10 +21,8 @@ public class Icon extends Component {
      * @param position Icon position
      */
     public Icon(int position) {
-        Position = position;
-        Name     = "Icon";
-        Lore     = "IconLore";
-        Image    = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
+        super(List.of(position), "Icon", "IconLore", null);
+        Image = new Item(getName(), getLore(), getBodyMaterial(), 1, getBodyCustomModelData());
     }
 
     /**
@@ -38,10 +32,8 @@ public class Icon extends Component {
      * @param lore Icon lore
      */
     public Icon(int position, String name, String lore) {
-        Position = position;
-        Name     = name;
-        Lore     = lore;
-        Image    = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
+        super(List.of(position), name, lore, null);
+        Image = new Item(getName(), getLore(), getBodyMaterial(), 1, getBodyCustomModelData());
     }
 
     /**
@@ -52,10 +44,8 @@ public class Icon extends Component {
      * @param material Icon material
      */
     public Icon(int position, String name, String lore, Material material) {
-        Position = position;
-        Name     = name;
-        Lore     = lore;
-        Image    = new Item(Name, Lore, material, 1, BodyCustomModelData);
+        super(List.of(position), name, lore, null);
+        Image = new Item(getName(), getLore(), material, 1, getBodyCustomModelData());
     }
 
     /**
@@ -67,30 +57,22 @@ public class Icon extends Component {
      * @param dataModel Icon data model
      */
     public Icon(int position, String name, String lore, Material material, int dataModel) {
-        Position = position;
-        Name     = name;
-        Lore     = lore;
-        Image    = new Item(Name, Lore, material, 1, dataModel);
+        super(List.of(position), name, lore, null);
+        Image = new Item(getName(), getLore(), material, 1, dataModel);
     }
 
-    private final int Position;
     private final ItemStack Image;
 
     @Override
     public void place(Inventory inventory) {
         var item = new Item(Name, Lore, Image.getType(), 1, Image.getItemMeta().getCustomModelData());
-        inventory.setItem(Position, item);
+        inventory.setItem(getCoordinates().getFirst(), item);
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
         var item = new Item(Name, String.join(", ", lore), Image.getType(), 1, Image.getItemMeta().getCustomModelData());
-        inventory.setItem(Position, item);
-    }
-
-    @Override
-    public List<Integer> getCoordinates() {
-        return List.of(Position);
+        inventory.setItem(getCoordinates().getFirst(), item);
     }
 
     @Override

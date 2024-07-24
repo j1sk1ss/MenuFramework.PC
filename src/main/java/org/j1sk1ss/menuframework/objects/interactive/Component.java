@@ -3,6 +3,7 @@ package org.j1sk1ss.menuframework.objects.interactive;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.ExtensionMethod;
+
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -10,33 +11,66 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+
 import org.j1sk1ss.itemmanager.ItemManager;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.MenuWindow;
+import org.j1sk1ss.menuframework.objects.nonInteractive.Direction;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 
+@Setter
+@Getter
 @ExtensionMethod({Manager.class})
 public abstract class Component {
-    public Component() {
-        Language = "RU";
-        BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
-        BodyMaterial = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
-        PersistentDataContainer = new ItemStack(BodyMaterial != null ? BodyMaterial : null)
-            .getItemMeta().getPersistentDataContainer().getAdapterContext().newPersistentDataContainer();
+    public Component(Component component) {
+        Name                    = component.getName();
+        Lore                    = component.getLore();
+        Language                = component.getLanguage();
+        Coordinates             = component.getCoordinates();
+        BodyCustomModelData     = component.getBodyCustomModelData();
+        BodyMaterial            = component.getBodyMaterial();
+        PersistentDataContainer = component.getPersistentDataContainer();
+        Parent                  = component.getParent();
+        Action                  = component.getAction();
     }
 
-    @Setter @Getter private MenuWindow Parent;
-    @Setter @Getter protected String Lore;
-    @Setter @Getter protected String Name;
-    @Setter @Getter protected PersistentDataContainer PersistentDataContainer;
-    @Setter @Getter protected String Language;
+    public Component(List<Integer> coordinates) {
+        Action              = null;
+        Language            = "RU";
+        Coordinates         = coordinates;
+        BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
+        BodyMaterial        = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
+        PersistentDataContainer = new ItemStack(Objects.requireNonNull(BodyMaterial)).getItemMeta().getPersistentDataContainer()
+                .getAdapterContext().newPersistentDataContainer();
+    }
 
+    public Component(List<Integer> coordinates, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+        Coordinates = coordinates;
+        Name        = name;
+        Lore        = lore;
+        Action      = delegate;
+
+        Language            = "RU";
+        BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
+        BodyMaterial        = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
+        PersistentDataContainer = new ItemStack(Objects.requireNonNull(BodyMaterial)).getItemMeta().getPersistentDataContainer()
+                .getAdapterContext().newPersistentDataContainer();
+    }
+
+    private MenuWindow Parent;
+    protected List<Integer> Coordinates;
+    protected String Lore;
+    protected String Name;
+    protected PersistentDataContainer PersistentDataContainer;
+    protected String Language;
     protected int BodyCustomModelData;
     protected Material BodyMaterial;
+    protected Consumer<InventoryClickEvent> Action;
 
     /**
      * Click interaction
@@ -55,19 +89,11 @@ public abstract class Component {
     }
 
     /**
-     * Get lore from component
-     * @return Lore
-     */
-    public String getLoreLines() {
-        return Lore;
-    }
-
-    /**
      * Action for button
      * @param event InventoryClickEvent
      */
     public void action(InventoryClickEvent event) {
-        return;
+        if (Action != null) Action.accept(event);
     }
 
     /**
@@ -151,6 +177,4 @@ public abstract class Component {
             if (Objects.requireNonNull(inventory.getItem(pos)).getName().equals(Name))
                 inventory.setItem(pos, null);
     }
-
-    public abstract List<Integer> getCoordinates(); 
 }

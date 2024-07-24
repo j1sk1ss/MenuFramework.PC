@@ -2,6 +2,7 @@ package org.j1sk1ss.menuframework.objects.interactive.components;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -20,14 +21,11 @@ import java.util.List;
 
 public class Panel extends Component {
     public Panel(Panel panel) {
+        super(panel);
+
         Ui         = panel.Ui;
-        Name       = panel.Name;
-        Lore       = panel.Lore;
         Components = panel.Components;
         MenuSize   = panel.MenuSize;
-
-        setParent(panel.getParent());
-        setPersistentDataContainer(panel.getPersistentDataContainer());
     }
 
     /**
@@ -36,9 +34,9 @@ public class Panel extends Component {
      * @param name Panel name
      */
     public Panel(List<Component> components, String name) {
+        super(null, name, "Panel lore lines", null);
+
         Ui         = "";
-        Name       = name;
-        Lore       = "Panel lore lines";
         Components = components;
         MenuSize   = MenuSizes.SixLines;
 
@@ -52,9 +50,9 @@ public class Panel extends Component {
      * @param size Size of menu
      */
     public Panel(List<Component> components, String name, MenuSizes size) {
+        super(null, name, "Panel lore lines", null);
+
         Ui         = "";
-        Name       = name;
-        Lore       = "Panel lore lines";
         Components = components;
         MenuSize   = size;
 
@@ -68,9 +66,9 @@ public class Panel extends Component {
      * @param size Size of menu
      */
     public Panel(List<Component> components, String name, MenuSizes size, String ui) {
+        super(null, name, "Panel lore lines", null);
+
         Ui         = CharSpacing.getNeg(8) + ui;
-        Name       = name;
-        Lore       = "Panel lore lines";
         Components = components;
         MenuSize   = size;
 
