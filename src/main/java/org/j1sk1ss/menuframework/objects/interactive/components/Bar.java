@@ -39,7 +39,7 @@ public class Bar extends Component {
      * @param direction direction of filling
      */
     public Bar(List<Integer> coordinates, Direction direction) {
-        super(coordinates, "Bar", "Bar lore", null);
+        super(coordinates, "Bar", "BarLore", null);
 
         Direction = direction;
         Options   = new ArrayList<>();
@@ -57,7 +57,7 @@ public class Bar extends Component {
      * @param options Lore of items in bar
      */
     public Bar(List<Integer> coordinates, Direction direction, List<String> options) {
-        super(coordinates, "Bar", "Bar lore", null);
+        super(coordinates, "Bar", "BarLore", null);
 
         Direction = direction;
         Options   = options;
@@ -76,7 +76,7 @@ public class Bar extends Component {
      * @param delegate Action
      */
     public Bar(List<Integer> coordinates, Direction direction, List<String> options, Consumer<InventoryClickEvent> delegate) {
-        super(coordinates, "Bar", "Bar lore", delegate);
+        super(coordinates, "Bar", "BarLore", delegate);
 
         Direction = direction;
         Options   = options;

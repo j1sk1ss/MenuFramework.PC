@@ -15,6 +15,7 @@ import org.j1sk1ss.menuframework.common.SlotsManager;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import lombok.experimental.ExtensionMethod;
+import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 
 @ExtensionMethod({Manager.class})
@@ -50,6 +51,17 @@ public class Checkbox extends Component {
                     String lore, Consumer<InventoryClickEvent> delegate,
                     int cdm, int ddm, Material cm, Material dm) {
         super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, delegate);
+
+        CheckedDataModel = cdm;
+        DefaultDataModel = ddm;
+        CheckedMaterial  = cm;
+        DefaultMaterial  = dm;
+    }
+
+    public Checkbox(Margin margin, String name,
+                    String lore, Consumer<InventoryClickEvent> delegate,
+                    int cdm, int ddm, Material cm, Material dm) {
+        super(margin, name, lore, delegate);
 
         CheckedDataModel = cdm;
         DefaultDataModel = ddm;

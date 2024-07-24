@@ -9,6 +9,7 @@ import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.common.SlotsManager;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
+import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -21,7 +22,7 @@ public class Button extends Component {
     }
 
     public Button(int firstSlot, int secondSlot, String name) {
-        super(SlotsManager.slots2list(firstSlot, secondSlot), name, "", null);
+        super(SlotsManager.slots2list(firstSlot, secondSlot), name, "ButtonLore", null);
     }
 
     public Button(int firstSlot, int secondSlot, String name, String lore) {
@@ -39,6 +40,12 @@ public class Button extends Component {
 
     public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
         super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, delegate);
+        setBodyMaterial(material);
+        setBodyCustomModelData(model);
+    }
+
+    public Button(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
+        super(margin, name, lore, delegate);
         setBodyMaterial(material);
         setBodyCustomModelData(model);
     }

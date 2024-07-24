@@ -17,6 +17,7 @@ import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.MenuWindow;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Direction;
+import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.List;
 import java.util.Objects;
@@ -51,6 +52,19 @@ public abstract class Component {
 
     public Component(List<Integer> coordinates, String name, String lore, Consumer<InventoryClickEvent> delegate) {
         Coordinates = coordinates;
+        Name        = name;
+        Lore        = lore;
+        Action      = delegate;
+
+        Language            = "RU";
+        BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
+        BodyMaterial        = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
+        PersistentDataContainer = new ItemStack(Objects.requireNonNull(BodyMaterial)).getItemMeta().getPersistentDataContainer()
+                .getAdapterContext().newPersistentDataContainer();
+    }
+
+    public Component(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+        Coordinates = margin.toSlots();
         Name        = name;
         Lore        = lore;
         Action      = delegate;
