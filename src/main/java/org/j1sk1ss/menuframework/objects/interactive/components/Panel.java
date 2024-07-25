@@ -34,7 +34,7 @@ public class Panel extends Component {
      * @param name Panel name
      */
     public Panel(List<Component> components, String name) {
-        super(null, name, "Panel lore lines", null);
+        super(new ArrayList<>(), name, "PanelLore", null);
 
         Ui         = "";
         Components = components;
@@ -50,7 +50,7 @@ public class Panel extends Component {
      * @param size Size of menu
      */
     public Panel(List<Component> components, String name, MenuSizes size) {
-        super(null, name, "Panel lore lines", null);
+        super(new ArrayList<>(), name, "Panel lore lines", null);
 
         Ui         = "";
         Components = components;
@@ -66,7 +66,7 @@ public class Panel extends Component {
      * @param size Size of menu
      */
     public Panel(List<Component> components, String name, MenuSizes size, String ui) {
-        super(null, name, "Panel lore lines", null);
+        super(new ArrayList<>(), name, "Panel lore lines", null);
 
         Ui         = CharSpacing.getNeg(8) + ui;
         Components = components;
@@ -77,7 +77,7 @@ public class Panel extends Component {
 
     private final String Ui;
     @Getter @Setter private List<Component> Components;
-    private final MenuSizes MenuSize;
+    @Getter @Setter private MenuSizes MenuSize;
 
     /**
      * Get button what was clicked
@@ -261,6 +261,17 @@ public class Panel extends Component {
             if (component instanceof Bar bar) bars.add(bar);
 
         return bars;
+    }
+
+    /**
+     * Resize panel
+     * @param menuSize New menu size
+     * @return Resized panel (Deep copy)
+     */
+    public Panel resize(MenuSizes menuSize) {
+        var copyPanel = (Panel) deepCopy();
+        copyPanel.setMenuSize(menuSize);
+        return copyPanel;
     }
 
     /**
