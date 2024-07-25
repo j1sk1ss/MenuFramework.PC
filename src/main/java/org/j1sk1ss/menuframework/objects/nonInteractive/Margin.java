@@ -17,6 +17,13 @@ public class Margin {
         Width  = 0;
     }
 
+    public Margin(int slotPosition, int height, int width) {
+        Row = slotPosition / 9;
+        Col = slotPosition % 9;
+        Height = height;
+        Width  = width;
+    }
+
     public Margin(int row, int col, int width, Direction direction) {
         Row = row;
         Col = col;
