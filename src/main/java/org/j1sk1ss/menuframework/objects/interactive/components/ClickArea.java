@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.j1sk1ss.menuframework.common.SlotsManager;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
+import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 
 public class ClickArea extends Component {
@@ -14,28 +15,16 @@ public class ClickArea extends Component {
         super(clickArea);
     }
 
-    public ClickArea(List<Integer> coordinates) {
+    public ClickArea(Margin coordinates) {
         super(coordinates, "ClickArea", "ClickAreaLore", null);
     }
 
-    public ClickArea(int firstCoordinate, int secondCoordinate) {
-        super(SlotsManager.slots2list(firstCoordinate, secondCoordinate), "ClickArea", "ClickAreaLore", null);
+    public ClickArea(Margin margin, Consumer<InventoryClickEvent> delegate) {
+        super(margin, "ClickArea", "ClickAreaLore", delegate);
     }
 
-    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<InventoryClickEvent> delegate) {
-        super(SlotsManager.slots2list(firstCoordinate, secondCoordinate), "ClickArea", "ClickAreaLore", delegate);
-    }
-
-    public ClickArea(List<Integer> coordinates, Consumer<InventoryClickEvent> delegate) {
-        super(coordinates, "ClickArea", "ClickAreaLore", delegate);
-    }
-
-    public ClickArea(int firstCoordinate, int secondCoordinate, Consumer<InventoryClickEvent> delegate, String name, String lore) {
-        super(SlotsManager.slots2list(firstCoordinate, secondCoordinate), name, lore, delegate);
-    }
-
-    public ClickArea(List<Integer> coordinates, Consumer<InventoryClickEvent> delegate, String name, String lore) {
-        super(coordinates, name, lore, delegate);
+    public ClickArea(Margin margin, Consumer<InventoryClickEvent> delegate, String name, String lore) {
+        super(margin, name, lore, delegate);
     }
 
     @Override

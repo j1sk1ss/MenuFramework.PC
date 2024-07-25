@@ -21,27 +21,21 @@ public class Button extends Component {
         super(button);
     }
 
-    public Button(int firstSlot, int secondSlot, String name) {
-        super(SlotsManager.slots2list(firstSlot, secondSlot), name, "ButtonLore", null);
+    public Button(Margin margin, String name) {
+        super(margin, name, "ButtonLore", null);
     }
 
-    public Button(int firstSlot, int secondSlot, String name, String lore) {
-        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, null);
+    public Button(Margin margin, String name, String lore) {
+        super(margin, name, lore, null);
     }
 
-    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
-        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, delegate);
+    public Button(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+        super(margin, name, lore, delegate);
     }
 
-    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
-        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, delegate);
+    public Button(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
+        super(margin, name, lore, delegate);
         setBodyMaterial(material);
-    }
-
-    public Button(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
-        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, delegate);
-        setBodyMaterial(material);
-        setBodyCustomModelData(model);
     }
 
     public Button(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
@@ -63,7 +57,7 @@ public class Button extends Component {
         PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
         item.setItemMeta(meta);
 
-        for (var coordinate : getCoordinates())
+        for (var coordinate : getCoordinates().toSlots())
             inventory.setItem(coordinate, item);
     }
 

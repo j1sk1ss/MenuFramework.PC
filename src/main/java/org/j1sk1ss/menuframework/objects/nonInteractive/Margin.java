@@ -13,8 +13,17 @@ public class Margin {
         Row = row;
         Col = col;
 
-        Height = -1;
-        Width  = -1;
+        Height = 0;
+        Width  = 0;
+    }
+
+    public Margin(int row, int col, int width, Direction direction) {
+        Row = row;
+        Col = col;
+        Width = width;
+
+        if (direction.equals(Direction.Vertical)) Height = -1;
+        else Height = -2;
     }
 
     public Margin(int row, int col, int height, int width) {
@@ -45,6 +54,9 @@ public class Margin {
     public List<Integer> toSlots() {
         var firstCoordinate = SlotsManager.coordinates2slot(Row, Col);
         var lastCoordinate = SlotsManager.coordinates2slot(Row + Height, Col + Width);
+        if (Height < 0)
+            lastCoordinate = SlotsManager.coordinates2slot(Height == -1 ? Row + Width : Row, Height == -2 ? Col + Width : Col);
+
         return SlotsManager.slots2list(firstCoordinate, lastCoordinate);
     }
 }

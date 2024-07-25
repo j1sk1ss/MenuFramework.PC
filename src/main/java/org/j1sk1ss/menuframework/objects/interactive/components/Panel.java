@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import net.kyori.adventure.text.format.TextColor;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,6 +15,7 @@ import org.j1sk1ss.menuframework.common.CharSpacing;
 import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.MenuSizes;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
+import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class Panel extends Component {
      * @param name Panel name
      */
     public Panel(List<Component> components, String name) {
-        super(new ArrayList<>(), name, "PanelLore", null);
+        super(new Margin(-1, -1), name, "PanelLore", null);
 
         Ui         = "";
         Components = components;
@@ -50,7 +52,7 @@ public class Panel extends Component {
      * @param size Size of menu
      */
     public Panel(List<Component> components, String name, MenuSizes size) {
-        super(new ArrayList<>(), name, "Panel lore lines", null);
+        super(new Margin(-1, -1), name, "PanelLore", null);
 
         Ui         = "";
         Components = components;
@@ -66,7 +68,7 @@ public class Panel extends Component {
      * @param size Size of menu
      */
     public Panel(List<Component> components, String name, MenuSizes size, String ui) {
-        super(new ArrayList<>(), name, "Panel lore lines", null);
+        super(new Margin(-1, -1), name, "PanelLore", null);
 
         Ui         = CharSpacing.getNeg(8) + ui;
         Components = components;
@@ -305,11 +307,6 @@ public class Panel extends Component {
     public boolean isClicked(int click) {
         for (var component : Components) if (component.isClicked(click)) return true;
         return false;
-    }
-
-    @Override
-    public List<Integer> getCoordinates() {
-        return null;
     }
 
     /**

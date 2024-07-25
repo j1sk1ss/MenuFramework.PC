@@ -8,9 +8,11 @@ import org.bukkit.inventory.Inventory;
 
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
+
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Direction;
+import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +25,11 @@ public class Bar extends Component {
         super(bar);
 
         Direction = bar.Direction;
-        Options   = bar.Options;
+        Options   = new ArrayList<>(bar.Options);
         LoadedDataModel  = bar.LoadedDataModel;
         LoadedMaterial   = bar.LoadedMaterial;
         DefaultDataModel = bar.DefaultDataModel;
         DefaultMaterial  = bar.DefaultMaterial;
-
-        setParent(bar.getParent());
-        setPersistentDataContainer(bar.getPersistentDataContainer());
     }
 
     /**
@@ -38,7 +37,7 @@ public class Bar extends Component {
      * @param coordinates Coordinates of bar
      * @param direction direction of filling
      */
-    public Bar(List<Integer> coordinates, Direction direction) {
+    public Bar(Margin coordinates, Direction direction) {
         super(coordinates, "Bar", "BarLore", null);
 
         Direction = direction;
@@ -56,7 +55,7 @@ public class Bar extends Component {
      * @param direction direction of filling
      * @param options Lore of items in bar
      */
-    public Bar(List<Integer> coordinates, Direction direction, List<String> options) {
+    public Bar(Margin coordinates, Direction direction, List<String> options) {
         super(coordinates, "Bar", "BarLore", null);
 
         Direction = direction;
@@ -75,7 +74,7 @@ public class Bar extends Component {
      * @param options Lore of items in bar
      * @param delegate Action
      */
-    public Bar(List<Integer> coordinates, Direction direction, List<String> options, Consumer<InventoryClickEvent> delegate) {
+    public Bar(Margin coordinates, Direction direction, List<String> options, Consumer<InventoryClickEvent> delegate) {
         super(coordinates, "Bar", "BarLore", delegate);
 
         Direction = direction;
@@ -96,7 +95,7 @@ public class Bar extends Component {
      * @param options Lore of items in bar
      * @param delegate Action
      */
-    public Bar(List<Integer> coordinates, Direction direction, String name, String lore, List<String> options, Consumer<InventoryClickEvent> delegate) {
+    public Bar(Margin coordinates, Direction direction, String name, String lore, List<String> options, Consumer<InventoryClickEvent> delegate) {
         super(coordinates, name, lore, delegate);
 
         Direction = direction;
@@ -121,7 +120,7 @@ public class Bar extends Component {
      * @param lm Loaded option material
      * @param dm Default option material
      */
-    public Bar(List<Integer> coordinates, Direction direction, String name, String lore,
+    public Bar(Margin coordinates, Direction direction, String name, String lore,
                List<String> options, Consumer<InventoryClickEvent> delegate,
                int ldm, int ddm, Material lm, Material dm) {
         super(coordinates, name, lore, delegate);
@@ -143,30 +142,34 @@ public class Bar extends Component {
 
     @Override
     public void place(Inventory inventory) {
-        for (var i = 0; i < getCoordinates().size(); i++)
-            if (getCoordinates().get(i) != 0)
-                inventory.setItem(getCoordinates().get(i), new Item(getName(), Options.get(i), DefaultMaterial, 1, DefaultDataModel));
-            else
-                inventory.setItem(getCoordinates().get(i), new Item(getName(), Options.get(i), LoadedMaterial, 1, LoadedDataModel));
+        place(inventory, Options);
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        for (var i = 0; i < getCoordinates().size(); i++)
-            if (getCoordinates().get(i) != 0)
-                inventory.setItem(getCoordinates().get(i), new Item(getName(), lore.get(i), DefaultMaterial, 1, DefaultDataModel));
-            else
-                inventory.setItem(getCoordinates().get(i), new Item(getName(), lore.get(i), LoadedMaterial, 1, LoadedDataModel));
+        var slots = getCoordinates().toSlots();
+        for (var i = 0; i < slots.size(); i++)
+            if (slots.get(i) != 0) {
+                inventory.setItem(
+                    slots.get(i), new Item(getName(), lore.get(i), DefaultMaterial, 1, DefaultDataModel)
+                );
+            }
+            else {
+                inventory.setItem(
+                    slots.get(i), new Item(getName(), lore.get(i), LoadedMaterial, 1, LoadedDataModel)
+                );
+            }
     }
 
     public void setValue(Inventory inventory, int downBorder, int upperBorder) {
-        for (var cord : getCoordinates()) setUnloaded(inventory, cord);
+        var slots = getCoordinates().toSlots();
+        for (var cord : slots) setUnloaded(inventory, cord);
         switch (Direction) {
             // Example: 5 idx -> 10 idx
             case Down -> {
                 var iterator = 0;
                 for (var pos = 0; pos < inventory.getSize(); pos++) {
-                    if (!getCoordinates().contains(pos)) continue;
+                    if (!slots.contains(pos)) continue;
                     if (iterator >= downBorder && iterator <= upperBorder)
                         setLoaded(inventory, pos);
 
@@ -176,9 +179,9 @@ public class Bar extends Component {
 
             // Example: 10 idx -> 5 idx
             case Up -> {
-                var iterator = getCoordinates().size();
+                var iterator = slots.size();
                 for (var pos = inventory.getSize(); pos >= 0; pos--) {
-                    if (!getCoordinates().contains(pos)) continue;
+                    if (!slots.contains(pos)) continue;
                     if (iterator >= upperBorder && iterator <= downBorder)
                         setLoaded(inventory, pos);
 
@@ -188,13 +191,13 @@ public class Bar extends Component {
 
             // Example: 10 idx -> 5 idx
             case Left -> {
-                var iterator = getCoordinates().size();
+                var iterator = slots.size();
                 var rows = inventory.getSize() / 9;
 
                 for (var row = 0; row < rows; row++) {
                     for (var column = 8; column >= 0; column--) {
                         var pos = row * 9 + column;
-                        if (!getCoordinates().contains(pos)) continue;
+                        if (!slots.contains(pos)) continue;
                         if (iterator >= upperBorder && iterator <= downBorder)
                             setLoaded(inventory, pos);
 
@@ -211,7 +214,7 @@ public class Bar extends Component {
                 for (var row = 0; row < rows; row++) {
                     for (var column = 0; column < 9; column++) {
                         var pos = row * 9 + column;
-                        if (!getCoordinates().contains(pos)) continue;
+                        if (!slots.contains(pos)) continue;
                         if (iterator >= downBorder && iterator <= upperBorder)
                             setLoaded(inventory, pos);
 

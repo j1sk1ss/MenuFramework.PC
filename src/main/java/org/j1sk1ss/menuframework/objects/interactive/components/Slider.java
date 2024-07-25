@@ -9,6 +9,7 @@ import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
+import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,14 +35,14 @@ public class Slider extends Component {
 
     /**
      * Slider component
-     * @param coordinates Coordinates of slider
+     * @param margin Coordinates of slider
      * @param options Options of slider
      * @param lore Lore of options
      * @param name Name of slider
      * @param delegate Action
      */
-    public Slider(List<Integer> coordinates, List<String> options, String lore, String name, Consumer<InventoryClickEvent> delegate) {
-        super(coordinates, name, lore, delegate);
+    public Slider(Margin margin, List<String> options, String lore, String name, Consumer<InventoryClickEvent> delegate) {
+        super(margin, name, lore, delegate);
 
         Options = options;
         ChosenDataModel  = MenuFramework.Config.getInt("slider_data.chosen.data", 17000);
@@ -62,7 +63,7 @@ public class Slider extends Component {
      * @param cm Chosen option material
      * @param dm Default option material
      */
-    public Slider(List<Integer> coordinates, List<String> options,
+    public Slider(Margin coordinates, List<String> options,
                   String lore, String name, Consumer<InventoryClickEvent> delegate,
                   int cdm, int ddm, Material cm, Material dm) {
         super(coordinates, name, lore, delegate);
@@ -89,24 +90,37 @@ public class Slider extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        for (var i = 0; i < getCoordinates().size(); i++)
-            if (getCoordinates().get(i) != 0) inventory.setItem(getCoordinates().get(i), new Item(getName(), lore.get(i), DefaultMaterial, 1, DefaultDataModel));
-            else inventory.setItem(getCoordinates().get(i), new Item(getName(), lore.get(i), ChosenMaterial, 1, ChosenDataModel));
-    }
-
-    @Override
-    public List<Integer> getCoordinates() {
-        return Coordinates;
+        var slots = getCoordinates().toSlots();
+        for (var i = 0; i < slots.size(); i++)
+            if (slots.get(i) != 0) {
+                inventory.setItem(
+                    slots.get(i), new Item(getName(), lore.get(i), DefaultMaterial, 1, DefaultDataModel)
+                );
+            }
+            else {
+                inventory.setItem(
+                    slots.get(i), new Item(getName(), lore.get(i), ChosenMaterial, 1, ChosenDataModel)
+                );
+            }
     }
 
     @Override
     public void action(InventoryClickEvent event) {
         if (getAction() != null) getAction().accept(event);
 
+        var slots = getCoordinates().toSlots();
         var inventory = event.getInventory();
-        for (var i = 0; i < getCoordinates().size(); i++)
-            if (getCoordinates().get(i) != event.getSlot()) inventory.setItem(getCoordinates().get(i), new Item(getName(), Options.get(i), DefaultMaterial, 1, DefaultDataModel));
-            else inventory.setItem(getCoordinates().get(i), new Item(getName(), Options.get(i), ChosenMaterial, 1, ChosenDataModel));
+        for (var i = 0; i < slots.size(); i++)
+            if (slots.get(i) != event.getSlot()) {
+                inventory.setItem(
+                    slots.get(i), new Item(getName(), Options.get(i), DefaultMaterial, 1, DefaultDataModel)
+                );
+            }
+            else {
+                inventory.setItem(
+                    slots.get(i), new Item(getName(), Options.get(i), ChosenMaterial, 1, ChosenDataModel)
+                );
+            }
     }
 
     @Override
@@ -119,9 +133,10 @@ public class Slider extends Component {
      * @return Coordinate of chose or SliderNone
      */
     public String getChose(InventoryClickEvent inventory) {
-        for (var i = 0; i < getCoordinates().size(); i++)
-            if (inventory.getInventory().getItem(getCoordinates().get(i)) != null)
-                if (Objects.requireNonNull(inventory.getInventory().getItem(getCoordinates().get(i))).getType().equals(ChosenMaterial))
+        var slots = getCoordinates().toSlots();
+        for (var i = 0; i < slots.size(); i++)
+            if (inventory.getInventory().getItem(slots.get(i)) != null)
+                if (Objects.requireNonNull(inventory.getInventory().getItem(slots.get(i))).getType().equals(ChosenMaterial))
                     return Options.get(i);
 
         return SliderNone;

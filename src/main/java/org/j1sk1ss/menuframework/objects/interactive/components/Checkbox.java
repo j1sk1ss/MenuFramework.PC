@@ -29,8 +29,8 @@ public class Checkbox extends Component {
         DefaultMaterial  = checkbox.DefaultMaterial;
     }
 
-    public Checkbox(int firstSlot, int secondSlot, String name, String lore) {
-        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, null);
+    public Checkbox(Margin margin, String name, String lore) {
+        super(margin, name, lore, null);
 
         CheckedDataModel = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
         DefaultDataModel = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
@@ -38,24 +38,13 @@ public class Checkbox extends Component {
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
     }
 
-    public Checkbox(int firstSlot, int secondSlot, String name, String lore, Consumer<InventoryClickEvent> delegate) {
-        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, delegate);
+    public Checkbox(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+        super(margin, name, lore, delegate);
 
         CheckedDataModel = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
         DefaultDataModel = MenuFramework.Config.getInt("checkbox_data.default.data", 17001);
         CheckedMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.checked.material", "GREEN_STAINED_GLASS"));
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
-    }
-
-    public Checkbox(int firstSlot, int secondSlot, String name,
-                    String lore, Consumer<InventoryClickEvent> delegate,
-                    int cdm, int ddm, Material cm, Material dm) {
-        super(SlotsManager.slots2list(firstSlot, secondSlot), name, lore, delegate);
-
-        CheckedDataModel = cdm;
-        DefaultDataModel = ddm;
-        CheckedMaterial  = cm;
-        DefaultMaterial  = dm;
     }
 
     public Checkbox(Margin margin, String name,
@@ -76,13 +65,13 @@ public class Checkbox extends Component {
 
     @Override
     public void place(Inventory inventory) {
-        for (var coordinate : getCoordinates())
+        for (var coordinate : getCoordinates().toSlots())
             inventory.setItem(coordinate, new Item(getName(), getLore(), DefaultMaterial, 1, DefaultDataModel));
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        for (var coordinate : getCoordinates())
+        for (var coordinate : getCoordinates().toSlots())
             inventory.setItem(coordinate, new Item(getName(), String.join(" ", lore), DefaultMaterial, 1, DefaultDataModel));
     }
     
@@ -92,11 +81,11 @@ public class Checkbox extends Component {
         var inventory = event.getInventory();
 
         if (Objects.requireNonNull(inventory.getItem(event.getSlot())).getType().equals(DefaultMaterial)) {
-            for (var coordinate : getCoordinates()) 
+            for (var coordinate : getCoordinates().toSlots())
                 inventory.setItem(coordinate, new Item(Name, Lore, CheckedMaterial, 1, CheckedDataModel));
         }
         else {
-            for (var coordinate : getCoordinates()) 
+            for (var coordinate : getCoordinates().toSlots())
                 inventory.setItem(coordinate, new Item(Name, Lore, DefaultMaterial, 1, DefaultDataModel));
         }
     }
@@ -107,6 +96,8 @@ public class Checkbox extends Component {
     }
 
     public boolean isChecked(InventoryClickEvent event) {
-        return Objects.requireNonNull(event.getInventory().getItem(getCoordinates().getFirst())).getType().equals(CheckedMaterial);
+        return Objects.requireNonNull(
+                event.getInventory().getItem(getCoordinates().toSlots().getFirst())
+        ).getType().equals(CheckedMaterial);
     }
 }

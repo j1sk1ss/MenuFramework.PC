@@ -14,9 +14,9 @@ import org.bukkit.persistence.PersistentDataType;
 
 import org.j1sk1ss.itemmanager.ItemManager;
 import org.j1sk1ss.itemmanager.manager.Manager;
+
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.MenuWindow;
-import org.j1sk1ss.menuframework.objects.nonInteractive.Direction;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.List;
@@ -40,23 +40,10 @@ public abstract class Component {
         Action                  = component.getAction();
     }
 
-    public Component(List<Integer> coordinates) {
+    public Component(Margin margin) {
         Action              = null;
         Language            = "RU";
-        Coordinates         = coordinates;
-        BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
-        BodyMaterial        = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
-        PersistentDataContainer = new ItemStack(Objects.requireNonNull(BodyMaterial)).getItemMeta().getPersistentDataContainer()
-                .getAdapterContext().newPersistentDataContainer();
-    }
-
-    public Component(List<Integer> coordinates, String name, String lore, Consumer<InventoryClickEvent> delegate) {
-        Coordinates = coordinates;
-        Name        = name;
-        Lore        = lore;
-        Action      = delegate;
-
-        Language            = "RU";
+        Coordinates         = margin;
         BodyCustomModelData = MenuFramework.Config.getInt("default.default_data", 7000);
         BodyMaterial        = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
         PersistentDataContainer = new ItemStack(Objects.requireNonNull(BodyMaterial)).getItemMeta().getPersistentDataContainer()
@@ -64,7 +51,7 @@ public abstract class Component {
     }
 
     public Component(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate) {
-        Coordinates = margin.toSlots();
+        Coordinates = margin;
         Name        = name;
         Lore        = lore;
         Action      = delegate;
@@ -77,7 +64,7 @@ public abstract class Component {
     }
 
     private MenuWindow Parent;
-    protected List<Integer> Coordinates;
+    protected Margin Coordinates;
     protected String Lore;
     protected String Name;
     protected PersistentDataContainer PersistentDataContainer;
@@ -173,22 +160,33 @@ public abstract class Component {
      * @return True or False
      */
     public boolean isClicked(int click) {
-        return getCoordinates().contains(click);
+        return getCoordinates().toSlots().contains(click);
     }
 
-    /**
-     * Deep copy object
-     * @return New object
-     */
     public abstract Component deepCopy();
 
     public abstract void place(Inventory inventory);
 
     public abstract void place(Inventory inventory, List<String> lore);
 
+    /**
+     * Displace component
+     * @param inventory Inventory
+     */
     public void displace(Inventory inventory) {
-        for (var pos : getCoordinates())
+        for (var pos : getCoordinates().toSlots())
             if (Objects.requireNonNull(inventory.getItem(pos)).getName().equals(Name))
                 inventory.setItem(pos, null);
+    }
+
+    /**
+     * Move component in inventory
+     * @param event Event clicker
+     * @param position New position
+     */
+    public void Move(InventoryClickEvent event, Margin position) {
+        displace(event.getInventory());
+        setCoordinates(position);
+        place(event.getInventory());
     }
 }
