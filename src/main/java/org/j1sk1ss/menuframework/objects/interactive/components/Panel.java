@@ -275,6 +275,17 @@ public class Panel extends Component {
     }
 
     /**
+     * Resize panel
+     * @param size New menu size in slots (Check it for division by 9)
+     * @return Resized panel (Deep copy)
+     */
+    public Panel resize(int size) {
+        var copyPanel = (Panel) deepCopy();
+        copyPanel.setMenuSize(MenuSizes.fromInt(size));
+        return copyPanel;
+    }
+
+    /**
      * Add component to panel
      * @param component Component for adding
      */
