@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.j1sk1ss.menuframework.common.SlotsManager;
+
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
@@ -35,9 +35,4 @@ public class ClickArea extends Component {
 
     @Override
     public void displace(Inventory inventory) { return; }
-
-    @Override
-    public Component deepCopy() {
-        return new ClickArea(this);
-    }
 }

@@ -30,21 +30,16 @@ public class ItemArea extends Component {
 
     @Override
     public void place(Inventory inventory) {
-        for (int i = 0; i < Math.min(getCoordinates().toSlots().size(), Items.size()); i++)
+        for (int i = 0; i < Math.min(getCoordinates().getSlots().size(), Items.size()); i++)
             inventory.setItem(i, Items.get(i));
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        for (int i = 0; i < Math.min(getCoordinates().toSlots().size(), Items.size()); i++) {
+        for (int i = 0; i < Math.min(getCoordinates().getSlots().size(), Items.size()); i++) {
             var item = Items.get(i);
             item.setLore(lore.get(i));
             inventory.setItem(i, item);
         }
-    }
-
-    @Override
-    public Component deepCopy() {
-        return new ItemArea(this);
     }
 }

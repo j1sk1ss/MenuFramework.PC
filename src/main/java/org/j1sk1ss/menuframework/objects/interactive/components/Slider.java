@@ -5,8 +5,10 @@ import lombok.experimental.ExtensionMethod;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
+
 import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
@@ -90,7 +92,7 @@ public class Slider extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        var slots = getCoordinates().toSlots();
+        var slots = getCoordinates().getSlots();
         for (var i = 0; i < slots.size(); i++)
             if (slots.get(i) != 0) {
                 inventory.setItem(
@@ -107,8 +109,9 @@ public class Slider extends Component {
     @Override
     public void action(InventoryClickEvent event) {
         if (getAction() != null) getAction().accept(event);
+        var a = deepCopy();
 
-        var slots = getCoordinates().toSlots();
+        var slots = getCoordinates().getSlots();
         var inventory = event.getInventory();
         for (var i = 0; i < slots.size(); i++)
             if (slots.get(i) != event.getSlot()) {
@@ -123,17 +126,12 @@ public class Slider extends Component {
             }
     }
 
-    @Override
-    public Component deepCopy() {
-        return new Slider(this);
-    }
-
     /**
      * Get coordinate of chose
      * @return Coordinate of chose or SliderNone
      */
     public String getChose(InventoryClickEvent inventory) {
-        var slots = getCoordinates().toSlots();
+        var slots = getCoordinates().getSlots();
         for (var i = 0; i < slots.size(); i++)
             if (inventory.getInventory().getItem(slots.get(i)) != null)
                 if (Objects.requireNonNull(inventory.getInventory().getItem(slots.get(i))).getType().equals(ChosenMaterial))

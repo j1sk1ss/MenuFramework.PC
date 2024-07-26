@@ -43,6 +43,28 @@ public class LocalizationManager {
     private Manager LocManager;
 
     /**
+     * Translate line to language
+     * @param line Line to translate
+     * @param language Language
+     * @return Translated line
+     */
+    public String translate(String line, String language) {
+        try {
+            if (LocManager == null) return line;
+
+            var localKey = LocManager.getString(language + "_" + line);
+            if (localKey == null) return line;
+
+            return localKey;
+        } catch (IOException e) {
+            System.err.println("Error while trying to translate '" +line + "' to " + language
+                    + "\nLOG: " + e);
+        }
+
+        return line;
+    }
+
+    /**
      * Translate component
      * @param component Component for translate
      * @return Translated component (deep copy)

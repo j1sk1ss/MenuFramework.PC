@@ -10,8 +10,8 @@ import org.bukkit.inventory.Inventory;
 
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
+
 import org.j1sk1ss.menuframework.MenuFramework;
-import org.j1sk1ss.menuframework.common.SlotsManager;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import lombok.experimental.ExtensionMethod;
@@ -65,13 +65,13 @@ public class Checkbox extends Component {
 
     @Override
     public void place(Inventory inventory) {
-        for (var coordinate : getCoordinates().toSlots())
+        for (var coordinate : getCoordinates().getSlots())
             inventory.setItem(coordinate, new Item(getName(), getLore(), DefaultMaterial, 1, DefaultDataModel));
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        for (var coordinate : getCoordinates().toSlots())
+        for (var coordinate : getCoordinates().getSlots())
             inventory.setItem(coordinate, new Item(getName(), String.join(" ", lore), DefaultMaterial, 1, DefaultDataModel));
     }
     
@@ -81,23 +81,18 @@ public class Checkbox extends Component {
         var inventory = event.getInventory();
 
         if (Objects.requireNonNull(inventory.getItem(event.getSlot())).getType().equals(DefaultMaterial)) {
-            for (var coordinate : getCoordinates().toSlots())
+            for (var coordinate : getCoordinates().getSlots())
                 inventory.setItem(coordinate, new Item(Name, Lore, CheckedMaterial, 1, CheckedDataModel));
         }
         else {
-            for (var coordinate : getCoordinates().toSlots())
+            for (var coordinate : getCoordinates().getSlots())
                 inventory.setItem(coordinate, new Item(Name, Lore, DefaultMaterial, 1, DefaultDataModel));
         }
     }
 
-    @Override
-    public Component deepCopy() {
-        return new Checkbox(this);
-    }
-
     public boolean isChecked(InventoryClickEvent event) {
         return Objects.requireNonNull(
-                event.getInventory().getItem(getCoordinates().toSlots().getFirst())
+                event.getInventory().getItem(getCoordinates().getSlots().getFirst())
         ).getType().equals(CheckedMaterial);
     }
 }

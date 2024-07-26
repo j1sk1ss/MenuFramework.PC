@@ -19,6 +19,7 @@ import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.objects.MenuWindow;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -160,10 +161,17 @@ public abstract class Component {
      * @return True or False
      */
     public boolean isClicked(int click) {
-        return getCoordinates().toSlots().contains(click);
+        return getCoordinates().getSlots().contains(click);
     }
 
-    public abstract Component deepCopy();
+    public <T extends Component> T deepCopy() {
+        try {
+            return (T) getClass().getConstructor(getClass()).newInstance(this);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
 
     public abstract void place(Inventory inventory);
 
@@ -174,7 +182,7 @@ public abstract class Component {
      * @param inventory Inventory
      */
     public void displace(Inventory inventory) {
-        for (var pos : getCoordinates().toSlots())
+        for (var pos : getCoordinates().getSlots())
             if (Objects.requireNonNull(inventory.getItem(pos)).getName().equals(Name))
                 inventory.setItem(pos, null);
     }

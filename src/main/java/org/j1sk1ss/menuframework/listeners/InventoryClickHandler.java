@@ -4,8 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.j1sk1ss.menuframework.events.ComponentClickEvent;
+
 import org.j1sk1ss.menuframework.objects.interactive.Component;
+import org.j1sk1ss.menuframework.objects.interactive.components.Panel;
 
 import java.util.HashMap;
 
@@ -25,6 +26,12 @@ public class InventoryClickHandler implements Listener {
             if (!player.equals(event.getWhoClicked())) return;
 
             for (var key : handlers.keySet()) {
+                var handler = handlers.get(key);
+                if (handler instanceof Panel) {
+                    var translator = handler.getParent().getLocManager();
+                    if (translator != null) windowTitle = translator.translate(windowTitle, handler.getLanguage());
+                }
+
                 var keyWords = key.split("\\s+");
                 var containsAllWords = true;
                 for (var word : keyWords) {
@@ -35,7 +42,7 @@ public class InventoryClickHandler implements Listener {
                 }
 
                 if (containsAllWords) {
-                    handlers.get(key).click(event);
+                    handler.click(event);
                     event.setCancelled(true);
                 }
             }

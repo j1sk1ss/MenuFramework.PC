@@ -9,6 +9,7 @@ import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import lombok.experimental.ExtensionMethod;
+
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.List;
@@ -91,11 +92,6 @@ public class LittleButton extends Component {
         PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
         item.setItemMeta(meta);
 
-        inventory.setItem(getCoordinates().toSlots().getFirst(), item);
-    }
-
-    @Override
-    public Component deepCopy() {
-        return new LittleButton(this);
+        inventory.setItem(getCoordinates().getSlots().getFirst(), item);
     }
 }

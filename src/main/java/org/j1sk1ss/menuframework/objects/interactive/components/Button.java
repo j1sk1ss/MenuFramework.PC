@@ -5,9 +5,9 @@ import lombok.experimental.ExtensionMethod;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+
 import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
-import org.j1sk1ss.menuframework.common.SlotsManager;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
@@ -57,12 +57,7 @@ public class Button extends Component {
         PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
         item.setItemMeta(meta);
 
-        for (var coordinate : getCoordinates().toSlots())
+        for (var coordinate : getCoordinates().getSlots())
             inventory.setItem(coordinate, item);
-    }
-
-    @Override
-    public Component deepCopy() {
-        return new Button(this);
     }
 }

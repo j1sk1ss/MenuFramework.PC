@@ -67,17 +67,12 @@ public class Icon extends Component {
     @Override
     public void place(Inventory inventory) {
         var item = new Item(Name, Lore, Image.getType(), 1, Image.getItemMeta().getCustomModelData());
-        inventory.setItem(getCoordinates().toSlots().getFirst(), item);
+        inventory.setItem(getCoordinates().getSlots().getFirst(), item);
     }
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
         var item = new Item(Name, String.join(", ", lore), Image.getType(), 1, Image.getItemMeta().getCustomModelData());
-        inventory.setItem(getCoordinates().toSlots().getFirst(), item);
-    }
-
-    @Override
-    public Component deepCopy() {
-        return new Icon(this);
+        inventory.setItem(getCoordinates().getSlots().getFirst(), item);
     }
 }

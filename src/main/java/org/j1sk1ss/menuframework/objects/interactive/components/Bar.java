@@ -147,7 +147,7 @@ public class Bar extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        var slots = getCoordinates().toSlots();
+        var slots = getCoordinates().getSlots();
         for (var i = 0; i < slots.size(); i++)
             if (slots.get(i) != 0) {
                 inventory.setItem(
@@ -162,7 +162,7 @@ public class Bar extends Component {
     }
 
     public void setValue(Inventory inventory, int downBorder, int upperBorder) {
-        var slots = getCoordinates().toSlots();
+        var slots = getCoordinates().getSlots();
         for (var cord : slots) setUnloaded(inventory, cord);
         switch (Direction) {
             // Example: 5 idx -> 10 idx
@@ -243,10 +243,5 @@ public class Bar extends Component {
         item.setMaterial(DefaultMaterial);
 
         inventory.setItem(pos, item);
-    }
-
-    @Override
-    public Component deepCopy() {
-        return new Bar(this);
     }
 }
