@@ -1,7 +1,9 @@
 package org.j1sk1ss.menuframework.objects;
 
 import lombok.Getter;
+
 import org.bukkit.inventory.Inventory;
+
 import org.j1sk1ss.menuframework.common.LocalizationManager;
 import org.j1sk1ss.menuframework.objects.interactive.components.Panel;
 
@@ -25,11 +27,7 @@ public class MenuWindow {
 
     public MenuWindow(List<Panel> panels) {
         Panels = panels;
-        for (Panel p : Panels) {
-            p.setParent(this);
-            for (var c : p.getComponents())
-                c.setParent(this);
-        }
+        registerChildren();
 
         Name = "Menu";
         LocManager = null;
@@ -37,11 +35,7 @@ public class MenuWindow {
 
     public MenuWindow(List<Panel> panels, String name) {
         Panels = panels;
-        for (Panel p : Panels) {
-            p.setParent(this);
-            for (var c : p.getComponents())
-                c.setParent(this);
-        }
+        registerChildren();
 
         Name = name;
         LocManager = null;
@@ -49,11 +43,7 @@ public class MenuWindow {
 
     public MenuWindow(List<Panel> panels, String name, LocalizationManager localizationManager) {
         Panels = panels;
-        for (Panel p : Panels) {
-            p.setParent(this);
-            for (var c : p.getComponents())
-                c.setParent(this);
-        }
+        registerChildren();
 
         Name = name;
         LocManager = localizationManager;
@@ -62,6 +52,16 @@ public class MenuWindow {
     @Getter private final String Name;
     private final List<Panel> Panels;
     @Getter private final LocalizationManager LocManager;
+
+    private void registerChildren() {
+        for (var p : Panels) {
+            p.setParent(this);
+            for (var c : p.getComponents())
+                c.setParent(this);
+
+            p.registerAsHandler();
+        }
+    }
 
     /**
      * Get panel by name

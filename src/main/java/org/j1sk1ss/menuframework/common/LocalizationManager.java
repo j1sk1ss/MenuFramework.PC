@@ -16,13 +16,12 @@ import java.util.ArrayList;
  *      - Key and value in CordellDB separated by ":"
  *      - Key should have LNG_ prefix. Also key should copy name of component for localization
  *          - Example: EN_button1:ButtonName/ButtonLore
- *          - Example: EN_panel:InventoryName/-
+ *          - Example: EN_panel:InventoryName
  *          - Example: IT_button1:ButtonNome/ButtonStoria
- *          - Example: RU_button1:Кнопка/- (- means saving lore (Or name))
+ *          - Example: RU_button1:-/ЛорКнопки (- means saving original name)
  *  Then just get panel with lang (from prefix), and show it for player:
  *      - Example: windowMenu.getPanel("panel1", "RU").getView(player);
  *  Notes:
- *      - Avoid localization for panels
  *      - Remember that MenuFramework don`t know player`s native language. You should detect this by yourself.
  */
 public class LocalizationManager {
@@ -43,6 +42,28 @@ public class LocalizationManager {
     private Manager LocManager;
 
     /**
+     * Get source name of element
+     * Note: Not work, if you provide lore localization
+     * Note1: Should work only for panel reverse translation in click handler
+     * @param translatedName Source name
+     * @return Reverse-translated name
+     */
+    public String getSourceName(String translatedName) {
+        if (LocManager == null) return translatedName;
+        try {
+            var records = LocManager.getKeys(translatedName);
+            for (var record : records) {
+                var splitRecord = record.y.split("_", 2);
+                return splitRecord[1];
+            }
+        } catch (IOException e) {
+            System.err.println("Error while trying to reverse translate '" + translatedName + "'\nLOG: " + e);
+        }
+
+        return translatedName;
+    }
+
+    /**
      * Translate line to language
      * @param line Line to translate
      * @param language Language
@@ -57,7 +78,7 @@ public class LocalizationManager {
 
             return localKey;
         } catch (IOException e) {
-            System.err.println("Error while trying to translate '" +line + "' to " + language
+            System.err.println("Error while trying to translate '" + line + "' to " + language
                     + "\nLOG: " + e);
         }
 
@@ -86,7 +107,7 @@ public class LocalizationManager {
 
             var translation = localKey.split("/", 2);
             if (!translation[0].equals("-")) translatedComponent.setName(translation[0]);
-            if (!translation[1].equals("-")) translatedComponent.setLore(translation[1]);
+            if (translation.length > 1) translatedComponent.setLore(translation[1]);
 
             translatedComponent.setLanguage(language);
             return translatedComponent;

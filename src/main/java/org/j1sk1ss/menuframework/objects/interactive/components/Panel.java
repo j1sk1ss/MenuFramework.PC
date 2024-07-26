@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Getter
 public class Panel extends Component {
     public Panel(Panel panel) {
         super(panel);
@@ -31,8 +32,8 @@ public class Panel extends Component {
     }
 
     /**
-     * Buttons panel
-     * @param components Components of panel
+     * Component panel
+     * @param components Components in panel
      * @param name Panel name
      */
     public Panel(List<Component> components, String name) {
@@ -41,13 +42,11 @@ public class Panel extends Component {
         Ui         = "";
         Components = components;
         MenuSize   = MenuSizes.SixLines;
-
-        MenuFramework.ClickHandler.addHandler(this, name);
     }
 
     /**
-     * Buttons panel
-     * @param components Components of panel
+     * Component panel
+     * @param components Components in panel
      * @param name Panel name
      * @param size Size of menu
      */
@@ -57,29 +56,42 @@ public class Panel extends Component {
         Ui         = "";
         Components = components;
         MenuSize   = size;
-
-        MenuFramework.ClickHandler.addHandler(this, name);
     }
 
     /**
-     * Buttons panel
-     * @param components Components of panel
+     * Component panel
+     * @param components Components in panel
      * @param name Panel name
      * @param size Size of menu
+     * @param ui UI symbols. Check this article how to do: <a href="https://www.spigotmc.org/threads/custom-inventory-uis-updated.635897/"> How to basic custom GUI </a>
      */
     public Panel(List<Component> components, String name, MenuSizes size, String ui) {
         super(new Margin(-1, -1), name, "PanelLore", null);
 
-        Ui         = CharSpacing.getNeg(8) + ui;
+        Ui         = "§f" + CharSpacing.getNeg(8) + ui;
         Components = components;
         MenuSize   = size;
+    }
 
-        MenuFramework.ClickHandler.addHandler(this, name);
+    /**
+     * Component panel
+     * @param components Components in panel
+     * @param name Panel name
+     * @param size Size of menu
+     * @param ui UI symbols. Check this article how to do: <a href="https://www.spigotmc.org/threads/custom-inventory-uis-updated.635897/"> How to basic custom GUI </a>
+     * @param color Color symbols. Check this article how to do: <a href="https://minecraft.fandom.com/wiki/Formatting_codes"> Color codes minecraft </a>
+     */
+    public Panel(List<Component> components, String name, MenuSizes size, String ui, String color) {
+        super(new Margin(-1, -1), name, "PanelLore", null);
+
+        Ui         = color + CharSpacing.getNeg(8) + ui;
+        Components = components;
+        MenuSize   = size;
     }
 
     private final String Ui;
-    @Getter @Setter private List<Component> Components;
-    @Getter @Setter private MenuSizes MenuSize;
+    @Setter private List<Component> Components;
+    @Setter private MenuSizes MenuSize;
 
     /**
      * Get button what was clicked
@@ -439,7 +451,10 @@ public class Panel extends Component {
 
     private Inventory getWindow(Player player, String title, int size) {
         var componentTitle = net.kyori.adventure.text.Component.text(Ui + title);
-        if (!Ui.isEmpty()) componentTitle = componentTitle.color(TextColor.color(255, 255, 255));
         return Bukkit.createInventory(player, size, componentTitle);
+    }
+
+    public void registerAsHandler() {
+        MenuFramework.ClickHandler.addHandler(this, getName());
     }
 }

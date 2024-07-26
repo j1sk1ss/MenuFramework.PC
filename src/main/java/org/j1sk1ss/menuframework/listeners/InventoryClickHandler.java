@@ -1,5 +1,6 @@
 package org.j1sk1ss.menuframework.listeners;
 
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,9 +28,13 @@ public class InventoryClickHandler implements Listener {
 
             for (var key : handlers.keySet()) {
                 var handler = handlers.get(key);
-                if (handler instanceof Panel) {
+                if (handler instanceof Panel panel) {
                     var translator = handler.getParent().getLocManager();
-                    if (translator != null) windowTitle = translator.translate(windowTitle, handler.getLanguage());
+                    if (translator != null) {
+                        windowTitle = translator.getSourceName(
+                            windowTitle.replace(panel.getUi(), "")
+                        );
+                    }
                 }
 
                 var keyWords = key.split("\\s+");
