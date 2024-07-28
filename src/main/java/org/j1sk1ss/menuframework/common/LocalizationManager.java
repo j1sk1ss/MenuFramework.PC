@@ -106,6 +106,8 @@ public class LocalizationManager {
             if (localKey == null) return translatedComponent;
 
             var translation = localKey.split("/", 2);
+            if (translation.length == 0) return translatedComponent;
+
             if (!translation[0].equals("-")) translatedComponent.setName(translation[0]);
             if (translation.length > 1) translatedComponent.setLore(translation[1]);
 

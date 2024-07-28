@@ -13,6 +13,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import org.j1sk1ss.itemmanager.ItemManager;
+import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 
 import org.j1sk1ss.menuframework.MenuFramework;
@@ -73,6 +74,20 @@ public abstract class Component {
     protected int BodyCustomModelData;
     protected Material BodyMaterial;
     protected Consumer<InventoryClickEvent> Action;
+
+    /**
+     * Get default body item
+     * @return Body item
+     */
+    public Item getBodyItem() {
+        var item = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
+        var meta = item.getItemMeta();
+
+        PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
+        item.setItemMeta(meta);
+
+        return item;
+    }
 
     /**
      * Click interaction
@@ -173,10 +188,6 @@ public abstract class Component {
         }
     }
 
-    public abstract void place(Inventory inventory);
-
-    public abstract void place(Inventory inventory, List<String> lore);
-
     /**
      * Displace component
      * @param inventory Inventory
@@ -197,4 +208,8 @@ public abstract class Component {
         setCoordinates(position);
         place(event.getInventory());
     }
+
+    public abstract void place(Inventory inventory);
+
+    public abstract void place(Inventory inventory, List<String> lore);
 }

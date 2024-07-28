@@ -65,8 +65,7 @@ public class Checkbox extends Component {
 
     @Override
     public void place(Inventory inventory) {
-        for (var coordinate : getCoordinates().getSlots())
-            inventory.setItem(coordinate, new Item(getName(), getLore(), DefaultMaterial, 1, DefaultDataModel));
+        place(inventory, List.of(getLore()));
     }
 
     @Override

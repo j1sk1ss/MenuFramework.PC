@@ -3,8 +3,6 @@ package org.j1sk1ss.menuframework.objects.interactive.components;
 import lombok.Getter;
 import lombok.Setter;
 
-import net.kyori.adventure.text.format.TextColor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -19,6 +17,7 @@ import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Getter
@@ -135,18 +134,21 @@ public class Panel extends Component {
     /**
      * Place components body to new inventory
      * @param inventory Inventory where should be placed components
-     * @param customLore If you need to use custom lore
+     * @param newLore If you need to use custom lore (name - lore)
      */
-    public void place(Inventory inventory, List<List<String>> customLore, List<String> names) {
+    public void place(Inventory inventory, Map<String, List<String>> newLore) {
         for (var component = 0; component < Components.size(); component++) {
-            if (customLore.get(component) == null) {
+            if (newLore.get(Components.get(component).getName()) == null) {
                 Components.get(component).place(inventory);
                 continue;
             }
 
-            for (var value : Components)
-                if (value.getName().equals(names.get(component)))
-                    value.place(inventory, customLore.get(component));
+            if (getParent().getLocManager() == null)
+                for (var value : Components) value.place(inventory, newLore.get(value.getName()));
+            else
+                for (var value : Components)
+                    value.place(inventory, List.of(getParent().getLocManager()
+                            .translate(String.join(" ", newLore.get(value.getName())), getLanguage())));
         }
     }
 
@@ -345,12 +347,11 @@ public class Panel extends Component {
     /**
      * Open panel as inventory with custom lore for components
      * @param player Player, who will see panel as inventory
-     * @param customLore Custom lore
-     * @param names Names of components, that will take custom lore
+     * @param newLore Custom lore (name - lore)
      */
-    public void getView(Player player, List<List<String>> customLore, List<String> names) {
+    public void getView(Player player, Map<String, List<String>> newLore) { // TODO: Localization break
         var window = getWindow(player, getName(), MenuSize.size);
-        place(window, customLore, names);
+        place(window, newLore);
         player.openInventory(window);
     }
 
@@ -381,12 +382,11 @@ public class Panel extends Component {
      * Open panel as inventory with custom lore for components and different title
      * @param player Player, who will see panel as inventory
      * @param newTitle New title
-     * @param customLore Custom lore
-     * @param names Names of components, that will take custom lore
+     * @param newLore Custom lore (name - lore)
      */
-    public void getView(Player player, String newTitle, List<List<String>> customLore, List<String> names) {
+    public void getView(Player player, String newTitle, Map<String, List<String>> newLore) {
         var window = getWindow(player, newTitle, MenuSize.size);
-        place(window, customLore, names);
+        place(window, newLore);
         player.openInventory(window);
     }
 
@@ -409,12 +409,11 @@ public class Panel extends Component {
 
     /**
      * Place components to inventory with custom lore
-     * @param customLore custom lore
-     * @param names Names of components, that will take custom lore
+     * @param newLore custom lore (name - lore)
      * @param inventory Inventory
      */
-    public void getView(Inventory inventory, List<List<String>> customLore, List<String> names) {
-        place(inventory, customLore, names);
+    public void getView(Inventory inventory, Map<String, List<String>> newLore) {
+        place(inventory, newLore);
     }
 
     /**

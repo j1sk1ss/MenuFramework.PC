@@ -1,6 +1,5 @@
 package org.j1sk1ss.menuframework.listeners;
 
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

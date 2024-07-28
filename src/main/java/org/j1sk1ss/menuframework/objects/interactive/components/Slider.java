@@ -107,9 +107,8 @@ public class Slider extends Component {
     }
 
     @Override
-    public void action(InventoryClickEvent event) {
+    public void action(InventoryClickEvent event) { // TODO: Localization broken at action
         if (getAction() != null) getAction().accept(event);
-        var a = deepCopy();
 
         var slots = getCoordinates().getSlots();
         var inventory = event.getInventory();
@@ -132,10 +131,14 @@ public class Slider extends Component {
      */
     public String getChose(InventoryClickEvent inventory) {
         var slots = getCoordinates().getSlots();
-        for (var i = 0; i < slots.size(); i++)
+        for (var i = 0; i < slots.size(); i++) {
             if (inventory.getInventory().getItem(slots.get(i)) != null)
-                if (Objects.requireNonNull(inventory.getInventory().getItem(slots.get(i))).getType().equals(ChosenMaterial))
-                    return Options.get(i);
+                if (Objects.requireNonNull(inventory.getInventory().getItem(slots.get(i))).getType().equals(ChosenMaterial)) {
+                    if (Objects.requireNonNull(inventory.getInventory().getItem(slots.get(i))).getItemMeta().getCustomModelData() == ChosenDataModel) {
+                        return Options.get(i);
+                    }
+                }
+        }
 
         return SliderNone;
     }
