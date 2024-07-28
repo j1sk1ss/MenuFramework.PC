@@ -16,6 +16,7 @@ import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 public class Icon extends Component {
     public Icon(Icon icon) {
         super(icon);
+        Body = icon.Body;
     }
 
     /**
@@ -71,7 +72,7 @@ public class Icon extends Component {
         Body = getBodyItem();
     }
 
-    private ItemStack Body;
+    private final ItemStack Body;
 
     @Override
     public void place(Inventory inventory) {
