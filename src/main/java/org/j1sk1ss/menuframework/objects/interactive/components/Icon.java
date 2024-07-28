@@ -2,13 +2,17 @@ package org.j1sk1ss.menuframework.objects.interactive.components;
 
 import java.util.List;
 
+import lombok.experimental.ExtensionMethod;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 
+import org.bukkit.inventory.ItemStack;
+import org.j1sk1ss.itemmanager.manager.Manager;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 
+@ExtensionMethod({Manager.class})
 public class Icon extends Component {
     public Icon(Icon icon) {
         super(icon);
@@ -20,6 +24,12 @@ public class Icon extends Component {
      */
     public Icon(Margin position) {
         super(position, "Icon", "IconLore", null);
+        Body = getBodyItem();
+    }
+
+    public Icon(Margin position, ItemStack icon) {
+        super(position, icon.getName(), String.join(" ", icon.getLoreLines()), null);
+        Body = icon;
     }
 
     /**
@@ -30,6 +40,7 @@ public class Icon extends Component {
      */
     public Icon(Margin position, String name, String lore) {
         super(position, name, lore, null);
+        Body = getBodyItem();
     }
 
     /**
@@ -42,6 +53,7 @@ public class Icon extends Component {
     public Icon(Margin position, String name, String lore, Material material) {
         super(position, name, lore, null);
         setBodyMaterial(material);
+        Body = getBodyItem();
     }
 
     /**
@@ -56,7 +68,10 @@ public class Icon extends Component {
         super(position, name, lore, null);
         setBodyMaterial(material);
         setBodyCustomModelData(dataModel);
+        Body = getBodyItem();
     }
+
+    private ItemStack Body;
 
     @Override
     public void place(Inventory inventory) {
@@ -65,6 +80,6 @@ public class Icon extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        inventory.setItem(getCoordinates().getSlots().getFirst(), getBodyItem());
+        inventory.setItem(getCoordinates().getSlots().getFirst(), Body);
     }
 }

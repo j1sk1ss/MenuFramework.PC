@@ -138,17 +138,15 @@ public class Panel extends Component {
      */
     public void place(Inventory inventory, Map<String, List<String>> newLore) {
         for (var component = 0; component < Components.size(); component++) {
-            if (newLore.get(Components.get(component).getName()) == null) {
-                Components.get(component).place(inventory);
-                continue;
+            for (var value : Components) {
+                if (getParent().getLocManager() == null) {
+                    if (newLore.get(Components.get(component).getName()) == null) Components.get(component).place(inventory);
+                    else  value.place(inventory, newLore.get(value.getName()));
+                }
+                else {
+                    value.place(inventory, newLore.get(getParent().getLocManager().getSourceName(value.getName())));
+                }
             }
-
-            if (getParent().getLocManager() == null)
-                for (var value : Components) value.place(inventory, newLore.get(value.getName()));
-            else
-                for (var value : Components)
-                    value.place(inventory, List.of(getParent().getLocManager()
-                            .translate(String.join(" ", newLore.get(value.getName())), getLanguage())));
         }
     }
 
@@ -168,11 +166,6 @@ public class Panel extends Component {
     @Override
     public void displace(Inventory inventory) {
         for (var component : Components) component.displace(inventory);
-    }
-
-    @Override
-    public Component deepCopy() {
-        return new Panel(this);
     }
 
     /**
