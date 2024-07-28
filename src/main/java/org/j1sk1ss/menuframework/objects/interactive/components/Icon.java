@@ -16,7 +16,6 @@ import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 public class Icon extends Component {
     public Icon(Icon icon) {
         super(icon);
-        Body = icon.Body;
     }
 
     /**
@@ -25,12 +24,11 @@ public class Icon extends Component {
      */
     public Icon(Margin position) {
         super(position, "Icon", "IconLore", null);
-        Body = getBodyItem();
     }
 
     public Icon(Margin position, ItemStack icon) {
         super(position, icon.getName(), String.join(" ", icon.getLoreLines()), null);
-        Body = icon;
+        setBodyItem(icon);
     }
 
     /**
@@ -41,7 +39,6 @@ public class Icon extends Component {
      */
     public Icon(Margin position, String name, String lore) {
         super(position, name, lore, null);
-        Body = getBodyItem();
     }
 
     /**
@@ -54,7 +51,7 @@ public class Icon extends Component {
     public Icon(Margin position, String name, String lore, Material material) {
         super(position, name, lore, null);
         setBodyMaterial(material);
-        Body = getBodyItem();
+        genBodyItem();
     }
 
     /**
@@ -69,10 +66,8 @@ public class Icon extends Component {
         super(position, name, lore, null);
         setBodyMaterial(material);
         setBodyCustomModelData(dataModel);
-        Body = getBodyItem();
+        genBodyItem();
     }
-
-    private final ItemStack Body;
 
     @Override
     public void place(Inventory inventory) {
@@ -81,6 +76,6 @@ public class Icon extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        inventory.setItem(getCoordinates().getSlots().getFirst(), Body);
+        inventory.setItem(getCoordinates().getSlots().getFirst(), getBodyItem());
     }
 }

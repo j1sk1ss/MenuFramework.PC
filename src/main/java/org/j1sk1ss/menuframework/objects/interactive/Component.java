@@ -40,6 +40,7 @@ public abstract class Component {
         PersistentDataContainer = component.getPersistentDataContainer();
         Parent                  = component.getParent();
         Action                  = component.getAction();
+        BodyItem                = component.getBodyItem();
     }
 
     public Component(Margin margin) {
@@ -50,6 +51,7 @@ public abstract class Component {
         BodyMaterial        = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
         PersistentDataContainer = new ItemStack(Objects.requireNonNull(BodyMaterial)).getItemMeta().getPersistentDataContainer()
                 .getAdapterContext().newPersistentDataContainer();
+        genBodyItem();
     }
 
     public Component(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate) {
@@ -63,9 +65,11 @@ public abstract class Component {
         BodyMaterial        = Material.matchMaterial(MenuFramework.Config.getString("default.default_material", "PAPER"));
         PersistentDataContainer = new ItemStack(Objects.requireNonNull(BodyMaterial)).getItemMeta().getPersistentDataContainer()
                 .getAdapterContext().newPersistentDataContainer();
+        genBodyItem();
     }
 
     private MenuWindow Parent;
+    protected ItemStack BodyItem;
     protected Margin Coordinates;
     protected String Lore;
     protected String Name;
@@ -76,17 +80,14 @@ public abstract class Component {
     protected Consumer<InventoryClickEvent> Action;
 
     /**
-     * Get default body item
-     * @return Body item
+     * Generate body item
      */
-    public Item getBodyItem() {
-        var item = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
-        var meta = item.getItemMeta();
+    protected void genBodyItem() {
+        BodyItem = new Item(Name, Lore, BodyMaterial, 1, BodyCustomModelData);
+        var meta = BodyItem.getItemMeta();
 
         PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
-        item.setItemMeta(meta);
-
-        return item;
+        BodyItem.setItemMeta(meta);
     }
 
     /**
