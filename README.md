@@ -6,6 +6,7 @@
 
 # **Dependencies:**</br>
 - ItemManager.PC</br>
+- CordellDB.EXMPL</br>
 
 # **Main info:**
 This is a very simple basis for creating your own menu in Minecraft.</br>
@@ -178,7 +179,7 @@ If you want create traditional GUI without resoursepacks, you can use **littleBu
 
 **Components** placed in **panels**. **Panels** placed in **Menu**. After all preparations we can start using all stuff what we make earlier.</br>
 
-    public static MenuWindow Menu = new MenuWindow(new Panel(List.of(new Button(...), new Slider(...))), "MenuName", new LocalizationManager("path")) // Create new menu with panels
+    public static MenuWindow Menu = new MenuWindow(new Panel(List.of(new Button(...), new Slider(...))), "MenuName", new LocalizationManager("path")); // Create new menu with panels
 
 After this, MenuFramework listen all inventory clicks and invoke functions that was linked to **components** in **panels**.
 
