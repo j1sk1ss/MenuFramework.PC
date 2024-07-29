@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.j1sk1ss.menuframework.common.LocalizationManager;
 import org.j1sk1ss.menuframework.listeners.InventoryClickHandler;
 import org.j1sk1ss.menuframework.listeners.PlayerEventListener;
 

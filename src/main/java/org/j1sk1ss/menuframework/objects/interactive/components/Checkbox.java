@@ -2,6 +2,7 @@ package org.j1sk1ss.menuframework.objects.interactive.components;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.bukkit.Material;
@@ -12,6 +13,7 @@ import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.objects.MenuWindow;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import lombok.experimental.ExtensionMethod;
@@ -38,7 +40,7 @@ public class Checkbox extends Component {
         DefaultMaterial  = Material.matchMaterial(MenuFramework.Config.getString("checkbox_data.default.material", "RED_STAINED_GLASS"));
     }
 
-    public Checkbox(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+    public Checkbox(Margin margin, String name, String lore, BiConsumer<InventoryClickEvent, MenuWindow> delegate) {
         super(margin, name, lore, delegate);
 
         CheckedDataModel = MenuFramework.Config.getInt("checkbox_data.checked.data", 17000);
@@ -48,7 +50,7 @@ public class Checkbox extends Component {
     }
 
     public Checkbox(Margin margin, String name,
-                    String lore, Consumer<InventoryClickEvent> delegate,
+                    String lore, BiConsumer<InventoryClickEvent, MenuWindow> delegate,
                     int cdm, int ddm, Material cm, Material dm) {
         super(margin, name, lore, delegate);
 
@@ -75,8 +77,8 @@ public class Checkbox extends Component {
     }
     
     @Override
-    public void action(InventoryClickEvent event) {
-        if (Action != null) Action.accept(event);
+    public void action(InventoryClickEvent event, MenuWindow parent) {
+        if (Action != null) Action.accept(event, parent);
         var inventory = event.getInventory();
 
         if (Objects.requireNonNull(inventory.getItem(event.getSlot())).getType().equals(DefaultMaterial)) {

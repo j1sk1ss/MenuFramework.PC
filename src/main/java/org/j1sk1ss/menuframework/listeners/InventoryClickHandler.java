@@ -46,7 +46,7 @@ public class InventoryClickHandler implements Listener {
                 }
 
                 if (containsAllWords) {
-                    handler.click(event);
+                    handler.click(event, handler.getParent());
                     event.setCancelled(true);
                 }
             }

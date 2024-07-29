@@ -23,7 +23,7 @@ import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 
 @Setter
@@ -54,7 +54,7 @@ public abstract class Component {
         genBodyItem();
     }
 
-    public Component(Margin margin, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+    public Component(Margin margin, String name, String lore, BiConsumer<InventoryClickEvent, MenuWindow> delegate) {
         Coordinates = margin;
         Name        = name;
         Lore        = lore;
@@ -77,7 +77,7 @@ public abstract class Component {
     protected String Language;
     protected int BodyCustomModelData;
     protected Material BodyMaterial;
-    protected Consumer<InventoryClickEvent> Action;
+    protected BiConsumer<InventoryClickEvent, MenuWindow> Action;
 
     /**
      * Generate body item
@@ -92,26 +92,18 @@ public abstract class Component {
 
     /**
      * Click interaction
-     * @param slot Slot in inventory
-     */
-    public void click(int slot) {
-        if (isClicked(slot)) action(null);
-    }
-
-    /**
-     * Click interaction
      * @param click InventoryClickEvent
      */
-    public void click(InventoryClickEvent click) {
-        if (isClicked(click.getSlot())) action(click);
+    public void click(InventoryClickEvent click, MenuWindow parent) {
+        if (isClicked(click.getSlot())) action(click, parent);
     }
 
     /**
      * Action for button
      * @param event InventoryClickEvent
      */
-    public void action(InventoryClickEvent event) {
-        if (Action != null) Action.accept(event);
+    public void action(InventoryClickEvent event, MenuWindow parent) {
+        if (Action != null) Action.accept(event, parent);
     }
 
     /**
@@ -180,15 +172,6 @@ public abstract class Component {
         return getCoordinates().getSlots().contains(click);
     }
 
-    public <T extends Component> T deepCopy() {
-        try {
-            return (T) getClass().getConstructor(getClass()).newInstance(this);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
     /**
      * Displace component
      * @param inventory Inventory
@@ -208,6 +191,16 @@ public abstract class Component {
         displace(event.getInventory());
         setCoordinates(position);
         place(event.getInventory());
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Component> T deepCopy() {
+        try {
+            return (T) getClass().getConstructor(getClass()).newInstance(this);
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public abstract void place(Inventory inventory);

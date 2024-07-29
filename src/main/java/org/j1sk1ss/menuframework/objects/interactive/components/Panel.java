@@ -12,10 +12,10 @@ import org.j1sk1ss.menuframework.MenuFramework;
 import org.j1sk1ss.menuframework.common.CharSpacing;
 import org.j1sk1ss.menuframework.events.ComponentClickEvent;
 import org.j1sk1ss.menuframework.objects.MenuSizes;
+import org.j1sk1ss.menuframework.objects.MenuWindow;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -103,20 +103,20 @@ public class Panel extends Component {
                 Bukkit.getPluginManager().callEvent(clickEvent);
 
                 if (!clickEvent.isCancelled())
-                    component.action(null);
+                    component.action(null, null);
             }
         }
     }
 
     @Override
-    public void click(InventoryClickEvent click) {
+    public void click(InventoryClickEvent click, MenuWindow parent) {
         for (var component : Components) {
             if (component.isClicked(click.getSlot())) {
                 var clickEvent = new ComponentClickEvent(component, (Player) click.getWhoClicked(), click.getSlot(), click);
                 Bukkit.getPluginManager().callEvent(clickEvent);
 
                 if (!clickEvent.isCancelled())
-                    component.action(click);
+                    component.action(click, parent);
             }
         }
     }
@@ -171,105 +171,24 @@ public class Panel extends Component {
     /**
      * Get slider from panel by name
      * @param name Name of slider
+     * @param target Target class
      * @return Slider
      */
-    public Slider getSliders(String name) {
-        for (var component : Components)
-            if (component instanceof Slider slider)
-                if (slider.getName().equals(name))
-                    return slider;
-
-        return null;
+    public <T extends Component> T getComponent(String name, Class<T> target) {
+        return Components.stream()
+            .filter(component -> component.getName().equals(name) && target.isInstance(component))
+            .map(target::cast)
+            .findFirst()
+            .orElse(null);
     }
 
     /**
-     * Get sliders from panel
-     * @return Sliders
+     * Get slider from panel by name
+     * @param name Name of slider
+     * @return Slider
      */
-    public List<Slider> getSliders() {
-        var sliders = new ArrayList<Slider>();
-        for (var component : Components)
-            if (component instanceof Slider slider) sliders.add(slider);
-
-        return sliders;
-    }
-
-    /**
-     * Get button from panel by name
-     * @param name Name of button
-     * @return Button
-     */
-    public Button getButtons(String name) {
-        for (var component : Components)
-            if (component instanceof Button button)
-                if (button.getName().equals(name))
-                    return button;
-
-        return null;
-    }
-
-    /**
-     * Get buttons from panel
-     * @return Buttons
-     */
-    public List<Button> getButtons() {
-        var buttons = new ArrayList<Button>();
-        for (var component : Components)
-            if (component instanceof Button button) buttons.add(button);
-
-        return buttons;
-    }
-
-    /**
-     * Get checkbox from panel by name
-     * @param name Name of checkbox
-     * @return Checkbox
-     */
-    public Checkbox getCheckBoxes(String name) {
-        for (var component : Components)
-            if (component instanceof Checkbox checkbox)
-                if (checkbox.getName().equals(name))
-                    return checkbox;
-
-        return null;
-    }
-
-    /**
-     * Get checkboxes from panel
-     * @return Checkboxes
-     */
-    public List<Checkbox> getCheckBoxes() {
-        var checkboxes = new ArrayList<Checkbox>();
-        for (var component : Components)
-            if (component instanceof Checkbox checkbox) checkboxes.add(checkbox);
-
-        return checkboxes;
-    }
-
-    /**
-     * Get bar from panel by name
-     * @param name Name of checkbox
-     * @return Bar
-     */
-    public Bar getBars(String name) {
-        for (var component : Components)
-            if (component instanceof Bar bar)
-                if (bar.getName().equals(name))
-                    return bar;
-
-        return null;
-    }
-
-    /**
-     * Get bars from panel
-     * @return Bars
-     */
-    public List<Bar> getBars() {
-        var bars = new ArrayList<Bar>();
-        for (var component : Components)
-            if (component instanceof Bar bar) bars.add(bar);
-
-        return bars;
+    public Component getComponent(String name) {
+        return Components.stream().filter(component -> component.getName().equals(name)).findFirst().orElse(null);
     }
 
     /**

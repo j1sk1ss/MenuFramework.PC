@@ -10,13 +10,14 @@ import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.objects.MenuWindow;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 
 @ExtensionMethod({Manager.class})
@@ -43,7 +44,7 @@ public class Slider extends Component {
      * @param name Name of slider
      * @param delegate Action
      */
-    public Slider(Margin margin, List<String> options, String lore, String name, Consumer<InventoryClickEvent> delegate) {
+    public Slider(Margin margin, List<String> options, String lore, String name, BiConsumer<InventoryClickEvent, MenuWindow> delegate) {
         super(margin, name, lore, delegate);
 
         Options = options;
@@ -66,7 +67,7 @@ public class Slider extends Component {
      * @param dm Default option material
      */
     public Slider(Margin coordinates, List<String> options,
-                  String lore, String name, Consumer<InventoryClickEvent> delegate,
+                  String lore, String name, BiConsumer<InventoryClickEvent, MenuWindow> delegate,
                   int cdm, int ddm, Material cm, Material dm) {
         super(coordinates, name, lore, delegate);
 
@@ -107,8 +108,8 @@ public class Slider extends Component {
     }
 
     @Override
-    public void action(InventoryClickEvent event) { // TODO: Localization broken at action
-        if (getAction() != null) getAction().accept(event);
+    public void action(InventoryClickEvent event, MenuWindow parent) { // TODO: Localization broken at action
+        if (getAction() != null) getAction().accept(event, parent);
 
         var slots = getCoordinates().getSlots();
         var inventory = event.getInventory();

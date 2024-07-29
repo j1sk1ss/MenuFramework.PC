@@ -7,11 +7,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import org.j1sk1ss.itemmanager.manager.Manager;
+import org.j1sk1ss.menuframework.objects.MenuWindow;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 
 @ExtensionMethod({Manager.class})
@@ -21,7 +22,7 @@ public class ItemArea extends Component {
         Items = itemArea.Items;
     }
 
-    public ItemArea(Margin coordinates, List<ItemStack> items, Consumer<InventoryClickEvent> delegate) {
+    public ItemArea(Margin coordinates, List<ItemStack> items, BiConsumer<InventoryClickEvent, MenuWindow> delegate) {
         super(coordinates, "ItemArea", "ItemAreaLore", delegate);
         Items = items;
     }

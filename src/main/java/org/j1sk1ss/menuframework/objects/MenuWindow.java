@@ -2,8 +2,6 @@ package org.j1sk1ss.menuframework.objects;
 
 import lombok.Getter;
 
-import org.bukkit.inventory.Inventory;
-
 import org.j1sk1ss.menuframework.common.LocalizationManager;
 import org.j1sk1ss.menuframework.objects.interactive.components.Panel;
 
@@ -69,11 +67,7 @@ public class MenuWindow {
      * @return Panel
      */
     public Panel getPanel(String name) {
-        for (var panel : Panels)
-            if (panel.getName().contains(name))
-                return panel;
-
-        return null;
+        return Panels.parallelStream().filter(p -> p.getName().equals(name)).findFirst().orElse(null);
     }
 
     /**
@@ -90,24 +84,6 @@ public class MenuWindow {
             }
 
         return null;
-    }
-
-    /**
-     * Place panel in inventory
-     * @param name Panel name
-     * @param inventory Inventory
-     */
-    public void placePanel(String name, Inventory inventory) {
-        getPanel(name).place(inventory);
-    }
-
-    /**
-     * Displace panel in inventory
-     * @param name Panel name
-     * @param inventory Inventory
-     */
-    public void displacePanel(String name, Inventory inventory) {
-        getPanel(name).displace(inventory);
     }
 
     /**

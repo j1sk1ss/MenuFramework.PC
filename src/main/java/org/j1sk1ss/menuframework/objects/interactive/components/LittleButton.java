@@ -4,8 +4,8 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
+import org.j1sk1ss.menuframework.objects.MenuWindow;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 
 import lombok.experimental.ExtensionMethod;
@@ -13,7 +13,7 @@ import lombok.experimental.ExtensionMethod;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 
 @ExtensionMethod({Manager.class})
@@ -47,7 +47,7 @@ public class LittleButton extends Component {
      * @param lore Little button lore
      * @param delegate Action
      */
-    public LittleButton(Margin position, String name, String lore, Consumer<InventoryClickEvent> delegate) {
+    public LittleButton(Margin position, String name, String lore, BiConsumer<InventoryClickEvent, MenuWindow> delegate) {
         super(position, name, lore, delegate);
     }
 
@@ -59,7 +59,7 @@ public class LittleButton extends Component {
      * @param delegate Action
      * @param material Little button material
      */
-    public LittleButton(Margin position, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material) {
+    public LittleButton(Margin position, String name, String lore, BiConsumer<InventoryClickEvent, MenuWindow> delegate, Material material) {
         super(position, name, lore, delegate);
         setBodyMaterial(material);
     }
@@ -73,7 +73,7 @@ public class LittleButton extends Component {
      * @param material Little button material
      * @param model Little button model data
      */
-    public LittleButton(Margin position, String name, String lore, Consumer<InventoryClickEvent> delegate, Material material, int model) {
+    public LittleButton(Margin position, String name, String lore, BiConsumer<InventoryClickEvent, MenuWindow> delegate, Material material, int model) {
         super(position, name, lore, delegate);
         setBodyMaterial(material);
         setBodyCustomModelData(model);
@@ -86,12 +86,7 @@ public class LittleButton extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        var item = new Item(getName(), String.join(" ", lore), getBodyMaterial(), 1, getBodyCustomModelData());
-        var meta = item.getItemMeta();
-
-        PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
-        item.setItemMeta(meta);
-
-        inventory.setItem(getCoordinates().getSlots().getFirst(), item);
+        genBodyItem();
+        inventory.setItem(getCoordinates().getSlots().getFirst(), getBodyItem());
     }
 }

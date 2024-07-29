@@ -10,13 +10,14 @@ import org.j1sk1ss.itemmanager.manager.Item;
 import org.j1sk1ss.itemmanager.manager.Manager;
 
 import org.j1sk1ss.menuframework.MenuFramework;
+import org.j1sk1ss.menuframework.objects.MenuWindow;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Direction;
 import org.j1sk1ss.menuframework.objects.nonInteractive.Margin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 
 @ExtensionMethod({Manager.class})
@@ -74,7 +75,7 @@ public class Bar extends Component {
      * @param options Lore of items in bar
      * @param delegate Action
      */
-    public Bar(Margin coordinates, Direction direction, List<String> options, Consumer<InventoryClickEvent> delegate) {
+    public Bar(Margin coordinates, Direction direction, List<String> options, BiConsumer<InventoryClickEvent, MenuWindow> delegate) {
         super(coordinates, "Bar", "BarLore", delegate);
 
         Direction = direction;
@@ -95,7 +96,7 @@ public class Bar extends Component {
      * @param options Lore of items in bar
      * @param delegate Action
      */
-    public Bar(Margin coordinates, Direction direction, String name, String lore, List<String> options, Consumer<InventoryClickEvent> delegate) {
+    public Bar(Margin coordinates, Direction direction, String name, String lore, List<String> options, BiConsumer<InventoryClickEvent, MenuWindow> delegate) {
         super(coordinates, name, lore, delegate);
 
         Direction = direction;
@@ -121,7 +122,7 @@ public class Bar extends Component {
      * @param dm Default option material
      */
     public Bar(Margin coordinates, Direction direction, String name, String lore,
-               List<String> options, Consumer<InventoryClickEvent> delegate,
+               List<String> options, BiConsumer<InventoryClickEvent, MenuWindow> delegate,
                int ldm, int ddm, Material lm, Material dm) {
         super(coordinates, name, lore, delegate);
 
@@ -161,6 +162,7 @@ public class Bar extends Component {
             }
     }
 
+    @SuppressWarnings("incomplete-switch")
     public void setValue(Inventory inventory, int downBorder, int upperBorder) {
         var slots = getCoordinates().getSlots();
         for (var cord : slots) setUnloaded(inventory, cord);
