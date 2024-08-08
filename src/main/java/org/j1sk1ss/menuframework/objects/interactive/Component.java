@@ -158,7 +158,6 @@ public abstract class Component {
      */
     public void deleteKeyFromContainer(String key) {
         var containerKey = new NamespacedKey(ItemManager.getPlugin(ItemManager.class), key);
-
         if (getPersistentDataContainer().has(containerKey))
             getPersistentDataContainer().remove(containerKey);
     }
@@ -177,9 +176,10 @@ public abstract class Component {
      * @param inventory Inventory
      */
     public void displace(Inventory inventory) {
-        for (var pos : getCoordinates().getSlots())
+        getCoordinates().getSlots().parallelStream().forEach(pos -> {
             if (Objects.requireNonNull(inventory.getItem(pos)).getName().equals(Name))
                 inventory.setItem(pos, null);
+        });
     }
 
     /**

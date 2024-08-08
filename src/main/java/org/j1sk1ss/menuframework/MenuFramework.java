@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import org.j1sk1ss.menuframework.listeners.InventoryClickHandler;
 import org.j1sk1ss.menuframework.listeners.PlayerEventListener;
 
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 
 public final class MenuFramework extends JavaPlugin {
+    public static MenuFramework instatnce = null;
     public static FileConfiguration Config = new YamlConfiguration();
     public static InventoryClickHandler ClickHandler = new InventoryClickHandler();
 
@@ -44,6 +46,13 @@ public final class MenuFramework extends JavaPlugin {
     @Override
     public void onDisable() {
         System.out.print("Menu framework disabled");
+    }
+
+    public static MenuFramework getInstance() {
+        if (instatnce == null) 
+            instatnce = new MenuFramework();
+
+        return instatnce;
     }
 
     private void CheckConfig() {

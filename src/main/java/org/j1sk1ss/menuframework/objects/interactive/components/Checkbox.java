@@ -3,7 +3,6 @@ package org.j1sk1ss.menuframework.objects.interactive.components;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -72,8 +71,14 @@ public class Checkbox extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        for (var coordinate : getCoordinates().getSlots())
-            inventory.setItem(coordinate, new Item(getName(), String.join(" ", lore), DefaultMaterial, 1, DefaultDataModel));
+        getCoordinates().getSlots().parallelStream().forEach(cord -> {
+            inventory.setItem(
+                    cord,
+                    new Item(getName(),
+                    String.join(" ", lore),
+                    DefaultMaterial, 1, DefaultDataModel)
+                );
+        });
     }
     
     @Override
@@ -93,7 +98,7 @@ public class Checkbox extends Component {
 
     public boolean isChecked(InventoryClickEvent event) {
         return Objects.requireNonNull(
-                event.getInventory().getItem(getCoordinates().getSlots().getFirst())
+                event.getInventory().getItem(getCoordinates().getSlots().get(0))
         ).getType().equals(CheckedMaterial);
     }
 }
