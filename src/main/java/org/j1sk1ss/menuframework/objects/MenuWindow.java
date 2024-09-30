@@ -54,9 +54,7 @@ public class MenuWindow {
     private void registerChildren() {
         for (var p : Panels) {
             p.setParent(this);
-            for (var c : p.getComponents())
-                c.setParent(this);
-
+            p.getComponents().parallelStream().forEach(c -> {c.setParent(this);});
             p.registerAsHandler();
         }
     }

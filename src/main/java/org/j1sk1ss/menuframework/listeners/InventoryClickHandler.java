@@ -8,48 +8,52 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.interactive.components.Panel;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class InventoryClickHandler implements Listener {
     public InventoryClickHandler() {
-        handlers = new HashMap<>();
+        handlers = new ConcurrentHashMap<>();
     }
 
-    private final HashMap<String, Component> handlers;
+    private final ConcurrentHashMap<String, Component> handlers;
 
     @EventHandler
     @SuppressWarnings("deprecation")
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getHolder() instanceof Player player) {
-            var windowTitle = event.getView().getTitle();
+            final String[] container = new String[1];
+            container[0] = event.getView().getTitle();
+
             if (!player.equals(event.getWhoClicked())) return;
 
-            for (var key : handlers.keySet()) {
-                var handler = handlers.get(key);
-                if (handler instanceof Panel panel) {
-                    var translator = handler.getParent().getLocManager();
-                    if (translator != null) {
-                        windowTitle = translator.getSourceName(
-                            windowTitle.replace(panel.getUi(), "")
-                        );
+            handlers.keySet().parallelStream().forEach(
+                key -> {
+                    var handler = handlers.get(key);
+                    if (handler instanceof Panel panel) {
+                        var translator = handler.getParent().getLocManager();
+                        if (translator != null) {
+                            container[0] = translator.getSourceName(
+                                container[0].replace(panel.getUi(), "")
+                            );
+                        }
                     }
-                }
-
-                var keyWords = key.split("\\s+");
-                var containsAllWords = true;
-                for (var word : keyWords) {
-                    if (!windowTitle.contains(word)) {
-                        containsAllWords = false;
-                        break;
+    
+                    var keyWords = key.split("\\s+");
+                    var containsAllWords = true;
+                    for (var word : keyWords) {
+                        if (!container[0].contains(word)) {
+                            containsAllWords = false;
+                            break;
+                        }
                     }
+    
+                    if (containsAllWords) {
+                        handler.click(event, handler.getParent());
+                        event.setCancelled(true);
+                    }   
                 }
-
-                if (containsAllWords) {
-                    handler.click(event, handler.getParent());
-                    event.setCancelled(true);
-                }
-            }
+            );
         }
     }
 

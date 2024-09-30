@@ -97,7 +97,7 @@ public class Panel extends Component {
      * @param click Slot of inventory what was clicked
      */
     public void click(int click) {
-        for (var component : Components) {
+        Components.parallelStream().forEach(component -> {
             if (component.isClicked(click)) {
                 var clickEvent = new ComponentClickEvent(component, null, click, null);
                 Bukkit.getPluginManager().callEvent(clickEvent);
@@ -105,12 +105,12 @@ public class Panel extends Component {
                 if (!clickEvent.isCancelled())
                     component.action(null, null);
             }
-        }
+        });
     }
 
     @Override
     public void click(InventoryClickEvent click, MenuWindow parent) {
-        for (var component : Components) {
+        Components.parallelStream().forEach(component -> {
             if (component.isClicked(click.getSlot())) {
                 var clickEvent = new ComponentClickEvent(component, (Player) click.getWhoClicked(), click.getSlot(), click);
                 Bukkit.getPluginManager().callEvent(clickEvent);
@@ -118,7 +118,7 @@ public class Panel extends Component {
                 if (!clickEvent.isCancelled())
                     component.action(click, parent);
             }
-        }
+        });
     }
 
     @Override

@@ -58,7 +58,8 @@ public class Button extends Component {
         PersistentDataContainer.copyTo(meta.getPersistentDataContainer(), true);
         item.setItemMeta(meta);
 
-        for (var coordinate : getCoordinates().getSlots())
-            inventory.setItem(coordinate, item);
+        getCoordinates().getSlots().parallelStream().forEach(cord -> {
+            inventory.setItem(cord, item);
+        });
     }
 }
