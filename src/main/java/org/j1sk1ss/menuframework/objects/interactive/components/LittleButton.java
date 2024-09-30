@@ -87,6 +87,6 @@ public class LittleButton extends Component {
     @Override
     public void place(Inventory inventory, List<String> lore) {
         genBodyItem();
-        inventory.setItem(getCoordinates().getSlots().getFirst(), getBodyItem());
+        inventory.setItem(getCoordinates().getSlots().get(0), getBodyItem());
     }
 }

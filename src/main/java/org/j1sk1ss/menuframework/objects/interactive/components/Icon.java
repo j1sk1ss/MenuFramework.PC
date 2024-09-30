@@ -76,6 +76,6 @@ public class Icon extends Component {
 
     @Override
     public void place(Inventory inventory, List<String> lore) {
-        inventory.setItem(getCoordinates().getSlots().getFirst(), getBodyItem());
+        inventory.setItem(getCoordinates().getSlots().get(0), getBodyItem());
     }
 }

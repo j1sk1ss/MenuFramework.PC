@@ -93,7 +93,7 @@ public class Checkbox extends Component {
 
     public boolean isChecked(InventoryClickEvent event) {
         return Objects.requireNonNull(
-                event.getInventory().getItem(getCoordinates().getSlots().getFirst())
+                event.getInventory().getItem(getCoordinates().getSlots().get(0))
         ).getType().equals(CheckedMaterial);
     }
 }
