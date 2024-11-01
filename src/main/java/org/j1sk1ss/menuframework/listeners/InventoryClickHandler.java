@@ -1,7 +1,9 @@
 package org.j1sk1ss.menuframework.listeners;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -9,7 +11,6 @@ import org.j1sk1ss.menuframework.objects.interactive.Component;
 import org.j1sk1ss.menuframework.objects.interactive.components.Panel;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class InventoryClickHandler implements Listener {
@@ -19,7 +20,7 @@ public class InventoryClickHandler implements Listener {
 
     private final ConcurrentHashMap<String, Component> handlers;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     @SuppressWarnings("deprecation")
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getHolder() instanceof Player player) {
@@ -27,12 +28,8 @@ public class InventoryClickHandler implements Listener {
             container[0] = event.getView().getTitle();
 
             if (!player.equals(event.getWhoClicked())) return;
-
-            var stopFlag = new AtomicBoolean(false);
             handlers.keySet().forEach(
                 key -> {
-                    if (stopFlag.get()) return;
-
                     var handler = handlers.get(key);
                     if (handler instanceof Panel panel) {
                         var translator = handler.getParent().getLocManager();
@@ -52,10 +49,12 @@ public class InventoryClickHandler implements Listener {
                         }
                     }
 
-                    if (containsAllWords && !stopFlag.get()) {
-                        handler.click(event, handler.getParent());
+                    if (containsAllWords) {
+                        System.out.println("Event was captured bu MenuFramework in: " + container[0]);
                         event.setCancelled(true);
-                        stopFlag.set(true);
+                        event.setResult(Event.Result.DENY);
+                        handler.click(event, handler.getParent());
+                        // event.setCurrentItem(null);
                     }
                 }
             );
