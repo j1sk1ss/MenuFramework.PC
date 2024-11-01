@@ -6,7 +6,7 @@
 
     <groupId>org.j1sk1ss</groupId>
     <artifactId>MenuFramework</artifactId>
-    <version>1.1-LTS</version>
+    <version>1.2-LTS</version>
     <packaging>jar</packaging>
 
     <name>MenuFramework</name>

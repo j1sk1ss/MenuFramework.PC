@@ -13,7 +13,7 @@ import java.io.IOException;
 
 
 public final class MenuFramework extends JavaPlugin {
-    public static MenuFramework instatnce = null;
+    public static MenuFramework instance = null;
     public static FileConfiguration Config = new YamlConfiguration();
     public static InventoryClickHandler ClickHandler = new InventoryClickHandler();
 
@@ -34,13 +34,13 @@ public final class MenuFramework extends JavaPlugin {
         }
 
         Config = JavaPlugin.getPlugin(MenuFramework.class).getConfig();
-        System.out.print("Menu framework enabled");
+        System.out.print("Menu framework enabled!");
 
         Bukkit.getPluginManager().registerEvents(ClickHandler, this);
-        System.out.print("Inventory handler registered");
+        System.out.print("Inventory handler registered!");
 
         Bukkit.getPluginManager().registerEvents(new PlayerEventListener(), this);
-        System.out.print("Player handler registered");
+        System.out.print("Player handler registered!");
     }
 
     @Override
@@ -49,10 +49,10 @@ public final class MenuFramework extends JavaPlugin {
     }
 
     public static MenuFramework getInstance() {
-        if (instatnce == null) 
-            instatnce = new MenuFramework();
+        if (instance == null)
+            instance = new MenuFramework();
 
-        return instatnce;
+        return instance;
     }
 
     private void CheckConfig() {
