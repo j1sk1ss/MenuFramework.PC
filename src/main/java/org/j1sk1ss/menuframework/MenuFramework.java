@@ -19,6 +19,7 @@ public final class MenuFramework extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getServer().getConsoleSender().sendMessage("Menu framework starting...");
         var file = new File(getDataFolder() + File.separator + "config.yml");
         if (file.exists()) saveDefaultConfig();
         else {
@@ -34,13 +35,13 @@ public final class MenuFramework extends JavaPlugin {
         }
 
         Config = JavaPlugin.getPlugin(MenuFramework.class).getConfig();
-        System.out.print("Menu framework enabled!");
+        getServer().getConsoleSender().sendMessage("Menu framework enabled!");
 
         Bukkit.getPluginManager().registerEvents(ClickHandler, this);
-        System.out.print("Inventory handler registered!");
+        getServer().getConsoleSender().sendMessage("Inventory handler registered!");
 
         Bukkit.getPluginManager().registerEvents(new PlayerEventListener(), this);
-        System.out.print("Player handler registered!");
+        getServer().getConsoleSender().sendMessage("Player handler registered!");
     }
 
     @Override

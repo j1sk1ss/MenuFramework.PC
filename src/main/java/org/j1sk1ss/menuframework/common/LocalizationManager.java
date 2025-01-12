@@ -50,14 +50,10 @@ public class LocalizationManager {
      */
     public String getSourceName(String translatedName) {
         if (LocManager == null) return translatedName;
-        try {
-            var records = LocManager.getKeys(translatedName);
-            for (var record : records) {
-                var splitRecord = record.y.split("_", 2);
-                return splitRecord[1];
-            }
-        } catch (IOException e) {
-            System.err.println("Error while trying to reverse translate '" + translatedName + "'\nLOG: " + e);
+        var records = LocManager.getKeys(translatedName);
+        for (var record : records) {
+            var splitRecord = record.y().split("_", 2);
+            return splitRecord[1];
         }
 
         return translatedName;

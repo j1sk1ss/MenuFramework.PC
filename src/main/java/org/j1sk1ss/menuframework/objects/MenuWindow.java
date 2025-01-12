@@ -8,6 +8,8 @@ import org.j1sk1ss.menuframework.objects.interactive.components.Panel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.bukkit.Bukkit.getServer;
+
 
 public class MenuWindow {
     public MenuWindow() {
@@ -52,9 +54,10 @@ public class MenuWindow {
     @Getter private final LocalizationManager LocManager;
 
     private void registerChildren() {
+        getServer().getConsoleSender().sendMessage("Registering " + Name);
         for (var p : Panels) {
             p.setParent(this);
-            p.getComponents().parallelStream().forEach(c -> {c.setParent(this);});
+            for (var c : p.getComponents()) c.setParent(this);
             p.registerAsHandler();
         }
     }

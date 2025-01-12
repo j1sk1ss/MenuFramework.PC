@@ -6,7 +6,7 @@
 
     <groupId>org.j1sk1ss</groupId>
     <artifactId>MenuFramework</artifactId>
-    <version>1.2-LTS</version>
+    <version>1.3-LTS</version>
     <packaging>jar</packaging>
 
     <name>MenuFramework</name>
@@ -30,7 +30,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.5.3</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -38,7 +38,12 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>com.github.j1sk1ss:ItemManager.PC</exclude>
+                                    <exclude>com.github.j1sk1ss:CordellDB.EXMPL</exclude>
+                                </excludes>
+                            </artifactSet>
                         </configuration>
                     </execution>
                 </executions>
@@ -87,15 +92,15 @@
         <dependency>
             <groupId>com.github.j1sk1ss</groupId>
             <artifactId>ItemManager.PC</artifactId>
-            <version>ver0.5</version>
-            <scope>compile</scope>
+            <version>ver0.6.1a</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.j1sk1ss</groupId>
             <artifactId>CordellDB.EXMPL</artifactId>
-            <version>ver0.2.1</version>
-            <scope>compile</scope>
+            <version>ver0.2.2g</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
